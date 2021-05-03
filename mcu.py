@@ -1,6 +1,14 @@
+import disassembler
+
+
 class Microcontroller:
     def __init__(self):
         self._rom = ROM()
+
+    def load_hex_file(self, filepath):
+        for record in disassembler.IntelHexFile(filepath):
+            for addr, byte in enumerate(record, record.first_byte_addr):
+                self._rom[addr] = byte
 
 
 class ROM:
