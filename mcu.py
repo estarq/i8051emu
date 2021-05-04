@@ -19,6 +19,9 @@ class Microcontroller:
             for addr, byte in enumerate(record, record.first_byte_addr):
                 self._rom[addr] = byte
 
+    def exec_0(self):
+        return
+
 
 class ROM:
     def __init__(self):
