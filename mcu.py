@@ -3,7 +3,7 @@ import disassembler
 
 class Microcontroller:
     def __init__(self):
-        self._rom = ROM()
+        self._rom = [0] * 4000  # 4 KB
         self._pc = 0
 
     def __call__(self):
@@ -12,26 +12,15 @@ class Microcontroller:
             op.args = self._rom[self._pc + 1:self._pc + len(op)]
             self._pc += len(op)
             # Jump operations may override the PC
-            exec(f'self.exec_{op.opcode}(*op.args)')
+            exec(f'self._exec_{op.opcode}(*op.args)')
 
     def load_hex_file(self, filepath):
         for record in disassembler.IntelHexFile(filepath):
             for addr, byte in enumerate(record, record.first_byte_addr):
                 self._rom[addr] = byte
 
-    def exec_0(self):
+    def _exec_0(self):
         return
-
-
-class ROM:
-    def __init__(self):
-        self._data = [0] * 4000  # 4 KB
-
-    def __getitem__(self, addr):
-        return self._data[addr]
-
-    def __setitem__(self, addr, value: int):
-        self._data[addr] = value
 
 
 class Operation:
