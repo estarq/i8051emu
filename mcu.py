@@ -3,7 +3,7 @@ import disassembler
 
 class Microcontroller:
     def __init__(self):
-        self._rom = [0] * 4000  # 4 KB
+        self._rom = [0] * 64000  # 64 KB
         self._pc = 0
 
     def __call__(self):
