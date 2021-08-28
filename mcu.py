@@ -23,6 +23,29 @@ class Microcontroller:
         return
 
 
+class Byte:
+    # Warning: big-endian
+    def __init__(self):
+        self.value = 0
+
+    def __getitem__(self, bit_number):
+        return int(self.bits()[bit_number])
+
+    def __setitem__(self, bit_number, bit_value: int):
+        bits = self.bits()
+        bits = bits[:bit_number] + str(bit_value) + bits[bit_number + 1:]
+        self.value = int(bits, 2)
+
+    def __setattr__(self, name, value: int):
+        super(Byte, self).__setattr__(name, value % 256)
+
+    def __eq__(self, other: int):
+        return self.value == other
+
+    def bits(self):
+        return f'{self.value:08b}'
+
+
 class Operation:
     _opcodes = {
         0: {'length': 1, 'mnemonic': 'NOP'},

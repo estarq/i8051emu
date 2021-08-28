@@ -10,6 +10,25 @@ class TestMicrocontroller:
         assert m._rom[256] == 174, 'Misplaced byte - addr change due to ORG statement ignored'
 
 
+class TestByte:
+    def test__getitem__(self):
+        b = mcu.Byte()
+        b.value = 4
+        assert b[5] == 1, 'Bit access not supported'
+
+    def test__setitem__(self):
+        b = mcu.Byte()
+        b[2] = 1
+        assert b == 32, 'Bit setting not supported'
+
+    def test__setattr__(self):
+        b = mcu.Byte()
+        b.value = 260
+        assert b == 4, 'Overflow not supported'
+        b.value = -2
+        assert b == 254, 'Underflow not supported'
+
+
 class TestOperation:
     def test__len__(self):
         op = mcu.Operation(2)
