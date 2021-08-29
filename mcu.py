@@ -42,6 +42,22 @@ class Byte:
     def __eq__(self, other: int):
         return self.value == other
 
+    def __add__(self, other: int):
+        b = Byte()
+        b.value = self.value + other
+        return b
+
+    def __sub__(self, other: int):
+        b = Byte()
+        b.value = self.value - other
+        return b
+
+    def __mod__(self, other: int):
+        return self.value % other
+
+    def __divmod__(self, other: 'Byte'):
+        return divmod(self.value, other.value)
+
     def bits(self):
         return f'{self.value:08b}'
 

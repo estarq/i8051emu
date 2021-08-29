@@ -28,6 +28,30 @@ class TestByte:
         b.value = -2
         assert b == 254, 'Underflow not supported'
 
+    def test__add__(self):
+        b = mcu.Byte()
+        b.value = 4
+        b += 1
+        assert b == 5
+
+    def test__sub__(self):
+        b = mcu.Byte()
+        b.value = 4
+        b -= 1
+        assert b == 3
+
+    def test__mod__(self):
+        b = mcu.Byte()
+        b.value = 9
+        assert b % 2 == 1
+
+    def test__divmod__(self):
+        b1 = mcu.Byte()
+        b1.value = 9
+        b2 = mcu.Byte()
+        b2.value = 2
+        assert divmod(b1, b2) == (4, 1)
+
 
 class TestOperation:
     def test__len__(self):
