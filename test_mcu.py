@@ -14,6 +14,36 @@ class TestMicrocontroller:
         m.pc = 65538
         assert m.pc == 2, 'Overflow not supported - int?'
 
+    def test_direct_addressing(self):
+        m = mcu.Microcontroller()
+        byte_id = id(m._mem[17])
+        m._mem[17] = 123
+        assert m._mem[17] == 123 and id(m._mem[17]) == byte_id, 'Byte replaced with int?'
+        m._mem[17][7] = 0
+        assert m._mem[17] == 122, 'Bit setting not supported'
+
+    def test_mem_val_overflow(self):
+        m = mcu.Microcontroller()
+        m._mem[30] += 300
+        assert m._mem[30] == 44, 'Overflow not supported'
+
+
+class TestDataMemory:
+    def test_decimal_access(self):
+        mem = mcu.DataMemory()
+        byte_id = id(mem[2])
+        mem[2] = 30
+        assert mem[2] == 30 and id(mem[2]) == byte_id, 'Decimal access not supported'
+        b = mcu.Byte()
+        b.value = 3
+        mem[b] = 30
+        assert mem[3] == 30, 'Cannot use a Byte instance as an address - not converted to int?'
+
+    def test_bit_access(self):
+        mem = mcu.DataMemory()
+        mem[5][1] = 1
+        assert mem[5] == 64, 'Bit access not supported'
+
 
 class TestByte:
     def test__getitem__(self):

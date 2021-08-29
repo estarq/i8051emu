@@ -4,6 +4,7 @@ import disassembler
 class Microcontroller:
     def __init__(self):
         self._rom = [0] * 64000  # 64 KB
+        self._mem = DataMemory()
         self._pc = DoubleByte()
 
     def __call__(self):
@@ -31,6 +32,17 @@ class Microcontroller:
         return
 
 
+class DataMemory:
+    def __init__(self):
+        self._data = [Byte() for _ in range(256)]
+
+    def __getitem__(self, addr):
+        return self._data[int(addr)]
+
+    def __setitem__(self, addr, value: int):
+        self[addr].value = value
+
+
 class Byte:
     # Warning: big-endian
     def __init__(self):
@@ -46,6 +58,9 @@ class Byte:
 
     def __setattr__(self, name, value: int):
         super(Byte, self).__setattr__(name, value % 256)
+
+    def __int__(self):
+        return self.value
 
     def __eq__(self, other: int):
         return self.value == other
