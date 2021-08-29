@@ -317,4 +317,4 @@ class Operation:
         # Turn two one-byte arguments (as stored in a .hex file) into one two-byte argument
         # e.g. 0xAB = 171, 0xCD = 205; 171 * 16 ** 2 + 205 = 43981 = 0xABCD
         args = [self.args[0] * 16 ** 2 + self.args[1]] if self.opcode in (2, 18, 144) else self.args
-        return self._opcodes[self.opcode]['mnemonic'].format(*args)
+        return Operation._opcodes[self.opcode]['mnemonic'].format(*args)
