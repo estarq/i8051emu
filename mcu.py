@@ -35,12 +35,23 @@ class Microcontroller:
 class DataMemory:
     def __init__(self):
         self._data = [Byte() for _ in range(256)]
+        self._dptr = DoubleByte()
 
     def __getitem__(self, addr):
         return self._data[int(addr)]
 
     def __setitem__(self, addr, value: int):
         self[addr].value = value
+
+    @property
+    def dptr(self):
+        return self._dptr.value
+
+    @dptr.setter
+    def dptr(self, value):
+        self._dptr.value = value
+        self[130].value = int(f'{value:016b}'[:8], 2)
+        self[131].value = int(f'{value:016b}'[8:], 2)
 
 
 class Byte:

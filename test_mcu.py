@@ -44,6 +44,14 @@ class TestDataMemory:
         mem[5][1] = 1
         assert mem[5] == 64, 'Bit access not supported'
 
+    def test_dptr(self):
+        mem = mcu.DataMemory()
+        mem.dptr = 65530
+        mem.dptr += 10
+        assert mem.dptr == 4, 'Overflow not supported - int?'
+        mem.dptr = 65530
+        assert mem[130] == int('1' * 8, 2) and mem[131] == int('11111010', 2), 'Wrong binary representation'
+
 
 class TestByte:
     def test__getitem__(self):
