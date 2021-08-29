@@ -62,6 +62,17 @@ class Byte:
         return f'{self.value:08b}'
 
 
+class DoubleByte(Byte):
+    def __init__(self):
+        super().__init__()
+
+    def __setattr__(self, name, value: int):
+        super(Byte, self).__setattr__(name, value % 65536)
+
+    def bits(self):
+        return f'{self.value:016b}'
+
+
 class Operation:
     _opcodes = {
         0: {'length': 1, 'mnemonic': 'NOP'},

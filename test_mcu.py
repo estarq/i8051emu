@@ -53,6 +53,25 @@ class TestByte:
         assert divmod(b1, b2) == (4, 1)
 
 
+class TestDoubleByte:
+    def test__getitem__(self):
+        b = mcu.DoubleByte()
+        b.value = 2048
+        assert b[4] == 1, 'Bit access not supported'
+
+    def test__setitem__(self):
+        b = mcu.DoubleByte()
+        b[5] = 1
+        assert b == 1024, 'Bit setting not supported'
+
+    def test__setattr__(self):
+        b = mcu.DoubleByte()
+        b.value = 65538
+        assert b == 2, 'Overflow not supported'
+        b.value = -4
+        assert b == 65532, 'Underflow not supported'
+
+
 class TestOperation:
     def test__len__(self):
         op = mcu.Operation(2)
