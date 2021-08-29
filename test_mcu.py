@@ -22,6 +22,15 @@ class TestMicrocontroller:
         m._mem[17][7] = 0
         assert m._mem[17] == 122, 'Bit setting not supported'
 
+    def test_mem_prop_bit_access(self):
+        m = mcu.Microcontroller()
+        m._mem.a = 8
+        assert m._mem[224] == 8, 'Property not aliased properly'
+        assert m._mem[224][4] == 1
+        assert m._mem.a[4] == 1, 'Bit access on property not supported'
+        m._mem.a[5] = 1
+        assert m._mem.a == 12, 'Bit setting on property not supported'
+
     def test_mem_val_overflow(self):
         m = mcu.Microcontroller()
         m._mem[30] += 300

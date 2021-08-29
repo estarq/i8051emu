@@ -53,6 +53,22 @@ class DataMemory:
         self[130].value = int(f'{value:016b}'[:8], 2)
         self[131].value = int(f'{value:016b}'[8:], 2)
 
+    @property
+    def a(self):
+        return self[224]
+
+    @a.setter
+    def a(self, value):
+        self[224].value = value
+
+    @property
+    def b(self):
+        return self[240]
+
+    @b.setter
+    def b(self, value):
+        self[240].value = value
+
 
 class Byte:
     # Warning: big-endian
