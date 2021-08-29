@@ -69,6 +69,58 @@ class DataMemory:
     def b(self, value):
         self[240].value = value
 
+    @property
+    def psw(self):
+        return self[208]
+
+    @property
+    def c(self):
+        return self.psw[0]
+
+    @c.setter
+    def c(self, value):
+        self.psw[0] = value
+
+    @property
+    def ac(self):
+        return self.psw[1]
+
+    @ac.setter
+    def ac(self, value):
+        self.psw[1] = value
+
+    @property
+    def rs1(self):
+        return self.psw[3]
+
+    @rs1.setter
+    def rs1(self, value):
+        self.psw[3] = value
+
+    @property
+    def rs2(self):
+        return self.psw[4]
+
+    @rs2.setter
+    def rs2(self, value):
+        self.psw[4] = value
+
+    @property
+    def ov(self):
+        return self.psw[5]
+
+    @ov.setter
+    def ov(self, value):
+        self.psw[5] = value
+
+    @property
+    def p(self):
+        return self.psw[7]
+
+    @p.setter
+    def p(self, value):
+        self.psw[7] = value
+
 
 class Byte:
     # Warning: big-endian

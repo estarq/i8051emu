@@ -61,6 +61,47 @@ class TestDataMemory:
         mem.dptr = 65530
         assert mem[130] == int('1' * 8, 2) and mem[131] == int('11111010', 2), 'Wrong binary representation'
 
+    def test_psw_prop(self):
+        mem = mcu.DataMemory()
+        mem.psw[0] = 1
+        assert mem.psw == 128
+
+    def test_c_prop(self):
+        mem = mcu.DataMemory()
+        mem.c = 1
+        assert mem.c == 1
+        assert mem[208][0] == 1
+
+    def test_ac_prop(self):
+        mem = mcu.DataMemory()
+        mem.ac = 1
+        assert mem.ac == 1
+        assert mem[208][1] == 1
+
+    def test_rs1_prop(self):
+        mem = mcu.DataMemory()
+        mem.rs1 = 1
+        assert mem.rs1 == 1
+        assert mem[208][3] == 1
+
+    def test_rs2_prop(self):
+        mem = mcu.DataMemory()
+        mem.rs2 = 1
+        assert mem.rs2 == 1
+        assert mem[208][4] == 1
+
+    def test_ov_prop(self):
+        mem = mcu.DataMemory()
+        mem.ov = 1
+        assert mem.ov == 1
+        assert mem[208][5] == 1
+
+    def test_p_prop(self):
+        mem = mcu.DataMemory()
+        mem.p = 1
+        assert mem.p == 1
+        assert mem[208][7] == 1
+
 
 class TestByte:
     def test__getitem__(self):
