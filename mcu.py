@@ -121,6 +121,78 @@ class DataMemory:
     def p(self, value):
         self.psw[7] = value
 
+    @property
+    def selected_register_bank(self):
+        return 2 * self.rs1 + self.rs2
+
+    @selected_register_bank.setter
+    def selected_register_bank(self, value):
+        self.rs1, self.rs2 = [int(bit) for bit in f'{value:02b}']
+
+    @property
+    def r0(self):
+        return self[8 * self.selected_register_bank]
+
+    @r0.setter
+    def r0(self, value):
+        self[8 * self.selected_register_bank].value = value
+
+    @property
+    def r1(self):
+        return self[8 * self.selected_register_bank + 1]
+
+    @r1.setter
+    def r1(self, value):
+        self[8 * self.selected_register_bank + 1].value = value
+
+    @property
+    def r2(self):
+        return self[8 * self.selected_register_bank + 2]
+
+    @r2.setter
+    def r2(self, value):
+        self[8 * self.selected_register_bank + 2].value = value
+
+    @property
+    def r3(self):
+        return self[8 * self.selected_register_bank + 3]
+
+    @r3.setter
+    def r3(self, value):
+        self[8 * self.selected_register_bank + 3].value = value
+
+    @property
+    def r4(self):
+        return self[8 * self.selected_register_bank + 4]
+
+    @r4.setter
+    def r4(self, value):
+        self[8 * self.selected_register_bank + 4].value = value
+
+    @property
+    def r5(self):
+        return self[8 * self.selected_register_bank + 5]
+
+    @r5.setter
+    def r5(self, value):
+        self[8 * self.selected_register_bank + 5].value = value
+
+    @property
+    def r6(self):
+        return self[8 * self.selected_register_bank + 6]
+
+    @r6.setter
+    def r6(self, value):
+        self[8 * self.selected_register_bank + 6].value = value
+
+    @property
+    def r7(self):
+        return self[8 * self.selected_register_bank + 7]
+
+    @r7.setter
+    def r7(self, value):
+        self[8 * self.selected_register_bank + 7].value = value
+
 
 class Byte:
     # Warning: big-endian

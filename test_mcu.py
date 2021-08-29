@@ -22,6 +22,15 @@ class TestMicrocontroller:
         m._mem[17][7] = 0
         assert m._mem[17] == 122, 'Bit setting not supported'
 
+    def test_register_addressing(self):
+        m = mcu.Microcontroller()
+        m._mem.selected_register_bank = 3
+        byte_id = id(m._mem[8 * m._mem.selected_register_bank + 1])
+        m._mem.r1 = 200
+        assert m._mem.r1 == 200, 'R1 property not supported'
+        assert m._mem[8 * 3 + 1] == 200, 'Address not calculated properly'
+        assert id(m._mem[8 * 3 + 1]) == byte_id, 'Value not changed in place'
+
     def test_mem_prop_bit_access(self):
         m = mcu.Microcontroller()
         m._mem.a = 8
@@ -101,6 +110,17 @@ class TestDataMemory:
         mem.p = 1
         assert mem.p == 1
         assert mem[208][7] == 1
+
+    def test_selected_register_bank_prop(self):
+        mem = mcu.DataMemory()
+        mem.selected_register_bank = 3
+        assert mem.selected_register_bank == 3 and mem.rs1 == 1 and mem.rs2 == 1
+
+    def test_r1_prop(self):
+        mem = mcu.DataMemory()
+        mem.selected_register_bank = 2
+        mem.r1 = 3
+        assert mem.r1 == 3 and mem[8 * 2 + 1] == 3
 
 
 class TestByte:
