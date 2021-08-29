@@ -9,6 +9,11 @@ class TestMicrocontroller:
         assert m._rom[1] == 1, 'Second byte not loaded'
         assert m._rom[256] == 174, 'Misplaced byte - addr change due to ORG statement ignored'
 
+    def test_pc_prop(self):
+        m = mcu.Microcontroller()
+        m.pc = 65538
+        assert m.pc == 2, 'Overflow not supported - int?'
+
 
 class TestByte:
     def test__getitem__(self):

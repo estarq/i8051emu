@@ -4,15 +4,23 @@ import disassembler
 class Microcontroller:
     def __init__(self):
         self._rom = [0] * 64000  # 64 KB
-        self._pc = 0
+        self._pc = DoubleByte()
 
     def __call__(self):
         while True:
-            op = Operation(self._rom[self._pc])
-            op.args = self._rom[self._pc + 1:self._pc + len(op)]
-            self._pc += len(op)
+            op = Operation(self._rom[self.pc])
+            op.args = self._rom[self.pc + 1:self.pc + len(op)]
+            self.pc += len(op)
             # Jump operations may override the PC
             exec(f'self._exec_{op.opcode}(*op.args)')
+
+    @property
+    def pc(self):
+        return self._pc.value
+
+    @pc.setter
+    def pc(self, value):
+        self._pc.value = value
 
     def load_hex_file(self, filepath):
         for record in disassembler.IntelHexFile(filepath):
