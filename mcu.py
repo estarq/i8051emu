@@ -31,6 +31,11 @@ class Microcontroller:
     def _exec_0(self):
         return
 
+    def _exec_2(self, high_order_byte, low_order_byte):
+        # Turn two one-byte arguments (as stored in a .hex file) into one two-byte argument
+        # e.g. 0xAB = 171, 0xCD = 205; 171 * 16 ** 2 + 205 = 43981 = 0xABCD
+        self.pc = high_order_byte * 16 ** 2 + low_order_byte
+
 
 class DataMemory:
     def __init__(self):
