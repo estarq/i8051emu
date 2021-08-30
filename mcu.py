@@ -108,6 +108,9 @@ class Microcontroller:
     def _exec_31(self):
         self._mem.r7 -= 1
 
+    def _exec_36(self, immed):
+        self._mem.a += immed
+
 
 class DataMemory:
     def __init__(self):
