@@ -63,6 +63,9 @@ class Microcontroller:
     def _exec_15(self):
         self._mem.r7 += 1
 
+    def _exec_20(self):
+        self._mem.a -= 1
+
     def _exec_24(self):
         self._mem.r0 -= 1
 
