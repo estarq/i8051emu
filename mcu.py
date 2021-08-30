@@ -39,6 +39,9 @@ class Microcontroller:
     def _exec_4(self):
         self._mem.a += 1
 
+    def _exec_5(self, direct):
+        self._mem[direct] += 1
+
     def _exec_8(self):
         self._mem.r0 += 1
 
