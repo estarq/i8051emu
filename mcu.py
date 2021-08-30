@@ -296,14 +296,14 @@ class Byte:
     def __eq__(self, other: int):
         return self.value == other
 
-    def __add__(self, other: int):
+    def __add__(self, other):
         b = Byte()
-        b.value = self.value + other
+        b.value = self.value + int(other)
         return b
 
-    def __sub__(self, other: int):
+    def __sub__(self, other):
         b = Byte()
-        b.value = self.value - other
+        b.value = self.value - int(other)
         return b
 
     def __mod__(self, other: int):
