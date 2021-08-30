@@ -36,6 +36,9 @@ class Microcontroller:
         # e.g. 0xAB = 171, 0xCD = 205; 171 * 16 ** 2 + 205 = 43981 = 0xABCD
         self.pc = high_order_byte * 16 ** 2 + low_order_byte
 
+    def _exec_4(self):
+        self._mem.a += 1
+
     def _exec_8(self):
         self._mem.r0 += 1
 
