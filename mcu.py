@@ -78,6 +78,12 @@ class Microcontroller:
     def _exec_21(self, direct):
         self._mem[direct] -= 1
 
+    def _exec_22(self):
+        self._mem[self._mem.r0] -= 1
+
+    def _exec_23(self):
+        self._mem[self._mem.r1] -= 1
+
     def _exec_24(self):
         self._mem.r0 -= 1
 
