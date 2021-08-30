@@ -60,6 +60,30 @@ class Microcontroller:
     def _exec_15(self):
         self._mem.r7 += 1
 
+    def _exec_24(self):
+        self._mem.r0 -= 1
+
+    def _exec_25(self):
+        self._mem.r1 -= 1
+
+    def _exec_26(self):
+        self._mem.r2 -= 1
+
+    def _exec_27(self):
+        self._mem.r3 -= 1
+
+    def _exec_28(self):
+        self._mem.r4 -= 1
+
+    def _exec_29(self):
+        self._mem.r5 -= 1
+
+    def _exec_30(self):
+        self._mem.r6 -= 1
+
+    def _exec_31(self):
+        self._mem.r7 -= 1
+
 
 class DataMemory:
     def __init__(self):

@@ -56,6 +56,10 @@ class TestMicrocontroller:
         m._exec_8()
         assert m._mem.r0 == 2
 
+    def test_exec_26(self):
+        m = mcu.Microcontroller()
+        m._exec_26()
+        assert m._mem.r2 == 255
 
 class TestDataMemory:
     def test_decimal_access(self):
