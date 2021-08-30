@@ -69,6 +69,9 @@ class Microcontroller:
     def _exec_20(self):
         self._mem.a -= 1
 
+    def _exec_21(self, direct):
+        self._mem[direct] -= 1
+
     def _exec_24(self):
         self._mem.r0 -= 1
 
