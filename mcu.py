@@ -144,6 +144,9 @@ class Microcontroller:
     def _exec_47(self):
         self._mem.a += self._mem.r7
 
+    def _exec_52(self, immed):
+        self._mem.a += self._mem.c + immed
+
 
 class DataMemory:
     def __init__(self):
