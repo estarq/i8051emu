@@ -233,12 +233,18 @@ class TestByte:
         b.value = 4
         b += 1
         assert b == 5
+        b2 = mcu.Byte()
+        b2.value = 3
+        assert b + b2 == 8
 
     def test__sub__(self):
         b = mcu.Byte()
         b.value = 4
         b -= 1
         assert b == 3
+        b2 = mcu.Byte()
+        b2.value = 2
+        assert b - b2 == 1
 
     def test__mod__(self):
         b = mcu.Byte()
