@@ -340,16 +340,16 @@ class Byte:
         return int(self) == other
 
     def __add__(self, other: Union[int, 'Byte']):
-        return Byte(int(self) + int(other))
+        return self.__class__(int(self) + int(other))
 
     def __radd__(self, other: int):
         return self.__add__(other)
 
     def __sub__(self, other: Union[int, 'Byte']):
-        return Byte(int(self) - int(other))
+        return self.__class__(int(self) - int(other))
 
     def __rsub__(self, other: int):
-        return Byte(other - int(self))
+        return self.__class__(other - int(self))
 
     def __mod__(self, other: int):
         return int(self) % other
