@@ -18,7 +18,7 @@ class Microcontroller:
 
     @property
     def pc(self):
-        return self._pc.value
+        return int(self._pc)
 
     @pc.setter
     def pc(self, value):
@@ -165,7 +165,7 @@ class DataMemory:
 
     @property
     def dptr(self):
-        return self._dptr.value
+        return int(self._dptr)
 
     @dptr.setter
     def dptr(self, value):
@@ -331,40 +331,34 @@ class Byte:
         super(Byte, self).__setattr__(name, value % 256)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.value})'
+        return f'{self.__class__.__name__}({int(self)})'
 
     def __int__(self):
         return self.value
 
     def __eq__(self, other: int):
-        return self.value == other
+        return int(self) == other
 
     def __add__(self, other: Union[int, 'Byte']):
-        b = Byte()
-        b.value = self.value + int(other)
-        return b
+        return Byte(int(self) + int(other))
 
     def __radd__(self, other: int):
         return self.__add__(other)
 
     def __sub__(self, other: Union[int, 'Byte']):
-        b = Byte()
-        b.value = self.value - int(other)
-        return b
+        return Byte(int(self) - int(other))
 
     def __rsub__(self, other: int):
-        b = Byte()
-        b.value = other - self.value
-        return b
+        return Byte(other - int(self))
 
     def __mod__(self, other: int):
-        return self.value % other
+        return int(self) % other
 
     def __divmod__(self, other: 'Byte'):
-        return divmod(self.value, other.value)
+        return divmod(int(self), int(other))
 
     def bits(self):
-        return f'{self.value:08b}'
+        return f'{int(self):08b}'
 
 
 class DoubleByte(Byte):
@@ -375,7 +369,7 @@ class DoubleByte(Byte):
         super(Byte, self).__setattr__(name, value % 65536)
 
     def bits(self):
-        return f'{self.value:016b}'
+        return f'{int(self):016b}'
 
 
 class Operation:

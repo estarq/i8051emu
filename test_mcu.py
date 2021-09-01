@@ -147,8 +147,7 @@ class TestDataMemory:
         byte_id = id(mem[2])
         mem[2] = 30
         assert mem[2] == 30 and id(mem[2]) == byte_id, 'Decimal access not supported'
-        b = mcu.Byte()
-        b.value = 3
+        b = mcu.Byte(3)
         mem[b] = 30
         assert mem[3] == 30, 'Cannot use a Byte instance as an address - not converted to int?'
 
@@ -220,9 +219,7 @@ class TestDataMemory:
 
 class TestByte:
     def test__getitem__(self):
-        b = mcu.Byte()
-        b.value = 4
-        assert b[5] == 1, 'Bit access not supported'
+        assert mcu.Byte(4)[5] == 1, 'Bit access not supported'
 
     def test__setitem__(self):
         b = mcu.Byte()
@@ -230,58 +227,37 @@ class TestByte:
         assert b == 32, 'Bit setting not supported'
 
     def test__setattr__(self):
-        b = mcu.Byte()
-        b.value = 260
-        assert b == 4, 'Overflow not supported'
-        b.value = -2
-        assert b == 254, 'Underflow not supported'
+        assert mcu.Byte(260) == 4, 'Overflow not supported'
+        assert mcu.Byte(-2) == 254, 'Underflow not supported'
 
     def test__add__(self):
-        b = mcu.Byte()
-        b.value = 4
+        b = mcu.Byte(4)
         b += 1
         assert b == 5
-        b2 = mcu.Byte()
-        b2.value = 3
-        assert b + b2 == 8
+        assert b + mcu.Byte(3) == 8
 
     def test__radd__(self):
-        b = mcu.Byte()
-        b.value = 4
-        assert 5 + b == 9
+        assert 5 + mcu.Byte(4) == 9
 
     def test__sub__(self):
-        b = mcu.Byte()
-        b.value = 4
+        b = mcu.Byte(4)
         b -= 1
         assert b == 3
-        b2 = mcu.Byte()
-        b2.value = 2
-        assert b - b2 == 1
+        assert b - mcu.Byte(2) == 1
 
     def test__rsub__(self):
-        b = mcu.Byte()
-        b.value = 5
-        assert 20 - b == 15
+        assert 20 - mcu.Byte(5) == 15
 
     def test__mod__(self):
-        b = mcu.Byte()
-        b.value = 9
-        assert b % 2 == 1
+        assert mcu.Byte(9) % 2 == 1
 
     def test__divmod__(self):
-        b1 = mcu.Byte()
-        b1.value = 9
-        b2 = mcu.Byte()
-        b2.value = 2
-        assert divmod(b1, b2) == (4, 1)
+        assert divmod(mcu.Byte(9), mcu.Byte(2)) == (4, 1)
 
 
 class TestDoubleByte:
     def test__getitem__(self):
-        b = mcu.DoubleByte()
-        b.value = 2048
-        assert b[4] == 1, 'Bit access not supported'
+        assert mcu.DoubleByte(2048)[4] == 1, 'Bit access not supported'
 
     def test__setitem__(self):
         b = mcu.DoubleByte()
@@ -289,11 +265,8 @@ class TestDoubleByte:
         assert b == 1024, 'Bit setting not supported'
 
     def test__setattr__(self):
-        b = mcu.DoubleByte()
-        b.value = 65538
-        assert b == 2, 'Overflow not supported'
-        b.value = -4
-        assert b == 65532, 'Underflow not supported'
+        assert mcu.DoubleByte(65538) == 2, 'Overflow not supported'
+        assert mcu.DoubleByte(-4) == 65532, 'Underflow not supported'
 
 
 class TestOperation:
