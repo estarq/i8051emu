@@ -151,6 +151,12 @@ class Microcontroller:
     def _exec_53(self, direct):
         self._mem.a += self._mem.c + self._mem[direct]
 
+    def _exec_54(self):
+        self._mem.a += self._mem.c + self._mem[self._mem.r0]
+
+    def _exec_55(self):
+        self._mem.a += self._mem.c + self._mem[self._mem.r1]
+
 
 class DataMemory:
     def __init__(self):
