@@ -132,6 +132,14 @@ class TestMicrocontroller:
         m._exec_52(20)
         assert m._mem.a == 31
 
+    def test_exec_53(self):
+        m = mcu.Microcontroller()
+        m._mem.a = 10
+        m._mem.c = 1
+        m._mem[15] = 40
+        m._exec_53(15)
+        assert m._mem.a == 51
+
 
 class TestDataMemory:
     def test_decimal_access(self):
