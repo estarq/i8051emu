@@ -181,6 +181,10 @@ class Microcontroller:
     def _exec_63(self):
         self._mem.a += self._mem.c + self._mem.r7
 
+    def _exec_64(self, offset):
+        if self._mem.c:
+            self.pc += offset
+
 
 class DataMemory:
     def __init__(self):

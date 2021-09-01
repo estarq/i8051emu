@@ -157,6 +157,16 @@ class TestMicrocontroller:
         m._exec_60()
         assert m._mem.a == 56
 
+    def test_exec_64(self):
+        m = mcu.Microcontroller()
+        m.pc = 123
+        m._mem.c = 0
+        m._exec_64(30)
+        assert m.pc == 123
+        m._mem.c = 1
+        m._exec_64(30)
+        assert m.pc == 153
+
 
 class TestDataMemory:
     def test_decimal_access(self):
