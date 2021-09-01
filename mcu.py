@@ -157,6 +157,30 @@ class Microcontroller:
     def _exec_55(self):
         self._mem.a += self._mem.c + self._mem[self._mem.r1]
 
+    def _exec_56(self):
+        self._mem.a += self._mem.c + self._mem.r0
+
+    def _exec_57(self):
+        self._mem.a += self._mem.c + self._mem.r1
+
+    def _exec_58(self):
+        self._mem.a += self._mem.c + self._mem.r2
+
+    def _exec_59(self):
+        self._mem.a += self._mem.c + self._mem.r3
+
+    def _exec_60(self):
+        self._mem.a += self._mem.c + self._mem.r4
+
+    def _exec_61(self):
+        self._mem.a += self._mem.c + self._mem.r5
+
+    def _exec_62(self):
+        self._mem.a += self._mem.c + self._mem.r6
+
+    def _exec_63(self):
+        self._mem.a += self._mem.c + self._mem.r7
+
 
 class DataMemory:
     def __init__(self):
