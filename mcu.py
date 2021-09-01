@@ -338,9 +338,17 @@ class Byte:
         b.value = self.value + int(other)
         return b
 
+    def __radd__(self, other: int):
+        return self.__add__(other)
+
     def __sub__(self, other: Union[int, 'Byte']):
         b = Byte()
         b.value = self.value - int(other)
+        return b
+
+    def __rsub__(self, other: int):
+        b = Byte()
+        b.value = other - self.value
         return b
 
     def __mod__(self, other: int):

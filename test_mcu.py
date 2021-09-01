@@ -237,6 +237,11 @@ class TestByte:
         b2.value = 3
         assert b + b2 == 8
 
+    def test__radd__(self):
+        b = mcu.Byte()
+        b.value = 4
+        assert 5 + b == 9
+
     def test__sub__(self):
         b = mcu.Byte()
         b.value = 4
@@ -245,6 +250,11 @@ class TestByte:
         b2 = mcu.Byte()
         b2.value = 2
         assert b - b2 == 1
+
+    def test__rsub__(self):
+        b = mcu.Byte()
+        b.value = 5
+        assert 20 - b == 15
 
     def test__mod__(self):
         b = mcu.Byte()
