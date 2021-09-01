@@ -197,6 +197,30 @@ class Microcontroller:
     def _exec_119(self, immed):
         self._mem[self._mem.r1] = immed
 
+    def _exec_120(self, immed):
+        self._mem.r0 = immed
+
+    def _exec_121(self, immed):
+        self._mem.r1 = immed
+
+    def _exec_122(self, immed):
+        self._mem.r2 = immed
+
+    def _exec_123(self, immed):
+        self._mem.r3 = immed
+
+    def _exec_124(self, immed):
+        self._mem.r4 = immed
+
+    def _exec_125(self, immed):
+        self._mem.r5 = immed
+
+    def _exec_126(self, immed):
+        self._mem.r6 = immed
+
+    def _exec_127(self, immed):
+        self._mem.r7 = immed
+
     def _exec_132(self):
         self._mem.a, self._mem.b = divmod(self._mem.a, self._mem.b)
 
