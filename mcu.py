@@ -185,6 +185,9 @@ class Microcontroller:
         if self._mem.c:
             self.pc += offset
 
+    def _exec_132(self):
+        self._mem.a, self._mem.b = divmod(self._mem.a, self._mem.b)
+
 
 class DataMemory:
     def __init__(self):
