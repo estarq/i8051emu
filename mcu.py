@@ -188,6 +188,9 @@ class Microcontroller:
     def _exec_132(self):
         self._mem.a, self._mem.b = divmod(self._mem.a, self._mem.b)
 
+    def _exec_144(self, immed):
+        self._mem.dptr = immed
+
 
 class DataMemory:
     def __init__(self):
