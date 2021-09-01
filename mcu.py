@@ -185,6 +185,9 @@ class Microcontroller:
         if self._mem.c:
             self.pc += offset
 
+    def _exec_116(self, immed):
+        self._mem.a = immed
+
     def _exec_132(self):
         self._mem.a, self._mem.b = divmod(self._mem.a, self._mem.b)
 
