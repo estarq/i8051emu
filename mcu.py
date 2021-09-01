@@ -330,6 +330,9 @@ class Byte:
     def __setattr__(self, name, value: int):
         super(Byte, self).__setattr__(name, value % 256)
 
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.value})'
+
     def __int__(self):
         return self.value
 
