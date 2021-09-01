@@ -316,8 +316,8 @@ class DataMemory:
 
 class Byte:
     # Warning: big-endian
-    def __init__(self):
-        self.value = 0
+    def __init__(self, value=0):
+        self.value = value
 
     def __getitem__(self, bit_number):
         return int(self.bits()[bit_number])
@@ -365,8 +365,8 @@ class Byte:
 
 
 class DoubleByte(Byte):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, value=0):
+        super().__init__(value)
 
     def __setattr__(self, name, value: int):
         super(Byte, self).__setattr__(name, value % 65536)
