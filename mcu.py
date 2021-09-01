@@ -1,3 +1,4 @@
+from typing import Union
 import disassembler
 
 
@@ -332,12 +333,12 @@ class Byte:
     def __eq__(self, other: int):
         return self.value == other
 
-    def __add__(self, other):
+    def __add__(self, other: Union[int, 'Byte']):
         b = Byte()
         b.value = self.value + int(other)
         return b
 
-    def __sub__(self, other):
+    def __sub__(self, other: Union[int, 'Byte']):
         b = Byte()
         b.value = self.value - int(other)
         return b
