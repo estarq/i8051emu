@@ -472,6 +472,15 @@ class TestByte:
     def test__divmod__(self):
         assert divmod(mcu.Byte(9), mcu.Byte(2)) == (4, 1)
 
+    def test__and__(self):
+        assert mcu.Byte(5) & mcu.Byte(3) == 1
+
+    def test__or__(self):
+        assert mcu.Byte(5) | mcu.Byte(2) == 7
+
+    def test__xor__(self):
+        assert mcu.Byte(5) ^ mcu.Byte(3) == 6
+
 
 class TestDoubleByte:
     def test__getitem__(self):

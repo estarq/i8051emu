@@ -703,6 +703,15 @@ class Byte:
     def __divmod__(self, other: Union[int, 'Byte']):
         return divmod(int(self), int(other))
 
+    def __and__(self, other: Union[int, 'Byte']):
+        return int(self) & int(other)
+
+    def __or__(self, other: Union[int, 'Byte']):
+        return int(self) | int(other)
+
+    def __xor__(self, other: Union[int, 'Byte']):
+        return int(self) ^ int(other)
+
     def bits(self):
         return f'{int(self):08b}'
 
