@@ -290,6 +290,11 @@ class Microcontroller:
     def _exec_175(self, direct):
         self._mem.r7 = self._mem[direct]
 
+    def _exec_180(self, immed, offset):
+        if self._mem.a != immed:
+            self.pc += offset
+        self._mem.c = 1 if self._mem.a < immed else 0
+
     def _exec_229(self, direct):
         self._mem.a = self._mem[direct]
 
