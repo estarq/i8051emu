@@ -299,6 +299,30 @@ class Microcontroller:
     def _exec_231(self):
         self._mem.a = self._mem[self._mem.r1]
 
+    def _exec_232(self):
+        self._mem.a = self._mem.r0
+
+    def _exec_233(self):
+        self._mem.a = self._mem.r1
+
+    def _exec_234(self):
+        self._mem.a = self._mem.r2
+
+    def _exec_235(self):
+        self._mem.a = self._mem.r3
+
+    def _exec_236(self):
+        self._mem.a = self._mem.r4
+
+    def _exec_237(self):
+        self._mem.a = self._mem.r5
+
+    def _exec_238(self):
+        self._mem.a = self._mem.r6
+
+    def _exec_239(self):
+        self._mem.a = self._mem.r7
+
 
 class DataMemory:
     def __init__(self):
