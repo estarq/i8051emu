@@ -260,6 +260,9 @@ class Microcontroller:
     def _exec_144(self, immed):
         self._mem.dptr = immed
 
+    def _exec_148(self, immed):
+        self._mem.a -= self._mem.c + immed
+
     def _exec_166(self, direct):
         self._mem[self._mem.r0] = self._mem[direct]
 
