@@ -233,6 +233,30 @@ class Microcontroller:
     def _exec_135(self, direct):
         self._mem[direct] = self._mem[self._mem.r1]
 
+    def _exec_136(self, direct):
+        self._mem[direct] = self._mem.r0
+
+    def _exec_137(self, direct):
+        self._mem[direct] = self._mem.r1
+
+    def _exec_138(self, direct):
+        self._mem[direct] = self._mem.r2
+
+    def _exec_139(self, direct):
+        self._mem[direct] = self._mem.r3
+
+    def _exec_140(self, direct):
+        self._mem[direct] = self._mem.r4
+
+    def _exec_141(self, direct):
+        self._mem[direct] = self._mem.r5
+
+    def _exec_142(self, direct):
+        self._mem[direct] = self._mem.r6
+
+    def _exec_143(self, direct):
+        self._mem[direct] = self._mem.r7
+
     def _exec_144(self, immed):
         self._mem.dptr = immed
 
