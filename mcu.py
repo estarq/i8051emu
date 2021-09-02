@@ -355,6 +355,46 @@ class Microcontroller:
         if self._mem[direct] != 0:
             self.pc += offset
 
+    def _exec_216(self, offset):
+        self._mem.r0 -= 1
+        if self._mem.r0 != 0:
+            self.pc += offset
+
+    def _exec_217(self, offset):
+        self._mem.r1 -= 1
+        if self._mem.r1 != 0:
+            self.pc += offset
+
+    def _exec_218(self, offset):
+        self._mem.r2 -= 1
+        if self._mem.r2 != 0:
+            self.pc += offset
+
+    def _exec_219(self, offset):
+        self._mem.r3 -= 1
+        if self._mem.r3 != 0:
+            self.pc += offset
+
+    def _exec_220(self, offset):
+        self._mem.r4 -= 1
+        if self._mem.r4 != 0:
+            self.pc += offset
+
+    def _exec_221(self, offset):
+        self._mem.r5 -= 1
+        if self._mem.r5 != 0:
+            self.pc += offset
+
+    def _exec_222(self, offset):
+        self._mem.r6 -= 1
+        if self._mem.r6 != 0:
+            self.pc += offset
+
+    def _exec_223(self, offset):
+        self._mem.r7 -= 1
+        if self._mem.r7 != 0:
+            self.pc += offset
+
     def _exec_229(self, direct):
         self._mem.a = self._mem[direct]
 

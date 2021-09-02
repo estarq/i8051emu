@@ -282,6 +282,15 @@ class TestMicrocontroller:
         m._exec_213(20, 30)
         assert m._mem[20] == 0 and m.pc == 80
 
+    def test_exec_222(self):
+        m = mcu.Microcontroller()
+        m._mem.r6 = 2
+        m.pc = 50
+        m._exec_222(30)
+        assert m._mem.r6 == 1 and m.pc == 80
+        m._exec_222(30)
+        assert m._mem.r6 == 0 and m.pc == 80
+
     def test_exec_229(self):
         m = mcu.Microcontroller()
         m._mem[15] = 100
