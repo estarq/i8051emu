@@ -293,6 +293,12 @@ class Microcontroller:
     def _exec_229(self, direct):
         self._mem.a = self._mem[direct]
 
+    def _exec_230(self):
+        self._mem.a = self._mem[self._mem.r0]
+
+    def _exec_231(self):
+        self._mem.a = self._mem[self._mem.r1]
+
 
 class DataMemory:
     def __init__(self):
