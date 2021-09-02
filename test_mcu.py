@@ -308,9 +308,6 @@ class TestByte:
     def test__rsub__(self):
         assert 20 - mcu.Byte(5) == 15
 
-    def test__mod__(self):
-        assert mcu.Byte(9) % 2 == 1
-
     def test__divmod__(self):
         assert divmod(mcu.Byte(9), mcu.Byte(2)) == (4, 1)
 

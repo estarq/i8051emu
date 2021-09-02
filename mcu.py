@@ -236,7 +236,7 @@ class DataMemory:
     def __getitem__(self, addr):
         return self._data[int(addr)]
 
-    def __setitem__(self, addr, value: int):
+    def __setitem__(self, addr, value: Union[int, 'Byte']):
         self[addr].value = value
 
     @property
@@ -403,8 +403,8 @@ class Byte:
         bits = bits[:bit_number] + str(bit_value) + bits[bit_number + 1:]
         self.value = int(bits, 2)
 
-    def __setattr__(self, name, value: int):
-        super(Byte, self).__setattr__(name, value % 256)
+    def __setattr__(self, name, value: Union[int, 'Byte']):
+        super(Byte, self).__setattr__(name, int(value) % 256)
 
     def __repr__(self):
         return f'{self.__class__.__name__}({int(self)})'
@@ -427,10 +427,7 @@ class Byte:
     def __rsub__(self, other: int):
         return self.__class__(other - int(self))
 
-    def __mod__(self, other: int):
-        return int(self) % other
-
-    def __divmod__(self, other: 'Byte'):
+    def __divmod__(self, other: Union[int, 'Byte']):
         return divmod(int(self), int(other))
 
     def bits(self):
@@ -441,8 +438,8 @@ class DoubleByte(Byte):
     def __init__(self, value=0):
         super().__init__(value)
 
-    def __setattr__(self, name, value: int):
-        super(Byte, self).__setattr__(name, value % 65536)
+    def __setattr__(self, name, value: Union[int, 'DoubleByte']):
+        super(Byte, self).__setattr__(name, int(value) % 65536)
 
     def bits(self):
         return f'{int(self):016b}'
