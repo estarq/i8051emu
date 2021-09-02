@@ -227,6 +227,12 @@ class Microcontroller:
     def _exec_133(self, src_direct, dest_direct):
         self._mem[dest_direct] = self._mem[src_direct]
 
+    def _exec_134(self, direct):
+        self._mem[direct] = self._mem[self._mem.r0]
+
+    def _exec_135(self, direct):
+        self._mem[direct] = self._mem[self._mem.r1]
+
     def _exec_144(self, immed):
         self._mem.dptr = immed
 
