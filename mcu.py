@@ -290,6 +290,9 @@ class Microcontroller:
     def _exec_175(self, direct):
         self._mem.r7 = self._mem[direct]
 
+    def _exec_229(self, direct):
+        self._mem.a = self._mem[direct]
+
 
 class DataMemory:
     def __init__(self):
