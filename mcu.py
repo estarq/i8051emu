@@ -541,8 +541,11 @@ class Byte:
     def __int__(self):
         return self.value
 
-    def __eq__(self, other: int):
-        return int(self) == other
+    def __eq__(self, other: Union[int, 'Byte']):
+        return int(self) == int(other)
+
+    def __lt__(self, other: Union[int, 'Byte']):
+        return int(self) < int(other)
 
     def __add__(self, other: Union[int, 'Byte']):
         return self.__class__(int(self) + int(other))
