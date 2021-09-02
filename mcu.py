@@ -272,6 +272,30 @@ class Microcontroller:
     def _exec_151(self):
         self._mem.a -= self._mem.c + self._mem[self._mem.r1]
 
+    def _exec_152(self):
+        self._mem.a -= self._mem.c + self._mem.r0
+
+    def _exec_153(self):
+        self._mem.a -= self._mem.c + self._mem.r1
+
+    def _exec_154(self):
+        self._mem.a -= self._mem.c + self._mem.r2
+
+    def _exec_155(self):
+        self._mem.a -= self._mem.c + self._mem.r3
+
+    def _exec_156(self):
+        self._mem.a -= self._mem.c + self._mem.r4
+
+    def _exec_157(self):
+        self._mem.a -= self._mem.c + self._mem.r5
+
+    def _exec_158(self):
+        self._mem.a -= self._mem.c + self._mem.r6
+
+    def _exec_159(self):
+        self._mem.a -= self._mem.c + self._mem.r7
+
     def _exec_166(self, direct):
         self._mem[self._mem.r0] = self._mem[direct]
 
