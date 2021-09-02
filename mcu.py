@@ -224,6 +224,9 @@ class Microcontroller:
     def _exec_132(self):
         self._mem.a, self._mem.b = divmod(self._mem.a, self._mem.b)
 
+    def _exec_133(self, src_direct, dest_direct):
+        self._mem[dest_direct] = self._mem[src_direct]
+
     def _exec_144(self, immed):
         self._mem.dptr = immed
 
