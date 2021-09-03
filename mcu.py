@@ -530,6 +530,9 @@ class Microcontroller:
     def _exec_195(self):
         self._mem.c = 0
 
+    def _exec_211(self):
+        self._mem.c = 1
+
     def _exec_213(self, direct, offset):
         self._mem[direct] -= 1
         if self._mem[direct] != 0:
