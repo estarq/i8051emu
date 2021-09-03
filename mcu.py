@@ -203,6 +203,30 @@ class Microcontroller:
     def _exec_71(self):
         self._mem.a |= self._mem[self._mem.r1]
 
+    def _exec_72(self):
+        self._mem.a |= self._mem.r0
+
+    def _exec_73(self):
+        self._mem.a |= self._mem.r1
+
+    def _exec_74(self):
+        self._mem.a |= self._mem.r2
+
+    def _exec_75(self):
+        self._mem.a |= self._mem.r3
+
+    def _exec_76(self):
+        self._mem.a |= self._mem.r4
+
+    def _exec_77(self):
+        self._mem.a |= self._mem.r5
+
+    def _exec_78(self):
+        self._mem.a |= self._mem.r6
+
+    def _exec_79(self):
+        self._mem.a |= self._mem.r7
+
     def _exec_116(self, immed):
         self._mem.a = immed
 
