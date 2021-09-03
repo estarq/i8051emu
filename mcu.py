@@ -527,6 +527,9 @@ class Microcontroller:
             self.pc += offset
         self._mem.c = 1 if self._mem.r7 < immed else 0
 
+    def _exec_195(self):
+        self._mem.c = 0
+
     def _exec_213(self, direct, offset):
         self._mem[direct] -= 1
         if self._mem[direct] != 0:
