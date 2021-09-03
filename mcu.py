@@ -694,8 +694,8 @@ class DataMemory:
         return self.psw[0]
 
     @c.setter
-    def c(self, value):
-        self.psw[0] = value
+    def c(self, value: Union[int, bool]):
+        self.psw[0] = int(value)
 
     @property
     def ac(self):
