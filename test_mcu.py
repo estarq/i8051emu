@@ -256,6 +256,12 @@ class TestMicrocontroller:
         m._exec_98(10)
         assert m._mem[10] == 6
 
+    def test_exec_99(self):
+        m = mcu.Microcontroller()
+        m._mem[10] = 13
+        m._exec_99(10, 5)
+        assert m._mem[10] == 8
+
     def test_exec_116(self):
         m = mcu.Microcontroller()
         m._exec_116(21)
