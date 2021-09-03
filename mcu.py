@@ -185,6 +185,9 @@ class Microcontroller:
         if self._mem.c:
             self.pc += offset
 
+    def _exec_66(self, direct):
+        self._mem.a |= self._mem[direct]
+
     def _exec_116(self, immed):
         self._mem.a = immed
 
