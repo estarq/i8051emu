@@ -467,6 +467,9 @@ class Microcontroller:
     def _exec_175(self, direct):
         self._mem.r7 = self._mem[direct]
 
+    def _exec_179(self):
+        self._mem.c = not self._mem.c
+
     def _exec_180(self, immed, offset):
         if self._mem.a != immed:
             self.pc += offset
