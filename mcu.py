@@ -4,7 +4,7 @@ import disassembler
 
 class Microcontroller:
     def __init__(self):
-        self._rom = [0] * 64000  # 64 KB
+        self._rom = ProgramMemory()
         self._mem = DataMemory()
         self._pc = DoubleByte()
 
@@ -18,7 +18,7 @@ class Microcontroller:
 
     @property
     def pc(self):
-        return int(self._pc)
+        return self._pc
 
     @pc.setter
     def pc(self, value):
@@ -655,6 +655,17 @@ class Microcontroller:
 
     def _exec_255(self):
         self._mem.r7 = self._mem.a
+
+
+class ProgramMemory:
+    def __init__(self):
+        self._data = [0] * 64000  # 64 KB
+
+    def __getitem__(self, addr: Union[int, 'Byte', 'DoubleByte']):
+        return self._data[int(addr)]
+
+    def __setitem__(self, addr: Union[int, 'Byte', 'DoubleByte'], value: int):
+        self._data[addr] = value
 
 
 class DataMemory:
