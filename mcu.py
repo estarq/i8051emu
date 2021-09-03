@@ -269,6 +269,10 @@ class Microcontroller:
     def _exec_95(self):
         self._mem.a &= self._mem.r7
 
+    def _exec_96(self, offset):
+        if self._mem.a == 0:
+            self.pc += offset
+
     def _exec_98(self, direct):
         self._mem[direct] ^= self._mem.a
 
