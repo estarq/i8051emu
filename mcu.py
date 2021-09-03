@@ -670,10 +670,10 @@ class DataMemory:
         return int(self._dptr)
 
     @dptr.setter
-    def dptr(self, value):
+    def dptr(self, value: Union[int, 'Byte', 'DoubleByte']):
         self._dptr.value = value
-        self[130].value = int(f'{value:016b}'[:8], 2)
-        self[131].value = int(f'{value:016b}'[8:], 2)
+        self[130].value = int(f'{int(value):016b}'[:8], 2)
+        self[131].value = int(f'{int(value):016b}'[8:], 2)
 
     @property
     def a(self):
