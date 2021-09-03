@@ -323,6 +323,9 @@ class Microcontroller:
         if self._mem.a != 0:
             self.pc += offset
 
+    def _exec_115(self):
+        self.pc = self._mem.dptr + self._mem.a
+
     def _exec_116(self, immed):
         self._mem.a = immed
 
@@ -667,7 +670,7 @@ class DataMemory:
 
     @property
     def dptr(self):
-        return int(self._dptr)
+        return self._dptr
 
     @dptr.setter
     def dptr(self, value: Union[int, 'Byte', 'DoubleByte']):
