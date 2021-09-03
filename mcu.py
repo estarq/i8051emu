@@ -236,6 +236,9 @@ class Microcontroller:
     def _exec_84(self, immed):
         self._mem.a &= immed
 
+    def _exec_85(self, direct):
+        self._mem.a &= self._mem[direct]
+
     def _exec_116(self, immed):
         self._mem.a = immed
 
