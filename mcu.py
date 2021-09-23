@@ -675,12 +675,21 @@ class DataMemory:
     def __init__(self):
         self._data = [Byte() for _ in range(256)]
         self._dptr = DoubleByte()
+        self.sp = 7
 
     def __getitem__(self, addr):
         return self._data[int(addr)]
 
     def __setitem__(self, addr, value: Union[int, 'Byte']):
         self[addr].value = value
+
+    @property
+    def sp(self):
+        return self[129]
+
+    @sp.setter
+    def sp(self, value):
+        self[129].value = value
 
     @property
     def dptr(self):
