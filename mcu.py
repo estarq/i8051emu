@@ -118,6 +118,13 @@ class Microcontroller:
     def _exec_31(self):
         self._mem.r7 -= 1
 
+    def _exec_34(self):
+        high_order_byte = self._mem[self._mem.sp]
+        self._mem.sp -= 1
+        low_order_byte = self._mem[self._mem.sp]
+        self._mem.sp -= 1
+        self.pc = int(f'{high_order_byte:b}{low_order_byte:08b}', 2)
+
     def _exec_36(self, immed):
         self._mem.a += immed
 
