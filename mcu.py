@@ -870,6 +870,9 @@ class Byte:
     def __repr__(self):
         return f'{self.__class__.__name__}({int(self)})'
 
+    def __format__(self, format_spec):
+        return format(int(self), format_spec)
+
     def __int__(self):
         return self.value
 
