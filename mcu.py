@@ -914,7 +914,7 @@ class Byte:
         return int(self) ^ int(other)
 
     def bits(self):
-        return f'{int(self):08b}'
+        return f'{self:08b}'
 
 
 class DoubleByte(Byte):
@@ -925,7 +925,7 @@ class DoubleByte(Byte):
         super(Byte, self).__setattr__(name, int(value) % 65536)
 
     def bits(self):
-        return f'{int(self):016b}'
+        return f'{self:016b}'
 
 
 class Operation:
