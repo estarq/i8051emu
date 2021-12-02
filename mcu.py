@@ -689,10 +689,12 @@ class ProgramMemory:
     def __init__(self):
         self._data = [0] * 64000  # 64 KB
 
-    def __getitem__(self, addr: Union[int, 'Byte', 'DoubleByte']):
+    def __getitem__(self, addr: Union[int, 'DoubleByte', slice]):
+        if isinstance(addr, slice):
+            return self._data[int(addr.start):int(addr.stop)]
         return self._data[int(addr)]
 
-    def __setitem__(self, addr: Union[int, 'Byte', 'DoubleByte'], value: int):
+    def __setitem__(self, addr: int, value: int):
         self._data[addr] = value
 
 
