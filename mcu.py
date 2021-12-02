@@ -762,7 +762,7 @@ class DataMemory:
         self._dptr = DoubleByte()
         self.sp = 7
 
-    def __getitem__(self, addr):
+    def __getitem__(self, addr: Union[int, 'Byte']):
         return self._data[int(addr)]
 
     def __setitem__(self, addr, value: Union[int, 'Byte']):
@@ -1035,7 +1035,7 @@ class DataMemory:
         return 2 * self.rs1 + self.rs2
 
     @selected_register_bank.setter
-    def selected_register_bank(self, value):
+    def selected_register_bank(self, value: int):
         self.rs1, self.rs2 = [int(bit) for bit in f'{value:02b}']
 
     @property
@@ -1108,10 +1108,10 @@ class Byte:
     def __init__(self, value=0):
         self.value = value
 
-    def __getitem__(self, bit_number):
+    def __getitem__(self, bit_number: int):
         return int(self.bits()[bit_number])
 
-    def __setitem__(self, bit_number, bit_value: int):
+    def __setitem__(self, bit_number: int, bit_value: int):
         bits = self.bits()
         bits = bits[:bit_number] + str(bit_value) + bits[bit_number + 1:]
         self.value = int(bits, 2)
