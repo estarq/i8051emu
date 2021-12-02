@@ -845,6 +845,54 @@ class DataMemory:
         self.ie[7] = value
 
     @property
+    def ip(self):
+        return self[184]
+
+    @ip.setter
+    def ip(self, value):
+        self[184].value = value
+
+    @property
+    def ps(self):
+        return self.ip[3]
+
+    @ps.setter
+    def ps(self, value):
+        self.ip[3] = value
+
+    @property
+    def pt1(self):
+        return self.ip[4]
+
+    @pt1.setter
+    def pt1(self, value):
+        self.ip[4] = value
+
+    @property
+    def px1(self):
+        return self.ip[5]
+
+    @px1.setter
+    def px1(self, value):
+        self.ip[5] = value
+
+    @property
+    def pt0(self):
+        return self.ip[6]
+
+    @pt0.setter
+    def pt0(self, value):
+        self.ip[6] = value
+
+    @property
+    def px0(self):
+        return self.ip[7]
+
+    @px0.setter
+    def px0(self, value):
+        self.ip[7] = value
+
+    @property
     def a(self):
         return self[224]
 
