@@ -717,6 +717,78 @@ class DataMemory:
         self[131].value = int(f'{int(value):016b}'[8:], 2)
 
     @property
+    def tcon(self):
+        return self[136]
+
+    @tcon.setter
+    def tcon(self, value):
+        self[136].value = value
+
+    @property
+    def tf1(self):
+        return self.tcon[0]
+
+    @tf1.setter
+    def tf1(self, value):
+        self.tcon[0] = value
+
+    @property
+    def tr1(self):
+        return self.tcon[1]
+
+    @tr1.setter
+    def tr1(self, value):
+        self.tcon[1] = value
+
+    @property
+    def tf0(self):
+        return self.tcon[2]
+
+    @tf0.setter
+    def tf0(self, value):
+        self.tcon[2] = value
+
+    @property
+    def tr0(self):
+        return self.tcon[3]
+
+    @tr0.setter
+    def tr0(self, value):
+        self.tcon[3] = value
+
+    @property
+    def ie1(self):
+        return self.tcon[4]
+
+    @ie1.setter
+    def ie1(self, value):
+        self.tcon[4] = value
+
+    @property
+    def it1(self):
+        return self.tcon[5]
+
+    @it1.setter
+    def it1(self, value):
+        self.tcon[5] = value
+
+    @property
+    def ie0(self):
+        return self.tcon[6]
+
+    @ie0.setter
+    def ie0(self, value):
+        self.tcon[6] = value
+
+    @property
+    def it0(self):
+        return self.tcon[7]
+
+    @it0.setter
+    def it0(self, value):
+        self.tcon[7] = value
+
+    @property
     def a(self):
         return self[224]
 
