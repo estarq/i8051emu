@@ -8,14 +8,6 @@ class Microcontroller:
         self._mem = DataMemory()
         self._pc = DoubleByte()
 
-    def __call__(self):
-        while True:
-            op = Operation(self._rom[self.pc])
-            op.args = self._rom[self.pc + 1:self.pc + len(op)]
-            self.pc += len(op)
-            # Jump operations may override the PC
-            exec(f'self._exec_{op.opcode}(*op.args)')
-
     @property
     def pc(self):
         return self._pc
@@ -28,6 +20,13 @@ class Microcontroller:
         for record in disassembler.IntelHexFile(filepath):
             for addr, byte in enumerate(record, record.first_byte_addr):
                 self._rom[addr] = byte
+
+    def next_cycle(self):
+        op = Operation(self._rom[self.pc])
+        op.args = self._rom[int(self.pc + 1):int(self.pc + len(op))]
+        self.pc += len(op)
+        # Jump operations may override the PC
+        exec(f'self._exec_{op.opcode}(*op.args)')
 
     def _exec_0(self):
         return
