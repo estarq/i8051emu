@@ -7,6 +7,8 @@ class Microcontroller:
         self._rom = ProgramMemory()
         self._mem = DataMemory()
         self._pc = DoubleByte()
+        self.interrupt_stack = Stack()
+        self.interrupt_stack.push(0)
 
     @property
     def pc(self):
@@ -159,6 +161,14 @@ class Microcontroller:
 
     def _exec_47(self):
         self._mem.a += self._mem.r7
+
+    def _exec_50(self):
+        high_order_byte = self._mem[self._mem.sp]
+        self._mem.sp -= 1
+        low_order_byte = self._mem[self._mem.sp]
+        self._mem.sp -= 1
+        self.pc = int(f'{high_order_byte:b}{low_order_byte:08b}', 2)
+        self.interrupt_stack.pop()
 
     def _exec_52(self, immed):
         self._mem.a += self._mem.c + immed

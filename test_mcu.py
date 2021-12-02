@@ -141,6 +141,17 @@ class TestMicrocontroller:
         m._exec_44()
         assert m._mem.a == 55
 
+    def test_exec_50(self):
+        m = mcu.Microcontroller()
+        m.pc = 123
+        m._exec_18(0, 3)  # INT0: LCALL 3h
+        m.interrupt_stack.push(5)
+        assert m.pc == 3
+        assert m.interrupt_stack.top() == 5
+        m._exec_50()
+        assert m.pc == 123
+        assert m.interrupt_stack.top() == 0
+
     def test_exec_52(self):
         m = mcu.Microcontroller()
         m._mem.a = 10
