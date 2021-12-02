@@ -725,3 +725,13 @@ class TestOperation:
         op = mcu.Operation(18, 171, 205)
         assert op.args == (171, 205), 'Wrong args - merged?'
         assert str(op) == 'LCALL ABCDh', 'Wrong representation - miscalculated value?'
+
+
+class TestStack:
+    def test_stack(self):
+        s = mcu.Stack()
+        s.push(10)
+        s.push(20)
+        assert s.top() == 20
+        assert s.pop() == 20
+        assert s.pop() == 10

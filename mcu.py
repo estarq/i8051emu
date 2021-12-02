@@ -1199,3 +1199,17 @@ class Operation:
         # e.g. 0xAB = 171, 0xCD = 205; 171 * 16 ** 2 + 205 = 43981 = 0xABCD
         args = [self.args[0] * 16 ** 2 + self.args[1]] if self.opcode in (2, 18, 144) else self.args
         return Operation._opcodes[self.opcode]['mnemonic'].format(*args)
+
+
+class Stack:
+    def __init__(self):
+        self._data = []
+
+    def push(self, value):
+        self._data.append(value)
+
+    def pop(self):
+        return self._data.pop()
+
+    def top(self):
+        return self._data[-1]
