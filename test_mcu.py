@@ -610,6 +610,17 @@ class TestDataMemory:
         assert mem.tf1 == 1
         assert mem[136][0] == 1
 
+    def test_ie_prop(self):
+        mem = mcu.DataMemory()
+        mem.ie[2] = 1
+        assert mem.ie == 32
+
+    def test_es_prop(self):
+        mem = mcu.DataMemory()
+        mem.es = 1
+        assert mem.es == 1
+        assert mem[168][3] == 1
+
     def test_psw_prop(self):
         mem = mcu.DataMemory()
         mem.psw[0] = 1

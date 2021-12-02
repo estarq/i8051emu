@@ -789,6 +789,62 @@ class DataMemory:
         self.tcon[7] = value
 
     @property
+    def ie(self):
+        return self[168]
+
+    @ie.setter
+    def ie(self, value):
+        self[168].value = value
+
+    @property
+    def ea(self):
+        return self.ie[0]
+
+    @ea.setter
+    def ea(self, value):
+        self.ie[0] = value
+
+    @property
+    def es(self):
+        return self.ie[3]
+
+    @es.setter
+    def es(self, value):
+        self.ie[3] = value
+
+    @property
+    def et1(self):
+        return self.ie[4]
+
+    @et1.setter
+    def et1(self, value):
+        self.ie[4] = value
+
+    @property
+    def ex1(self):
+        return self.ie[5]
+
+    @ex1.setter
+    def ex1(self, value):
+        self.ie[5] = value
+
+    @property
+    def et0(self):
+        return self.ie[6]
+
+    @et0.setter
+    def et0(self, value):
+        self.ie[6] = value
+
+    @property
+    def ex0(self):
+        return self.ie[7]
+
+    @ex0.setter
+    def ex0(self, value):
+        self.ie[7] = value
+
+    @property
     def a(self):
         return self[224]
 
