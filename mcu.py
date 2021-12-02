@@ -24,6 +24,64 @@ class Microcontroller:
                 self._rom[addr] = byte
 
     def next_cycle(self):
+        # handle an interrupt request
+        if self._mem.ea:
+            # INT0 (high priority)
+            if ((int0_awaiting := self._mem.ie0 and self._mem.ex0)
+                    and self._mem.px0 and self.interrupt_stack.top() < 10):
+                self._mem.ie0 = 0
+                self.interrupt_stack.push(10)
+                self._exec_18(0, 3)
+
+            # T0 (high priority)
+            elif ((t0_awaiting := self._mem.tf0 and self._mem.et0)
+                  and self._mem.pt0 and self.interrupt_stack.top() < 9):
+                self._mem.tf0 = 0
+                self.interrupt_stack.push(9)
+                self._exec_18(0, 11)
+
+            # INT1 (high priority)
+            elif ((int1_awaiting := self._mem.ie1 and self._mem.ex1)
+                  and self._mem.px1 and self.interrupt_stack.top() < 8):
+                self._mem.ie1 = 0
+                self.interrupt_stack.push(8)
+                self._exec_18(0, 19)
+
+            # T1 (high priority)
+            elif ((t1_awaiting := self._mem.tf1 and self._mem.et1)
+                  and self._mem.pt1 and self.interrupt_stack.top() < 7):
+                self._mem.tf1 = 0
+                self.interrupt_stack.push(7)
+                self._exec_18(0, 27)
+
+            # TODO: SP (RI/TI) (high priority)
+
+            # INT0 (low priority)
+            elif int0_awaiting and self.interrupt_stack.top() < 5:
+                self._mem.ie0 = 0
+                self.interrupt_stack.push(5)
+                self._exec_18(0, 3)
+
+            # T0 (low priority)
+            elif t0_awaiting and self.interrupt_stack.top() < 4:
+                self._mem.tf0 = 0
+                self.interrupt_stack.push(4)
+                self._exec_18(0, 11)
+
+            # INT1 (low priority)
+            elif int1_awaiting and self.interrupt_stack.top() < 3:
+                self._mem.ie1 = 0
+                self.interrupt_stack.push(3)
+                self._exec_18(0, 19)
+
+            # T1 (low priority)
+            elif t1_awaiting and self.interrupt_stack.top() < 2:
+                self._mem.tf1 = 0
+                self.interrupt_stack.push(2)
+                self._exec_18(0, 27)
+
+            # TODO: SP (RI/TI) (low priority)
+
         op = Operation(self._rom[self.pc])
         op.args = self._rom[int(self.pc + 1):int(self.pc + len(op))]
         self.pc += len(op)

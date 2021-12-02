@@ -9,6 +9,67 @@ class TestMicrocontroller:
         assert m._rom[1] == 1, 'Second byte not loaded'
         assert m._rom[256] == 174, 'Misplaced byte - addr change due to ORG statement ignored'
 
+    def test_next_cycle__interrupt(self):
+        m = mcu.Microcontroller()
+        m.pc = 123
+        m._mem.ea = 1
+
+        # INT0 (low priority)
+        m._mem.ie0 = 1
+        m._mem.ex0 = 1
+        m._rom[3] = 4  # INC A
+        m._rom[4] = 50  # RETI
+
+        # T1 (high priority)
+        m._mem.tf1 = 1
+        m._mem.et1 = 1
+        m._mem.pt1 = 1
+        # ADD A, #4
+        m._rom[27] = 36
+        m._rom[28] = 4
+        # ADD A, #5
+        m._rom[29] = 36
+        m._rom[30] = 5
+        # ADD A, #6
+        m._rom[31] = 36
+        m._rom[32] = 6
+        # RETI
+        m._rom[33] = 50
+
+        m.next_cycle()  # ADD A, #4
+        m.next_cycle()  # ADD A, #5
+        assert m._mem.a == 9
+
+        m._mem.tf1 = 1
+
+        # T0 (high priority)
+        m._mem.tf0 = 1
+        m._mem.et0 = 1
+        m._mem.pt0 = 1
+        m._rom[11] = 20  # DEC A
+        m._rom[12] = 50  # RETI
+
+        m.next_cycle()  # DEC A
+        m.next_cycle()  # RETI
+        assert m._mem.a == 8
+
+        m.next_cycle()  # ADD A, #6
+        m.next_cycle()  # RETI
+        assert m._mem.a == 14
+
+        m.next_cycle()  # ADD A, #4
+        m.next_cycle()  # ADD A, #5
+        m.next_cycle()  # ADD A, #6
+        m.next_cycle()  # RETI
+        assert m._mem.a == 29
+
+        m.next_cycle()  # INC A
+        m.next_cycle()  # RETI
+        assert m._mem.a == 30
+
+        assert m.pc == 123
+        assert m.interrupt_stack.top() == 0
+
     def test_pc_prop(self):
         m = mcu.Microcontroller()
         m.pc = 65538
