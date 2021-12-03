@@ -23,6 +23,9 @@ class Microcontroller:
             for addr, byte in enumerate(record, record.first_byte_addr):
                 self._rom[addr] = byte
 
+    def reset_rom(self):
+        self._rom = ProgramMemory()
+
     def next_cycle(self):
         # handle an interrupt request
         if self._mem.ea:

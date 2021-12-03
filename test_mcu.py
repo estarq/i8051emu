@@ -9,6 +9,12 @@ class TestMicrocontroller:
         assert m._rom[1] == 1, 'Second byte not loaded'
         assert m._rom[256] == 174, 'Misplaced byte - addr change due to ORG statement ignored'
 
+    def test_reset_rom(self):
+        m = mcu.Microcontroller()
+        m._rom[100] = 123
+        m.reset_rom()
+        assert m._rom[100] == 0
+
     def test_next_cycle__interrupt(self):
         m = mcu.Microcontroller()
         m.pc = 123
