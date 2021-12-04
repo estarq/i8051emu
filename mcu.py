@@ -862,6 +862,78 @@ class DataMemory:
         self.tcon[7] = value
 
     @property
+    def tmod(self):
+        return self[137]
+
+    @tmod.setter
+    def tmod(self, value):
+        self[137].value = value
+
+    @property
+    def gate_t1(self):
+        return self.tmod[0]
+
+    @gate_t1.setter
+    def gate_t1(self, value):
+        self.tmod[0] = value
+
+    @property
+    def ct_t1(self):
+        return self.tmod[1]
+
+    @ct_t1.setter
+    def ct_t1(self, value):
+        self.tmod[1] = value
+
+    @property
+    def m1_t1(self):
+        return self.tmod[2]
+
+    @m1_t1.setter
+    def m1_t1(self, value):
+        self.tmod[2] = value
+
+    @property
+    def m0_t1(self):
+        return self.tmod[3]
+
+    @m0_t1.setter
+    def m0_t1(self, value):
+        self.tmod[3] = value
+
+    @property
+    def gate_t0(self):
+        return self.tmod[4]
+
+    @gate_t0.setter
+    def gate_t0(self, value):
+        self.tmod[4] = value
+
+    @property
+    def ct_t0(self):
+        return self.tmod[5]
+
+    @ct_t0.setter
+    def ct_t0(self, value):
+        self.tmod[5] = value
+
+    @property
+    def m1_t0(self):
+        return self.tmod[6]
+
+    @m1_t0.setter
+    def m1_t0(self, value):
+        self.tmod[6] = value
+
+    @property
+    def m0_t0(self):
+        return self.tmod[7]
+
+    @m0_t0.setter
+    def m0_t0(self, value):
+        self.tmod[7] = value
+
+    @property
     def ie(self):
         return self[168]
 
