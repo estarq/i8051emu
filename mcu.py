@@ -934,6 +934,38 @@ class DataMemory:
         self.tmod[7] = value
 
     @property
+    def tl0(self):
+        return self[138]
+
+    @tl0.setter
+    def tl0(self, value):
+        self[138].value = value
+
+    @property
+    def tl1(self):
+        return self[139]
+
+    @tl1.setter
+    def tl1(self, value):
+        self[139].value = value
+
+    @property
+    def th0(self):
+        return self[140]
+
+    @th0.setter
+    def th0(self, value):
+        self[140].value = value
+
+    @property
+    def th1(self):
+        return self[141]
+
+    @th1.setter
+    def th1(self, value):
+        self[141].value = value
+
+    @property
     def ie(self):
         return self[168]
 
