@@ -684,7 +684,7 @@ class TestDataMemory:
         mem[5][1] = 1
         assert mem[5] == 64, 'Bit access not supported'
 
-    def test_dptr(self):
+    def test_dptr_prop(self):
         mem = mcu.DataMemory()
         mem.dptr = 65530
         mem.dptr += 10
@@ -708,10 +708,10 @@ class TestDataMemory:
         mem.tmod[2] = 1
         assert mem.tmod == 32
 
-    def test_m0_t1_prop(self):
+    def test_t1_m0_prop(self):
         mem = mcu.DataMemory()
-        mem.m0_t1 = 1
-        assert mem.m0_t1 == 1
+        mem.t1_m0 = 1
+        assert mem.t1_m0 == 1
         assert mem[137][3] == 1
 
     def test_tl0_prop(self):
