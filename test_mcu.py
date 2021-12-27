@@ -15,6 +15,25 @@ class TestMicrocontroller:
         m.reset_rom()
         assert m._rom[100] == 0
 
+    def test_next_cycle__int0_level_activated(self):
+        m = mcu.Microcontroller()
+        m._mem.it0 = 0
+        m._mem.int0 = 0
+        m._rom[0] = 0  # NOP
+        m.next_cycle()
+        assert m._mem.ie0 == 1
+
+    def test_next_cycle__int0_edge_triggered(self):
+        m = mcu.Microcontroller()
+        m._mem.it0 = 1
+        m._rom[0] = 0  # NOP
+        m._rom[1] = 0
+        m._mem.int0 = 1
+        m.next_cycle()
+        m._mem.int0 = 0
+        m.next_cycle()
+        assert m._mem.ie0 == 1
+
     def test_next_cycle__interrupt(self):
         m = mcu.Microcontroller()
         m.pc = 123

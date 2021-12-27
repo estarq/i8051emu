@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Union
 
 import disassembler
@@ -10,6 +11,8 @@ class Microcontroller:
         self._pc = DoubleByte()
         self.interrupt_stack = Stack()
         self.interrupt_stack.push(0)
+        self.prev_int0_states = PreviousPortStates()
+        self.prev_int1_states = PreviousPortStates()
 
     @property
     def pc(self):
@@ -28,6 +31,25 @@ class Microcontroller:
         self._rom = ProgramMemory()
 
     def next_cycle(self):
+        # Keep track of two previous distinct states of INT0/INT1
+        if self.prev_int0_states.last != self._mem.int0:
+            self.prev_int0_states.next_to_last = self.prev_int0_states.last
+            self.prev_int0_states.last = self._mem.int0
+
+        if self.prev_int1_states.last != self._mem.int1:
+            self.prev_int1_states.next_to_last = self.prev_int1_states.last
+            self.prev_int1_states.last = self._mem.int1
+
+        # Check for an external interrupt request from INT0/INT1
+        # that can be either negative edge-triggered or negative level-activated
+        if (self._mem.it0 and self.prev_int0_states.negative_edge
+                or not self._mem.it0 and not self._mem.int0):
+            self._mem.ie0 = 1
+
+        if (self._mem.it1 and self.prev_int1_states.negative_edge
+                or not self._mem.it1 and not self._mem.int1):
+            self._mem.ie1 = 1
+
         # handle an interrupt request
         if self._mem.ea:
             # INT0 (high priority)
@@ -1593,3 +1615,13 @@ class Stack:
 
     def top(self):
         return self._data[-1]
+
+
+@dataclass
+class PreviousPortStates:
+    next_to_last: int = 1
+    last: int = 1
+
+    @property
+    def negative_edge(self):
+        return self.next_to_last and not self.last
