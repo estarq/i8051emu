@@ -33,7 +33,8 @@ class Microcontroller:
             # INT0 (high priority)
             if ((int0_awaiting := self._mem.ie0 and self._mem.ex0)
                     and self._mem.px0 and self.interrupt_stack.top() < 10):
-                self._mem.ie0 = 0
+                if self._mem.it0:
+                    self._mem.ie0 = 0
                 self.interrupt_stack.push(10)
                 self._exec_18(0, 3)
 
@@ -47,7 +48,8 @@ class Microcontroller:
             # INT1 (high priority)
             elif ((int1_awaiting := self._mem.ie1 and self._mem.ex1)
                   and self._mem.px1 and self.interrupt_stack.top() < 8):
-                self._mem.ie1 = 0
+                if self._mem.it1:
+                    self._mem.ie1 = 0
                 self.interrupt_stack.push(8)
                 self._exec_18(0, 19)
 
@@ -62,7 +64,8 @@ class Microcontroller:
 
             # INT0 (low priority)
             elif int0_awaiting and self.interrupt_stack.top() < 5:
-                self._mem.ie0 = 0
+                if self._mem.it0:
+                    self._mem.ie0 = 0
                 self.interrupt_stack.push(5)
                 self._exec_18(0, 3)
 
@@ -74,7 +77,8 @@ class Microcontroller:
 
             # INT1 (low priority)
             elif int1_awaiting and self.interrupt_stack.top() < 3:
-                self._mem.ie1 = 0
+                if self._mem.it1:
+                    self._mem.ie1 = 0
                 self.interrupt_stack.push(3)
                 self._exec_18(0, 19)
 
