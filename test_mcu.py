@@ -95,6 +95,20 @@ class TestMicrocontroller:
         assert m.pc == 123
         assert m.interrupt_stack.top() == 0
 
+    def test_next_cycle__operation_execution(self):
+        m = mcu.Microcontroller()
+        m.pc = mcu.DoubleByte(50)
+        m._rom[50] = 0  # NOP
+        m.next_cycle()
+        assert m.pc == 51
+
+        m.pc = mcu.DoubleByte(100)
+        m._rom[100] = 2  # LJMP
+        m._rom[101] = 171
+        m._rom[102] = 205
+        m.next_cycle()
+        assert m.pc == 43981  # 171 * 2 ** 8 + 205
+
     def test_pc_prop(self):
         m = mcu.Microcontroller()
         m.pc = 65538

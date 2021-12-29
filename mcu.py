@@ -50,7 +50,7 @@ class Microcontroller:
                 or not self._mem.it1 and not self._mem.int1):
             self._mem.ie1 = 1
 
-        # handle an interrupt request
+        # Handle an interrupt request
         if self._mem.ea:
             # INT0 (high priority)
             if ((int0_awaiting := self._mem.ie0 and self._mem.ex0)
@@ -112,8 +112,9 @@ class Microcontroller:
 
             # TODO: SP (RI/TI) (low priority)
 
+        # Execute an operation
         op = Operation(self._rom[self.pc])
-        op.args = self._rom[int(self.pc + 1):int(self.pc + len(op))]
+        op.args = self._rom[self.pc + 1:self.pc + len(op)]
         self.pc += len(op)
         # Jump operations may override the PC
         exec(f'self._exec_{op.opcode}(*op.args)')
@@ -1496,7 +1497,7 @@ class Operation:
         162: {'bytes': 2, 'cycles': 1, 'mnemonic': 'MOV C, {:X}h'},
         163: {'bytes': 1, 'cycles': 2, 'mnemonic': 'INC DPTR'},
         164: {'bytes': 1, 'cycles': 4, 'mnemonic': 'MUL AB'},
-        165: {'bytes': 1, 'cycles': None, 'mnemonic': None},
+        165: {'bytes': None, 'cycles': None, 'mnemonic': None},
         166: {'bytes': 2, 'cycles': 2, 'mnemonic': 'MOV @R0, {:X}h'},
         167: {'bytes': 2, 'cycles': 2, 'mnemonic': 'MOV @R1, {:X}h'},
         168: {'bytes': 2, 'cycles': 2, 'mnemonic': 'MOV R0, {:X}h'},
