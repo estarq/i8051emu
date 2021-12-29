@@ -17,38 +17,38 @@ class TestMicrocontroller:
 
     def test_next_cycle__int0_level_activated(self):
         m = mcu.Microcontroller()
-        m._mem.it0 = 0
-        m._mem.int0 = 0
+        m.mem.it0 = 0
+        m.mem.int0 = 0
         m._rom[0] = 0  # NOP
         m.next_cycle()
-        assert m._mem.ie0 == 1
+        assert m.mem.ie0 == 1
 
     def test_next_cycle__int0_edge_triggered(self):
         m = mcu.Microcontroller()
-        m._mem.it0 = 1
+        m.mem.it0 = 1
         m._rom[0] = 0  # NOP
         m._rom[1] = 0
-        m._mem.int0 = 1
+        m.mem.int0 = 1
         m.next_cycle()
-        m._mem.int0 = 0
+        m.mem.int0 = 0
         m.next_cycle()
-        assert m._mem.ie0 == 1
+        assert m.mem.ie0 == 1
 
     def test_next_cycle__interrupt(self):
         m = mcu.Microcontroller()
         m.pc = 123
-        m._mem.ea = 1
+        m.mem.ea = 1
 
         # INT0 (low priority)
-        m._mem.ie0 = 1
-        m._mem.ex0 = 1
+        m.mem.ie0 = 1
+        m.mem.ex0 = 1
         m._rom[3] = 4  # INC A
         m._rom[4] = 50  # RETI
 
         # T1 (high priority)
-        m._mem.tf1 = 1
-        m._mem.et1 = 1
-        m._mem.pt1 = 1
+        m.mem.tf1 = 1
+        m.mem.et1 = 1
+        m.mem.pt1 = 1
         # ADD A, #4
         m._rom[27] = 36
         m._rom[28] = 4
@@ -63,34 +63,34 @@ class TestMicrocontroller:
 
         m.next_cycle()  # ADD A, #4
         m.next_cycle()  # ADD A, #5
-        assert m._mem.a == 9
+        assert m.mem.a == 9
 
-        m._mem.tf1 = 1
+        m.mem.tf1 = 1
 
         # T0 (high priority)
-        m._mem.tf0 = 1
-        m._mem.et0 = 1
-        m._mem.pt0 = 1
+        m.mem.tf0 = 1
+        m.mem.et0 = 1
+        m.mem.pt0 = 1
         m._rom[11] = 20  # DEC A
         m._rom[12] = 50  # RETI
 
         m.next_cycle()  # DEC A
         m.next_cycle()  # RETI
-        assert m._mem.a == 8
+        assert m.mem.a == 8
 
         m.next_cycle()  # ADD A, #6
         m.next_cycle()  # RETI
-        assert m._mem.a == 14
+        assert m.mem.a == 14
 
         m.next_cycle()  # ADD A, #4
         m.next_cycle()  # ADD A, #5
         m.next_cycle()  # ADD A, #6
         m.next_cycle()  # RETI
-        assert m._mem.a == 29
+        assert m.mem.a == 29
 
         m.next_cycle()  # INC A
         m.next_cycle()  # RETI
-        assert m._mem.a == 30
+        assert m.mem.a == 30
 
         assert m.pc == 123
         assert m.interrupt_stack.top() == 0
@@ -116,34 +116,34 @@ class TestMicrocontroller:
 
     def test_direct_addressing(self):
         m = mcu.Microcontroller()
-        byte_id = id(m._mem[17])
-        m._mem[17] = 123
-        assert m._mem[17] == 123 and id(m._mem[17]) == byte_id, 'Byte replaced with int?'
-        m._mem[17][7] = 0
-        assert m._mem[17] == 122, 'Bit setting not supported'
+        byte_id = id(m.mem[17])
+        m.mem[17] = 123
+        assert m.mem[17] == 123 and id(m.mem[17]) == byte_id, 'Byte replaced with int?'
+        m.mem[17][7] = 0
+        assert m.mem[17] == 122, 'Bit setting not supported'
 
     def test_register_addressing(self):
         m = mcu.Microcontroller()
-        m._mem.selected_register_bank = 3
-        byte_id = id(m._mem[8 * m._mem.selected_register_bank + 1])
-        m._mem.r1 = 200
-        assert m._mem.r1 == 200, 'R1 property not supported'
-        assert m._mem[8 * 3 + 1] == 200, 'Address not calculated properly'
-        assert id(m._mem[8 * 3 + 1]) == byte_id, 'Value not changed in place'
+        m.mem.selected_register_bank = 3
+        byte_id = id(m.mem[8 * m.mem.selected_register_bank + 1])
+        m.mem.r1 = 200
+        assert m.mem.r1 == 200, 'R1 property not supported'
+        assert m.mem[8 * 3 + 1] == 200, 'Address not calculated properly'
+        assert id(m.mem[8 * 3 + 1]) == byte_id, 'Value not changed in place'
 
     def test_mem_prop_bit_access(self):
         m = mcu.Microcontroller()
-        m._mem.a = 8
-        assert m._mem[224] == 8, 'Property not aliased properly'
-        assert m._mem[224][4] == 1
-        assert m._mem.a[4] == 1, 'Bit access on property not supported'
-        m._mem.a[5] = 1
-        assert m._mem.a == 12, 'Bit setting on property not supported'
+        m.mem.a = 8
+        assert m.mem[224] == 8, 'Property not aliased properly'
+        assert m.mem[224][4] == 1
+        assert m.mem.a[4] == 1, 'Bit access on property not supported'
+        m.mem.a[5] = 1
+        assert m.mem.a == 12, 'Bit setting on property not supported'
 
     def test_mem_val_overflow(self):
         m = mcu.Microcontroller()
-        m._mem[30] += 300
-        assert m._mem[30] == 44, 'Overflow not supported'
+        m.mem[30] += 300
+        assert m.mem[30] == 44, 'Overflow not supported'
 
     def test_exec_2(self):
         m = mcu.Microcontroller()
@@ -153,93 +153,93 @@ class TestMicrocontroller:
     def test_exec_4(self):
         m = mcu.Microcontroller()
         m._exec_4()
-        assert m._mem.a == 1
+        assert m.mem.a == 1
 
     def test_exec_5(self):
         m = mcu.Microcontroller()
-        m._mem[23] = 15
+        m.mem[23] = 15
         m._exec_5(23)
-        assert m._mem[23] == 16
+        assert m.mem[23] == 16
 
     def test_exec_6(self):
         m = mcu.Microcontroller()
-        m._mem.r0 = 17
-        m._mem[m._mem.r0] = 100
+        m.mem.r0 = 17
+        m.mem[m.mem.r0] = 100
         m._exec_6()
-        assert m._mem[m._mem.r0] == 101
+        assert m.mem[m.mem.r0] == 101
 
     def test_exec_8(self):
         m = mcu.Microcontroller()
         m._exec_8()
         m._exec_8()
-        assert m._mem.r0 == 2
+        assert m.mem.r0 == 2
 
     def test_exec_18(self):
         m = mcu.Microcontroller()
         m.pc = 33719  # 131 * 2 ** 8 + 183
         m._exec_18(171, 205)
-        assert m._mem[m._mem.sp] == 131 and m._mem[m._mem.sp - 1] == 183
+        assert m.mem[m.mem.sp] == 131 and m.mem[m.mem.sp - 1] == 183
         assert m.pc == 43981  # 171 * 2 ** 8 + 205
 
     def test_exec_20(self):
         m = mcu.Microcontroller()
         m._exec_20()
-        assert m._mem.a == 255
+        assert m.mem.a == 255
 
     def test_exec_21(self):
         m = mcu.Microcontroller()
-        m._mem[23] = 15
+        m.mem[23] = 15
         m._exec_21(23)
-        assert m._mem[23] == 14
+        assert m.mem[23] == 14
 
     def test_exec_23(self):
         m = mcu.Microcontroller()
-        m._mem.r1 = 17
-        m._mem[m._mem.r1] = 100
+        m.mem.r1 = 17
+        m.mem[m.mem.r1] = 100
         m._exec_23()
-        assert m._mem[m._mem.r1] == 99
+        assert m.mem[m.mem.r1] == 99
 
     def test_exec_26(self):
         m = mcu.Microcontroller()
         m._exec_26()
-        assert m._mem.r2 == 255
+        assert m.mem.r2 == 255
 
     def test_exec_34(self):
         m = mcu.Microcontroller()
-        m._mem.sp += 1
-        m._mem[m._mem.sp] = 183
-        m._mem.sp += 1
-        m._mem[m._mem.sp] = 131
+        m.mem.sp += 1
+        m.mem[m.mem.sp] = 183
+        m.mem.sp += 1
+        m.mem[m.mem.sp] = 131
         m._exec_34()
         assert m.pc == 33719  # 131 * 2 ** 8 + 183
 
     def test_exec_36(self):
         m = mcu.Microcontroller()
-        m._mem.a = 10
+        m.mem.a = 10
         m._exec_36(20)
-        assert m._mem.a == 30
+        assert m.mem.a == 30
 
     def test_exec_37(self):
         m = mcu.Microcontroller()
-        m._mem.a = 10
-        m._mem[15] = 40
+        m.mem.a = 10
+        m.mem[15] = 40
         m._exec_37(15)
-        assert m._mem.a == 50
+        assert m.mem.a == 50
 
     def test_exec_38(self):
         m = mcu.Microcontroller()
-        m._mem.a = 30
-        m._mem.r0 = 100
-        m._mem[m._mem.r0] = 25
+        m.mem.a = 30
+        m.mem.r0 = 100
+        m.mem[m.mem.r0] = 25
         m._exec_38()
-        assert m._mem.a == 55
+        assert m.mem.a == 55
 
     def test_exec_44(self):
         m = mcu.Microcontroller()
-        m._mem.a = 50
-        m._mem.r4 = 5
+        m.mem.a = 50
+        m.mem.r4 = 5
         m._exec_44()
-        assert m._mem.a == 55
+        assert m.mem.a == 55
 
     def test_exec_50(self):
         m = mcu.Microcontroller()
@@ -254,437 +254,437 @@ class TestMicrocontroller:
 
     def test_exec_52(self):
         m = mcu.Microcontroller()
-        m._mem.a = 10
-        m._mem.c = 1
+        m.mem.a = 10
+        m.mem.c = 1
         m._exec_52(20)
-        assert m._mem.a == 31
+        assert m.mem.a == 31
 
     def test_exec_53(self):
         m = mcu.Microcontroller()
-        m._mem.a = 10
-        m._mem.c = 1
-        m._mem[15] = 40
+        m.mem.a = 10
+        m.mem.c = 1
+        m.mem[15] = 40
         m._exec_53(15)
-        assert m._mem.a == 51
+        assert m.mem.a == 51
 
     def test_exec_55(self):
         m = mcu.Microcontroller()
-        m._mem.a = 30
-        m._mem.c = 1
-        m._mem.r1 = 100
-        m._mem[m._mem.r1] = 25
+        m.mem.a = 30
+        m.mem.c = 1
+        m.mem.r1 = 100
+        m.mem[m.mem.r1] = 25
         m._exec_55()
-        assert m._mem.a == 56
+        assert m.mem.a == 56
 
     def test_exec_60(self):
         m = mcu.Microcontroller()
-        m._mem.a = 50
-        m._mem.c = 1
-        m._mem.r4 = 5
+        m.mem.a = 50
+        m.mem.c = 1
+        m.mem.r4 = 5
         m._exec_60()
-        assert m._mem.a == 56
+        assert m.mem.a == 56
 
     def test_exec_64(self):
         m = mcu.Microcontroller()
         m.pc = 123
-        m._mem.c = 0
+        m.mem.c = 0
         m._exec_64(30)
         assert m.pc == 123
-        m._mem.c = 1
+        m.mem.c = 1
         m._exec_64(30)
         assert m.pc == 153
 
     def test_exec_66(self):
         m = mcu.Microcontroller()
-        m._mem.a = 5
-        m._mem[10] = 2
+        m.mem.a = 5
+        m.mem[10] = 2
         m._exec_66(10)
-        assert m._mem[10] == 7
+        assert m.mem[10] == 7
 
     def test_exec_67(self):
         m = mcu.Microcontroller()
-        m._mem[10] = 2
+        m.mem[10] = 2
         m._exec_67(10, 1)
-        assert m._mem[10] == 3
+        assert m.mem[10] == 3
 
     def test_exec_68(self):
         m = mcu.Microcontroller()
-        m._mem.a = 6
+        m.mem.a = 6
         m._exec_68(5)
-        assert m._mem.a == 7
+        assert m.mem.a == 7
 
     def test_exec_69(self):
         m = mcu.Microcontroller()
-        m._mem.a = 6
-        m._mem[10] = 5
+        m.mem.a = 6
+        m.mem[10] = 5
         m._exec_69(10)
-        assert m._mem.a == 7
+        assert m.mem.a == 7
 
     def test_exec_71(self):
         m = mcu.Microcontroller()
-        m._mem.a = 1
-        m._mem.r1 = 10
-        m._mem[m._mem.r1] = 8
+        m.mem.a = 1
+        m.mem.r1 = 10
+        m.mem[m.mem.r1] = 8
         m._exec_71()
-        assert m._mem.a == 9
+        assert m.mem.a == 9
 
     def test_exec_74(self):
         m = mcu.Microcontroller()
-        m._mem.a = 3
-        m._mem.r2 = 10
+        m.mem.a = 3
+        m.mem.r2 = 10
         m._exec_74()
-        assert m._mem.a == 11
+        assert m.mem.a == 11
 
     def test_exec_80(self):
         m = mcu.Microcontroller()
         m.pc = 123
-        m._mem.c = 1
+        m.mem.c = 1
         m._exec_80(30)
         assert m.pc == 123
-        m._mem.c = 0
+        m.mem.c = 0
         m._exec_80(30)
         assert m.pc == 153
 
     def test_exec_82(self):
         m = mcu.Microcontroller()
-        m._mem.a = 5
-        m._mem[10] = 3
+        m.mem.a = 5
+        m.mem[10] = 3
         m._exec_82(10)
-        assert m._mem[10] == 1
+        assert m.mem[10] == 1
 
     def test_exec_83(self):
         m = mcu.Microcontroller()
-        m._mem[10] = 13
+        m.mem[10] = 13
         m._exec_83(10, 5)
-        assert m._mem[10] == 5
+        assert m.mem[10] == 5
 
     def test_exec_84(self):
         m = mcu.Microcontroller()
-        m._mem.a = 6
+        m.mem.a = 6
         m._exec_84(5)
-        assert m._mem.a == 4
+        assert m.mem.a == 4
 
     def test_exec_85(self):
         m = mcu.Microcontroller()
-        m._mem.a = 5
-        m._mem[10] = 3
+        m.mem.a = 5
+        m.mem[10] = 3
         m._exec_85(10)
-        assert m._mem.a == 1
+        assert m.mem.a == 1
 
     def test_exec_87(self):
         m = mcu.Microcontroller()
-        m._mem.a = 13
-        m._mem.r1 = 10
-        m._mem[m._mem.r1] = 3
+        m.mem.a = 13
+        m.mem.r1 = 10
+        m.mem[m.mem.r1] = 3
         m._exec_87()
-        assert m._mem.a == 1
+        assert m.mem.a == 1
 
     def test_exec_90(self):
         m = mcu.Microcontroller()
-        m._mem.a = 3
-        m._mem.r2 = 10
+        m.mem.a = 3
+        m.mem.r2 = 10
         m._exec_90()
-        assert m._mem.a == 2
+        assert m.mem.a == 2
 
     def test_exec_96(self):
         m = mcu.Microcontroller()
         m.pc = 100
-        m._mem.a = 0
+        m.mem.a = 0
         m._exec_96(30)
         assert m.pc == 130
-        m._mem.a = 15
+        m.mem.a = 15
         m._exec_96(30)
         assert m.pc == 130
 
     def test_exec_98(self):
         m = mcu.Microcontroller()
-        m._mem.a = 5
-        m._mem[10] = 3
+        m.mem.a = 5
+        m.mem[10] = 3
         m._exec_98(10)
-        assert m._mem[10] == 6
+        assert m.mem[10] == 6
 
     def test_exec_99(self):
         m = mcu.Microcontroller()
-        m._mem[10] = 13
+        m.mem[10] = 13
         m._exec_99(10, 5)
-        assert m._mem[10] == 8
+        assert m.mem[10] == 8
 
     def test_exec_100(self):
         m = mcu.Microcontroller()
-        m._mem.a = 6
+        m.mem.a = 6
         m._exec_100(5)
-        assert m._mem.a == 3
+        assert m.mem.a == 3
 
     def test_exec_101(self):
         m = mcu.Microcontroller()
-        m._mem.a = 5
-        m._mem[10] = 3
+        m.mem.a = 5
+        m.mem[10] = 3
         m._exec_101(10)
-        assert m._mem.a == 6
+        assert m.mem.a == 6
 
     def test_exec_103(self):
         m = mcu.Microcontroller()
-        m._mem.a = 13
-        m._mem.r1 = 3
-        m._mem[m._mem.r1] = 10
+        m.mem.a = 13
+        m.mem.r1 = 3
+        m.mem[m.mem.r1] = 10
         m._exec_103()
-        assert m._mem.a == 7
+        assert m.mem.a == 7
 
     def test_exec_106(self):
         m = mcu.Microcontroller()
-        m._mem.a = 3
-        m._mem.r2 = 10
+        m.mem.a = 3
+        m.mem.r2 = 10
         m._exec_106()
-        assert m._mem.a == 9
+        assert m.mem.a == 9
 
     def test_exec_112(self):
         m = mcu.Microcontroller()
         m.pc = 100
-        m._mem.a = 0
+        m.mem.a = 0
         m._exec_112(30)
         assert m.pc == 100
-        m._mem.a = 15
+        m.mem.a = 15
         m._exec_112(30)
         assert m.pc == 130
 
     def test_exec_115(self):
         m = mcu.Microcontroller()
-        m._mem.a = 20
-        m._mem.dptr = 65000
+        m.mem.a = 20
+        m.mem.dptr = 65000
         m._exec_115()
         assert m.pc == 65020
 
     def test_exec_116(self):
         m = mcu.Microcontroller()
         m._exec_116(21)
-        assert m._mem.a == 21
+        assert m.mem.a == 21
 
     def test_exec_117(self):
         m = mcu.Microcontroller()
         m._exec_117(10, 21)
-        assert m._mem[10] == 21
+        assert m.mem[10] == 21
 
     def test_exec_118(self):
         m = mcu.Microcontroller()
-        m._mem.r0 = 20
+        m.mem.r0 = 20
         m._exec_118(10)
-        assert m._mem[m._mem.r0] == 10
+        assert m.mem[m.mem.r0] == 10
 
     def test_exec_127(self):
         m = mcu.Microcontroller()
         m._exec_127(33)
-        assert m._mem.r7 == 33
+        assert m.mem.r7 == 33
 
     def test_exec_132(self):
         m = mcu.Microcontroller()
-        m._mem.a = 11
-        m._mem.b = 4
+        m.mem.a = 11
+        m.mem.b = 4
         m._exec_132()
-        assert m._mem.a == 2 and m._mem.b == 3
+        assert m.mem.a == 2 and m.mem.b == 3
 
     def test_exec_133(self):
         m = mcu.Microcontroller()
-        m._mem[20] = 50
+        m.mem[20] = 50
         m._exec_133(20, 30)
-        assert m._mem[30] == 50
+        assert m.mem[30] == 50
 
     def test_exec_134(self):
         m = mcu.Microcontroller()
-        m._mem.r0 = 20
-        m._mem[m._mem.r0] = 100
+        m.mem.r0 = 20
+        m.mem[m.mem.r0] = 100
         m._exec_134(10)
-        assert m._mem[10] == 100
+        assert m.mem[10] == 100
 
     def test_exec_138(self):
         m = mcu.Microcontroller()
-        m._mem.r2 = 20
+        m.mem.r2 = 20
         m._exec_138(50)
-        assert m._mem[50] == 20
+        assert m.mem[50] == 20
 
     def test_exec_144(self):
         m = mcu.Microcontroller()
         m._exec_144(30)
-        assert m._mem.dptr == 30
+        assert m.mem.dptr == 30
 
     def test_exec_148(self):
         m = mcu.Microcontroller()
-        m._mem.a = 100
-        m._mem.c = 1
+        m.mem.a = 100
+        m.mem.c = 1
         m._exec_148(20)
-        assert m._mem.a == 79
+        assert m.mem.a == 79
 
     def test_exec_149(self):
         m = mcu.Microcontroller()
-        m._mem.a = 100
-        m._mem.c = 1
-        m._mem[10] = 50
+        m.mem.a = 100
+        m.mem.c = 1
+        m.mem[10] = 50
         m._exec_149(10)
-        assert m._mem.a == 49
+        assert m.mem.a == 49
 
     def test_exec_151(self):
         m = mcu.Microcontroller()
-        m._mem.a = 50
-        m._mem.c = 1
-        m._mem.r1 = 30
-        m._mem[m._mem.r1] = 10
+        m.mem.a = 50
+        m.mem.c = 1
+        m.mem.r1 = 30
+        m.mem[m.mem.r1] = 10
         m._exec_151()
-        assert m._mem.a == 39
+        assert m.mem.a == 39
 
     def test_exec_154(self):
         m = mcu.Microcontroller()
-        m._mem.a = 50
-        m._mem.c = 1
-        m._mem.r2 = 30
+        m.mem.a = 50
+        m.mem.c = 1
+        m.mem.r2 = 30
         m._exec_154()
-        assert m._mem.a == 19
+        assert m.mem.a == 19
 
     def test_exec_163(self):
         m = mcu.Microcontroller()
-        m._mem.dptr = 50
+        m.mem.dptr = 50
         m._exec_163()
-        assert m._mem.dptr == 51
+        assert m.mem.dptr == 51
 
     def test_exec_167(self):
         m = mcu.Microcontroller()
-        m._mem.r1 = 35
-        m._mem[15] = 200
+        m.mem.r1 = 35
+        m.mem[15] = 200
         m._exec_167(15)
-        assert m._mem[35] == 200
+        assert m.mem[35] == 200
 
     def test_exec_174(self):
         m = mcu.Microcontroller()
-        m._mem[15] = 200
+        m.mem[15] = 200
         m._exec_174(15)
-        assert m._mem.r6 == 200
+        assert m.mem.r6 == 200
 
     def test_exec_179(self):
         m = mcu.Microcontroller()
-        m._mem.c = 0
+        m.mem.c = 0
         m._exec_179()
-        assert m._mem.c == 1
+        assert m.mem.c == 1
         m._exec_179()
-        assert m._mem.c == 0
+        assert m.mem.c == 0
 
     def test_exec_180(self):
         m = mcu.Microcontroller()
         m.pc = 50
-        m._mem.a = 3
+        m.mem.a = 3
         m._exec_180(4, 30)
-        assert m.pc == 80 and m._mem.c == 1
+        assert m.pc == 80 and m.mem.c == 1
         m._exec_180(3, 20)
-        assert m.pc == 80 and m._mem.c == 0
+        assert m.pc == 80 and m.mem.c == 0
 
     def test_exec_181(self):
         m = mcu.Microcontroller()
         m.pc = 50
-        m._mem.a = 3
-        m._mem[10] = 4
+        m.mem.a = 3
+        m.mem[10] = 4
         m._exec_181(10, 30)
-        assert m.pc == 80 and m._mem.c == 1
-        m._mem[10] = 3
+        assert m.pc == 80 and m.mem.c == 1
+        m.mem[10] = 3
         m._exec_181(10, 20)
-        assert m.pc == 80 and m._mem.c == 0
+        assert m.pc == 80 and m.mem.c == 0
 
     def test_exec_182(self):
         m = mcu.Microcontroller()
         m.pc = 50
-        m._mem.r0 = 10
-        m._mem[m._mem.r0] = 3
+        m.mem.r0 = 10
+        m.mem[m.mem.r0] = 3
         m._exec_182(4, 30)
-        assert m.pc == 80 and m._mem.c == 1
-        m._mem[m._mem.r0] = 4
+        assert m.pc == 80 and m.mem.c == 1
+        m.mem[m.mem.r0] = 4
         m._exec_182(4, 20)
-        assert m.pc == 80 and m._mem.c == 0
+        assert m.pc == 80 and m.mem.c == 0
 
     def test_exec_190(self):
         m = mcu.Microcontroller()
         m.pc = 50
-        m._mem.r6 = 3
+        m.mem.r6 = 3
         m._exec_190(4, 30)
-        assert m.pc == 80 and m._mem.c == 1
-        m._mem.r6 = 4
+        assert m.pc == 80 and m.mem.c == 1
+        m.mem.r6 = 4
         m._exec_190(4, 20)
-        assert m.pc == 80 and m._mem.c == 0
+        assert m.pc == 80 and m.mem.c == 0
 
     def test_exec_195(self):
         m = mcu.Microcontroller()
-        m._mem.c = 1
+        m.mem.c = 1
         m._exec_195()
-        assert m._mem.c == 0
+        assert m.mem.c == 0
 
     def test_exec_211(self):
         m = mcu.Microcontroller()
-        m._mem.c = 0
+        m.mem.c = 0
         m._exec_211()
-        assert m._mem.c == 1
+        assert m.mem.c == 1
 
     def test_exec_213(self):
         m = mcu.Microcontroller()
-        m._mem[20] = 2
+        m.mem[20] = 2
         m.pc = 50
         m._exec_213(20, 30)
-        assert m._mem[20] == 1 and m.pc == 80
+        assert m.mem[20] == 1 and m.pc == 80
         m._exec_213(20, 30)
-        assert m._mem[20] == 0 and m.pc == 80
+        assert m.mem[20] == 0 and m.pc == 80
 
     def test_exec_222(self):
         m = mcu.Microcontroller()
-        m._mem.r6 = 2
+        m.mem.r6 = 2
         m.pc = 50
         m._exec_222(30)
-        assert m._mem.r6 == 1 and m.pc == 80
+        assert m.mem.r6 == 1 and m.pc == 80
         m._exec_222(30)
-        assert m._mem.r6 == 0 and m.pc == 80
+        assert m.mem.r6 == 0 and m.pc == 80
 
     def test_exec_228(self):
         m = mcu.Microcontroller()
-        m._mem.a = 30
+        m.mem.a = 30
         m._exec_228()
-        assert m._mem.a == 0
+        assert m.mem.a == 0
 
     def test_exec_229(self):
         m = mcu.Microcontroller()
-        m._mem[15] = 100
+        m.mem[15] = 100
         m._exec_229(15)
-        assert m._mem.a == 100
+        assert m.mem.a == 100
 
     def test_exec_230(self):
         m = mcu.Microcontroller()
-        m._mem.r0 = 15
-        m._mem[m._mem.r0] = 150
+        m.mem.r0 = 15
+        m.mem[m.mem.r0] = 150
         m._exec_230()
-        assert m._mem.a == 150
+        assert m.mem.a == 150
 
     def test_exec_235(self):
         m = mcu.Microcontroller()
-        m._mem.r3 = 20
+        m.mem.r3 = 20
         m._exec_235()
-        assert m._mem.a == 20
+        assert m.mem.a == 20
 
     def test_exec_244(self):
         m = mcu.Microcontroller()
-        m._mem.a = 7
+        m.mem.a = 7
         m._exec_244()
-        assert m._mem.a == 248
+        assert m.mem.a == 248
 
     def test_exec_245(self):
         m = mcu.Microcontroller()
-        m._mem.a = 10
+        m.mem.a = 10
         m._exec_245(100)
-        assert m._mem[100] == 10
+        assert m.mem[100] == 10
 
     def test_exec_247(self):
         m = mcu.Microcontroller()
-        m._mem.a = 30
-        m._mem.r1 = 20
+        m.mem.a = 30
+        m.mem.r1 = 20
         m._exec_247()
-        assert m._mem[20] == 30
+        assert m.mem[20] == 30
 
     def test_exec_250(self):
         m = mcu.Microcontroller()
-        m._mem.a = 50
+        m.mem.a = 50
         m._exec_250()
-        assert m._mem.r2 == 50
+        assert m.mem.r2 == 50
 
 
 class TestProgramMemory:

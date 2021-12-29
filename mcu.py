@@ -7,7 +7,7 @@ import disassembler
 class Microcontroller:
     def __init__(self):
         self._rom = ProgramMemory()
-        self._mem = DataMemory()
+        self.mem = DataMemory()
         self._pc = DoubleByte()
         self.interrupt_stack = Stack()
         self.interrupt_stack.push(0)
@@ -32,53 +32,53 @@ class Microcontroller:
 
     def next_cycle(self):
         # Keep track of two previous distinct states of INT0/INT1
-        if self.prev_int0_states.last != self._mem.int0:
+        if self.prev_int0_states.last != self.mem.int0:
             self.prev_int0_states.next_to_last = self.prev_int0_states.last
-            self.prev_int0_states.last = self._mem.int0
+            self.prev_int0_states.last = self.mem.int0
 
-        if self.prev_int1_states.last != self._mem.int1:
+        if self.prev_int1_states.last != self.mem.int1:
             self.prev_int1_states.next_to_last = self.prev_int1_states.last
-            self.prev_int1_states.last = self._mem.int1
+            self.prev_int1_states.last = self.mem.int1
 
         # Check for an external interrupt request from INT0/INT1
         # that can be either negative edge-triggered or negative level-activated
-        if (self._mem.it0 and self.prev_int0_states.negative_edge
-                or not self._mem.it0 and not self._mem.int0):
-            self._mem.ie0 = 1
+        if (self.mem.it0 and self.prev_int0_states.negative_edge
+                or not self.mem.it0 and not self.mem.int0):
+            self.mem.ie0 = 1
 
-        if (self._mem.it1 and self.prev_int1_states.negative_edge
-                or not self._mem.it1 and not self._mem.int1):
-            self._mem.ie1 = 1
+        if (self.mem.it1 and self.prev_int1_states.negative_edge
+                or not self.mem.it1 and not self.mem.int1):
+            self.mem.ie1 = 1
 
         # Handle an interrupt request
-        if self._mem.ea:
+        if self.mem.ea:
             # INT0 (high priority)
-            if ((int0_awaiting := self._mem.ie0 and self._mem.ex0)
-                    and self._mem.px0 and self.interrupt_stack.top() < 10):
-                if self._mem.it0:
-                    self._mem.ie0 = 0
+            if ((int0_awaiting := self.mem.ie0 and self.mem.ex0)
+                    and self.mem.px0 and self.interrupt_stack.top() < 10):
+                if self.mem.it0:
+                    self.mem.ie0 = 0
                 self.interrupt_stack.push(10)
                 self._exec_18(0, 3)
 
             # T0 (high priority)
-            elif ((t0_awaiting := self._mem.tf0 and self._mem.et0)
-                  and self._mem.pt0 and self.interrupt_stack.top() < 9):
-                self._mem.tf0 = 0
+            elif ((t0_awaiting := self.mem.tf0 and self.mem.et0)
+                  and self.mem.pt0 and self.interrupt_stack.top() < 9):
+                self.mem.tf0 = 0
                 self.interrupt_stack.push(9)
                 self._exec_18(0, 11)
 
             # INT1 (high priority)
-            elif ((int1_awaiting := self._mem.ie1 and self._mem.ex1)
-                  and self._mem.px1 and self.interrupt_stack.top() < 8):
-                if self._mem.it1:
-                    self._mem.ie1 = 0
+            elif ((int1_awaiting := self.mem.ie1 and self.mem.ex1)
+                  and self.mem.px1 and self.interrupt_stack.top() < 8):
+                if self.mem.it1:
+                    self.mem.ie1 = 0
                 self.interrupt_stack.push(8)
                 self._exec_18(0, 19)
 
             # T1 (high priority)
-            elif ((t1_awaiting := self._mem.tf1 and self._mem.et1)
-                  and self._mem.pt1 and self.interrupt_stack.top() < 7):
-                self._mem.tf1 = 0
+            elif ((t1_awaiting := self.mem.tf1 and self.mem.et1)
+                  and self.mem.pt1 and self.interrupt_stack.top() < 7):
+                self.mem.tf1 = 0
                 self.interrupt_stack.push(7)
                 self._exec_18(0, 27)
 
@@ -86,27 +86,27 @@ class Microcontroller:
 
             # INT0 (low priority)
             elif int0_awaiting and self.interrupt_stack.top() < 5:
-                if self._mem.it0:
-                    self._mem.ie0 = 0
+                if self.mem.it0:
+                    self.mem.ie0 = 0
                 self.interrupt_stack.push(5)
                 self._exec_18(0, 3)
 
             # T0 (low priority)
             elif t0_awaiting and self.interrupt_stack.top() < 4:
-                self._mem.tf0 = 0
+                self.mem.tf0 = 0
                 self.interrupt_stack.push(4)
                 self._exec_18(0, 11)
 
             # INT1 (low priority)
             elif int1_awaiting and self.interrupt_stack.top() < 3:
-                if self._mem.it1:
-                    self._mem.ie1 = 0
+                if self.mem.it1:
+                    self.mem.ie1 = 0
                 self.interrupt_stack.push(3)
                 self._exec_18(0, 19)
 
             # T1 (low priority)
             elif t1_awaiting and self.interrupt_stack.top() < 2:
-                self._mem.tf1 = 0
+                self.mem.tf1 = 0
                 self.interrupt_stack.push(2)
                 self._exec_18(0, 27)
 
@@ -128,650 +128,650 @@ class Microcontroller:
         self.pc = high_order_byte * 16 ** 2 + low_order_byte
 
     def _exec_4(self):
-        self._mem.a += 1
+        self.mem.a += 1
 
     def _exec_5(self, direct):
-        self._mem[direct] += 1
+        self.mem[direct] += 1
 
     def _exec_6(self):
-        self._mem[self._mem.r0] += 1
+        self.mem[self.mem.r0] += 1
 
     def _exec_7(self):
-        self._mem[self._mem.r1] += 1
+        self.mem[self.mem.r1] += 1
 
     def _exec_8(self):
-        self._mem.r0 += 1
+        self.mem.r0 += 1
 
     def _exec_9(self):
-        self._mem.r1 += 1
+        self.mem.r1 += 1
 
     def _exec_10(self):
-        self._mem.r2 += 1
+        self.mem.r2 += 1
 
     def _exec_11(self):
-        self._mem.r3 += 1
+        self.mem.r3 += 1
 
     def _exec_12(self):
-        self._mem.r4 += 1
+        self.mem.r4 += 1
 
     def _exec_13(self):
-        self._mem.r5 += 1
+        self.mem.r5 += 1
 
     def _exec_14(self):
-        self._mem.r6 += 1
+        self.mem.r6 += 1
 
     def _exec_15(self):
-        self._mem.r7 += 1
+        self.mem.r7 += 1
 
     def _exec_18(self, high_order_byte, low_order_byte):
-        self._mem.sp += 1
-        self._mem[self._mem.sp] = int(self.pc.bits()[8:], 2)
-        self._mem.sp += 1
-        self._mem[self._mem.sp] = int(self.pc.bits()[:8], 2)
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits()[8:], 2)
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits()[:8], 2)
         # Turn two one-byte arguments (as stored in a .hex file) into one two-byte argument
         # e.g. 0xAB = 171, 0xCD = 205; 171 * 16 ** 2 + 205 = 43981 = 0xABCD
         self.pc = high_order_byte * 16 ** 2 + low_order_byte
 
     def _exec_20(self):
-        self._mem.a -= 1
+        self.mem.a -= 1
 
     def _exec_21(self, direct):
-        self._mem[direct] -= 1
+        self.mem[direct] -= 1
 
     def _exec_22(self):
-        self._mem[self._mem.r0] -= 1
+        self.mem[self.mem.r0] -= 1
 
     def _exec_23(self):
-        self._mem[self._mem.r1] -= 1
+        self.mem[self.mem.r1] -= 1
 
     def _exec_24(self):
-        self._mem.r0 -= 1
+        self.mem.r0 -= 1
 
     def _exec_25(self):
-        self._mem.r1 -= 1
+        self.mem.r1 -= 1
 
     def _exec_26(self):
-        self._mem.r2 -= 1
+        self.mem.r2 -= 1
 
     def _exec_27(self):
-        self._mem.r3 -= 1
+        self.mem.r3 -= 1
 
     def _exec_28(self):
-        self._mem.r4 -= 1
+        self.mem.r4 -= 1
 
     def _exec_29(self):
-        self._mem.r5 -= 1
+        self.mem.r5 -= 1
 
     def _exec_30(self):
-        self._mem.r6 -= 1
+        self.mem.r6 -= 1
 
     def _exec_31(self):
-        self._mem.r7 -= 1
+        self.mem.r7 -= 1
 
     def _exec_34(self):
-        high_order_byte = self._mem[self._mem.sp]
-        self._mem.sp -= 1
-        low_order_byte = self._mem[self._mem.sp]
-        self._mem.sp -= 1
+        high_order_byte = self.mem[self.mem.sp]
+        self.mem.sp -= 1
+        low_order_byte = self.mem[self.mem.sp]
+        self.mem.sp -= 1
         self.pc = int(f'{high_order_byte:b}{low_order_byte:08b}', 2)
 
     def _exec_36(self, immed):
-        self._mem.a += immed
+        self.mem.a += immed
 
     def _exec_37(self, direct):
-        self._mem.a += self._mem[direct]
+        self.mem.a += self.mem[direct]
 
     def _exec_38(self):
-        self._mem.a += self._mem[self._mem.r0]
+        self.mem.a += self.mem[self.mem.r0]
 
     def _exec_39(self):
-        self._mem.a += self._mem[self._mem.r1]
+        self.mem.a += self.mem[self.mem.r1]
 
     def _exec_40(self):
-        self._mem.a += self._mem.r0
+        self.mem.a += self.mem.r0
 
     def _exec_41(self):
-        self._mem.a += self._mem.r1
+        self.mem.a += self.mem.r1
 
     def _exec_42(self):
-        self._mem.a += self._mem.r2
+        self.mem.a += self.mem.r2
 
     def _exec_43(self):
-        self._mem.a += self._mem.r3
+        self.mem.a += self.mem.r3
 
     def _exec_44(self):
-        self._mem.a += self._mem.r4
+        self.mem.a += self.mem.r4
 
     def _exec_45(self):
-        self._mem.a += self._mem.r5
+        self.mem.a += self.mem.r5
 
     def _exec_46(self):
-        self._mem.a += self._mem.r6
+        self.mem.a += self.mem.r6
 
     def _exec_47(self):
-        self._mem.a += self._mem.r7
+        self.mem.a += self.mem.r7
 
     def _exec_50(self):
-        high_order_byte = self._mem[self._mem.sp]
-        self._mem.sp -= 1
-        low_order_byte = self._mem[self._mem.sp]
-        self._mem.sp -= 1
+        high_order_byte = self.mem[self.mem.sp]
+        self.mem.sp -= 1
+        low_order_byte = self.mem[self.mem.sp]
+        self.mem.sp -= 1
         self.pc = int(f'{high_order_byte:b}{low_order_byte:08b}', 2)
         self.interrupt_stack.pop()
 
     def _exec_52(self, immed):
-        self._mem.a += self._mem.c + immed
+        self.mem.a += self.mem.c + immed
 
     def _exec_53(self, direct):
-        self._mem.a += self._mem.c + self._mem[direct]
+        self.mem.a += self.mem.c + self.mem[direct]
 
     def _exec_54(self):
-        self._mem.a += self._mem.c + self._mem[self._mem.r0]
+        self.mem.a += self.mem.c + self.mem[self.mem.r0]
 
     def _exec_55(self):
-        self._mem.a += self._mem.c + self._mem[self._mem.r1]
+        self.mem.a += self.mem.c + self.mem[self.mem.r1]
 
     def _exec_56(self):
-        self._mem.a += self._mem.c + self._mem.r0
+        self.mem.a += self.mem.c + self.mem.r0
 
     def _exec_57(self):
-        self._mem.a += self._mem.c + self._mem.r1
+        self.mem.a += self.mem.c + self.mem.r1
 
     def _exec_58(self):
-        self._mem.a += self._mem.c + self._mem.r2
+        self.mem.a += self.mem.c + self.mem.r2
 
     def _exec_59(self):
-        self._mem.a += self._mem.c + self._mem.r3
+        self.mem.a += self.mem.c + self.mem.r3
 
     def _exec_60(self):
-        self._mem.a += self._mem.c + self._mem.r4
+        self.mem.a += self.mem.c + self.mem.r4
 
     def _exec_61(self):
-        self._mem.a += self._mem.c + self._mem.r5
+        self.mem.a += self.mem.c + self.mem.r5
 
     def _exec_62(self):
-        self._mem.a += self._mem.c + self._mem.r6
+        self.mem.a += self.mem.c + self.mem.r6
 
     def _exec_63(self):
-        self._mem.a += self._mem.c + self._mem.r7
+        self.mem.a += self.mem.c + self.mem.r7
 
     def _exec_64(self, offset):
-        if self._mem.c:
+        if self.mem.c:
             self.pc += offset
 
     def _exec_66(self, direct):
-        self._mem[direct] |= self._mem.a
+        self.mem[direct] |= self.mem.a
 
     def _exec_67(self, direct, immed):
-        self._mem[direct] |= immed
+        self.mem[direct] |= immed
 
     def _exec_68(self, immed):
-        self._mem.a |= immed
+        self.mem.a |= immed
 
     def _exec_69(self, direct):
-        self._mem.a |= self._mem[direct]
+        self.mem.a |= self.mem[direct]
 
     def _exec_70(self):
-        self._mem.a |= self._mem[self._mem.r0]
+        self.mem.a |= self.mem[self.mem.r0]
 
     def _exec_71(self):
-        self._mem.a |= self._mem[self._mem.r1]
+        self.mem.a |= self.mem[self.mem.r1]
 
     def _exec_72(self):
-        self._mem.a |= self._mem.r0
+        self.mem.a |= self.mem.r0
 
     def _exec_73(self):
-        self._mem.a |= self._mem.r1
+        self.mem.a |= self.mem.r1
 
     def _exec_74(self):
-        self._mem.a |= self._mem.r2
+        self.mem.a |= self.mem.r2
 
     def _exec_75(self):
-        self._mem.a |= self._mem.r3
+        self.mem.a |= self.mem.r3
 
     def _exec_76(self):
-        self._mem.a |= self._mem.r4
+        self.mem.a |= self.mem.r4
 
     def _exec_77(self):
-        self._mem.a |= self._mem.r5
+        self.mem.a |= self.mem.r5
 
     def _exec_78(self):
-        self._mem.a |= self._mem.r6
+        self.mem.a |= self.mem.r6
 
     def _exec_79(self):
-        self._mem.a |= self._mem.r7
+        self.mem.a |= self.mem.r7
 
     def _exec_80(self, offset):
-        if not self._mem.c:
+        if not self.mem.c:
             self.pc += offset
 
     def _exec_82(self, direct):
-        self._mem[direct] &= self._mem.a
+        self.mem[direct] &= self.mem.a
 
     def _exec_83(self, direct, immed):
-        self._mem[direct] &= immed
+        self.mem[direct] &= immed
 
     def _exec_84(self, immed):
-        self._mem.a &= immed
+        self.mem.a &= immed
 
     def _exec_85(self, direct):
-        self._mem.a &= self._mem[direct]
+        self.mem.a &= self.mem[direct]
 
     def _exec_86(self):
-        self._mem.a &= self._mem[self._mem.r0]
+        self.mem.a &= self.mem[self.mem.r0]
 
     def _exec_87(self):
-        self._mem.a &= self._mem[self._mem.r1]
+        self.mem.a &= self.mem[self.mem.r1]
 
     def _exec_88(self):
-        self._mem.a &= self._mem.r0
+        self.mem.a &= self.mem.r0
 
     def _exec_89(self):
-        self._mem.a &= self._mem.r1
+        self.mem.a &= self.mem.r1
 
     def _exec_90(self):
-        self._mem.a &= self._mem.r2
+        self.mem.a &= self.mem.r2
 
     def _exec_91(self):
-        self._mem.a &= self._mem.r3
+        self.mem.a &= self.mem.r3
 
     def _exec_92(self):
-        self._mem.a &= self._mem.r4
+        self.mem.a &= self.mem.r4
 
     def _exec_93(self):
-        self._mem.a &= self._mem.r5
+        self.mem.a &= self.mem.r5
 
     def _exec_94(self):
-        self._mem.a &= self._mem.r6
+        self.mem.a &= self.mem.r6
 
     def _exec_95(self):
-        self._mem.a &= self._mem.r7
+        self.mem.a &= self.mem.r7
 
     def _exec_96(self, offset):
-        if self._mem.a == 0:
+        if self.mem.a == 0:
             self.pc += offset
 
     def _exec_98(self, direct):
-        self._mem[direct] ^= self._mem.a
+        self.mem[direct] ^= self.mem.a
 
     def _exec_99(self, direct, immed):
-        self._mem[direct] ^= immed
+        self.mem[direct] ^= immed
 
     def _exec_100(self, immed):
-        self._mem.a ^= immed
+        self.mem.a ^= immed
 
     def _exec_101(self, direct):
-        self._mem.a ^= self._mem[direct]
+        self.mem.a ^= self.mem[direct]
 
     def _exec_102(self):
-        self._mem.a ^= self._mem[self._mem.r0]
+        self.mem.a ^= self.mem[self.mem.r0]
 
     def _exec_103(self):
-        self._mem.a ^= self._mem[self._mem.r1]
+        self.mem.a ^= self.mem[self.mem.r1]
 
     def _exec_104(self):
-        self._mem.a ^= self._mem.r0
+        self.mem.a ^= self.mem.r0
 
     def _exec_105(self):
-        self._mem.a ^= self._mem.r1
+        self.mem.a ^= self.mem.r1
 
     def _exec_106(self):
-        self._mem.a ^= self._mem.r2
+        self.mem.a ^= self.mem.r2
 
     def _exec_107(self):
-        self._mem.a ^= self._mem.r3
+        self.mem.a ^= self.mem.r3
 
     def _exec_108(self):
-        self._mem.a ^= self._mem.r4
+        self.mem.a ^= self.mem.r4
 
     def _exec_109(self):
-        self._mem.a ^= self._mem.r5
+        self.mem.a ^= self.mem.r5
 
     def _exec_110(self):
-        self._mem.a ^= self._mem.r6
+        self.mem.a ^= self.mem.r6
 
     def _exec_111(self):
-        self._mem.a ^= self._mem.r7
+        self.mem.a ^= self.mem.r7
 
     def _exec_112(self, offset):
-        if self._mem.a != 0:
+        if self.mem.a != 0:
             self.pc += offset
 
     def _exec_115(self):
-        self.pc = self._mem.dptr + self._mem.a
+        self.pc = self.mem.dptr + self.mem.a
 
     def _exec_116(self, immed):
-        self._mem.a = immed
+        self.mem.a = immed
 
     def _exec_117(self, direct, immed):
-        self._mem[direct] = immed
+        self.mem[direct] = immed
 
     def _exec_118(self, immed):
-        self._mem[self._mem.r0] = immed
+        self.mem[self.mem.r0] = immed
 
     def _exec_119(self, immed):
-        self._mem[self._mem.r1] = immed
+        self.mem[self.mem.r1] = immed
 
     def _exec_120(self, immed):
-        self._mem.r0 = immed
+        self.mem.r0 = immed
 
     def _exec_121(self, immed):
-        self._mem.r1 = immed
+        self.mem.r1 = immed
 
     def _exec_122(self, immed):
-        self._mem.r2 = immed
+        self.mem.r2 = immed
 
     def _exec_123(self, immed):
-        self._mem.r3 = immed
+        self.mem.r3 = immed
 
     def _exec_124(self, immed):
-        self._mem.r4 = immed
+        self.mem.r4 = immed
 
     def _exec_125(self, immed):
-        self._mem.r5 = immed
+        self.mem.r5 = immed
 
     def _exec_126(self, immed):
-        self._mem.r6 = immed
+        self.mem.r6 = immed
 
     def _exec_127(self, immed):
-        self._mem.r7 = immed
+        self.mem.r7 = immed
 
     def _exec_132(self):
-        self._mem.a, self._mem.b = divmod(self._mem.a, self._mem.b)
+        self.mem.a, self.mem.b = divmod(self.mem.a, self.mem.b)
 
     def _exec_133(self, src_direct, dest_direct):
-        self._mem[dest_direct] = self._mem[src_direct]
+        self.mem[dest_direct] = self.mem[src_direct]
 
     def _exec_134(self, direct):
-        self._mem[direct] = self._mem[self._mem.r0]
+        self.mem[direct] = self.mem[self.mem.r0]
 
     def _exec_135(self, direct):
-        self._mem[direct] = self._mem[self._mem.r1]
+        self.mem[direct] = self.mem[self.mem.r1]
 
     def _exec_136(self, direct):
-        self._mem[direct] = self._mem.r0
+        self.mem[direct] = self.mem.r0
 
     def _exec_137(self, direct):
-        self._mem[direct] = self._mem.r1
+        self.mem[direct] = self.mem.r1
 
     def _exec_138(self, direct):
-        self._mem[direct] = self._mem.r2
+        self.mem[direct] = self.mem.r2
 
     def _exec_139(self, direct):
-        self._mem[direct] = self._mem.r3
+        self.mem[direct] = self.mem.r3
 
     def _exec_140(self, direct):
-        self._mem[direct] = self._mem.r4
+        self.mem[direct] = self.mem.r4
 
     def _exec_141(self, direct):
-        self._mem[direct] = self._mem.r5
+        self.mem[direct] = self.mem.r5
 
     def _exec_142(self, direct):
-        self._mem[direct] = self._mem.r6
+        self.mem[direct] = self.mem.r6
 
     def _exec_143(self, direct):
-        self._mem[direct] = self._mem.r7
+        self.mem[direct] = self.mem.r7
 
     def _exec_144(self, immed):
-        self._mem.dptr = immed
+        self.mem.dptr = immed
 
     def _exec_148(self, immed):
-        self._mem.a -= self._mem.c + immed
+        self.mem.a -= self.mem.c + immed
 
     def _exec_149(self, direct):
-        self._mem.a -= self._mem.c + self._mem[direct]
+        self.mem.a -= self.mem.c + self.mem[direct]
 
     def _exec_150(self):
-        self._mem.a -= self._mem.c + self._mem[self._mem.r0]
+        self.mem.a -= self.mem.c + self.mem[self.mem.r0]
 
     def _exec_151(self):
-        self._mem.a -= self._mem.c + self._mem[self._mem.r1]
+        self.mem.a -= self.mem.c + self.mem[self.mem.r1]
 
     def _exec_152(self):
-        self._mem.a -= self._mem.c + self._mem.r0
+        self.mem.a -= self.mem.c + self.mem.r0
 
     def _exec_153(self):
-        self._mem.a -= self._mem.c + self._mem.r1
+        self.mem.a -= self.mem.c + self.mem.r1
 
     def _exec_154(self):
-        self._mem.a -= self._mem.c + self._mem.r2
+        self.mem.a -= self.mem.c + self.mem.r2
 
     def _exec_155(self):
-        self._mem.a -= self._mem.c + self._mem.r3
+        self.mem.a -= self.mem.c + self.mem.r3
 
     def _exec_156(self):
-        self._mem.a -= self._mem.c + self._mem.r4
+        self.mem.a -= self.mem.c + self.mem.r4
 
     def _exec_157(self):
-        self._mem.a -= self._mem.c + self._mem.r5
+        self.mem.a -= self.mem.c + self.mem.r5
 
     def _exec_158(self):
-        self._mem.a -= self._mem.c + self._mem.r6
+        self.mem.a -= self.mem.c + self.mem.r6
 
     def _exec_159(self):
-        self._mem.a -= self._mem.c + self._mem.r7
+        self.mem.a -= self.mem.c + self.mem.r7
 
     def _exec_163(self):
-        self._mem.dptr += 1
+        self.mem.dptr += 1
 
     def _exec_165(self):
         return
 
     def _exec_166(self, direct):
-        self._mem[self._mem.r0] = self._mem[direct]
+        self.mem[self.mem.r0] = self.mem[direct]
 
     def _exec_167(self, direct):
-        self._mem[self._mem.r1] = self._mem[direct]
+        self.mem[self.mem.r1] = self.mem[direct]
 
     def _exec_168(self, direct):
-        self._mem.r0 = self._mem[direct]
+        self.mem.r0 = self.mem[direct]
 
     def _exec_169(self, direct):
-        self._mem.r1 = self._mem[direct]
+        self.mem.r1 = self.mem[direct]
 
     def _exec_170(self, direct):
-        self._mem.r2 = self._mem[direct]
+        self.mem.r2 = self.mem[direct]
 
     def _exec_171(self, direct):
-        self._mem.r3 = self._mem[direct]
+        self.mem.r3 = self.mem[direct]
 
     def _exec_172(self, direct):
-        self._mem.r4 = self._mem[direct]
+        self.mem.r4 = self.mem[direct]
 
     def _exec_173(self, direct):
-        self._mem.r5 = self._mem[direct]
+        self.mem.r5 = self.mem[direct]
 
     def _exec_174(self, direct):
-        self._mem.r6 = self._mem[direct]
+        self.mem.r6 = self.mem[direct]
 
     def _exec_175(self, direct):
-        self._mem.r7 = self._mem[direct]
+        self.mem.r7 = self.mem[direct]
 
     def _exec_179(self):
-        self._mem.c = not self._mem.c
+        self.mem.c = not self.mem.c
 
     def _exec_180(self, immed, offset):
-        if self._mem.a != immed:
+        if self.mem.a != immed:
             self.pc += offset
-        self._mem.c = 1 if self._mem.a < immed else 0
+        self.mem.c = 1 if self.mem.a < immed else 0
 
     def _exec_181(self, direct, offset):
-        if self._mem.a != self._mem[direct]:
+        if self.mem.a != self.mem[direct]:
             self.pc += offset
-        self._mem.c = 1 if self._mem.a < self._mem[direct] else 0
+        self.mem.c = 1 if self.mem.a < self.mem[direct] else 0
 
     def _exec_182(self, immed, offset):
-        if self._mem[self._mem.r0] != immed:
+        if self.mem[self.mem.r0] != immed:
             self.pc += offset
-        self._mem.c = 1 if self._mem[self._mem.r0] < immed else 0
+        self.mem.c = 1 if self.mem[self.mem.r0] < immed else 0
 
     def _exec_183(self, immed, offset):
-        if self._mem[self._mem.r1] != immed:
+        if self.mem[self.mem.r1] != immed:
             self.pc += offset
-        self._mem.c = 1 if self._mem[self._mem.r1] < immed else 0
+        self.mem.c = 1 if self.mem[self.mem.r1] < immed else 0
 
     def _exec_184(self, immed, offset):
-        if self._mem.r0 != immed:
+        if self.mem.r0 != immed:
             self.pc += offset
-        self._mem.c = 1 if self._mem.r0 < immed else 0
+        self.mem.c = 1 if self.mem.r0 < immed else 0
 
     def _exec_185(self, immed, offset):
-        if self._mem.r1 != immed:
+        if self.mem.r1 != immed:
             self.pc += offset
-        self._mem.c = 1 if self._mem.r1 < immed else 0
+        self.mem.c = 1 if self.mem.r1 < immed else 0
 
     def _exec_186(self, immed, offset):
-        if self._mem.r2 != immed:
+        if self.mem.r2 != immed:
             self.pc += offset
-        self._mem.c = 1 if self._mem.r2 < immed else 0
+        self.mem.c = 1 if self.mem.r2 < immed else 0
 
     def _exec_187(self, immed, offset):
-        if self._mem.r3 != immed:
+        if self.mem.r3 != immed:
             self.pc += offset
-        self._mem.c = 1 if self._mem.r3 < immed else 0
+        self.mem.c = 1 if self.mem.r3 < immed else 0
 
     def _exec_188(self, immed, offset):
-        if self._mem.r4 != immed:
+        if self.mem.r4 != immed:
             self.pc += offset
-        self._mem.c = 1 if self._mem.r4 < immed else 0
+        self.mem.c = 1 if self.mem.r4 < immed else 0
 
     def _exec_189(self, immed, offset):
-        if self._mem.r5 != immed:
+        if self.mem.r5 != immed:
             self.pc += offset
-        self._mem.c = 1 if self._mem.r5 < immed else 0
+        self.mem.c = 1 if self.mem.r5 < immed else 0
 
     def _exec_190(self, immed, offset):
-        if self._mem.r6 != immed:
+        if self.mem.r6 != immed:
             self.pc += offset
-        self._mem.c = 1 if self._mem.r6 < immed else 0
+        self.mem.c = 1 if self.mem.r6 < immed else 0
 
     def _exec_191(self, immed, offset):
-        if self._mem.r7 != immed:
+        if self.mem.r7 != immed:
             self.pc += offset
-        self._mem.c = 1 if self._mem.r7 < immed else 0
+        self.mem.c = 1 if self.mem.r7 < immed else 0
 
     def _exec_195(self):
-        self._mem.c = 0
+        self.mem.c = 0
 
     def _exec_211(self):
-        self._mem.c = 1
+        self.mem.c = 1
 
     def _exec_213(self, direct, offset):
-        self._mem[direct] -= 1
-        if self._mem[direct] != 0:
+        self.mem[direct] -= 1
+        if self.mem[direct] != 0:
             self.pc += offset
 
     def _exec_216(self, offset):
-        self._mem.r0 -= 1
-        if self._mem.r0 != 0:
+        self.mem.r0 -= 1
+        if self.mem.r0 != 0:
             self.pc += offset
 
     def _exec_217(self, offset):
-        self._mem.r1 -= 1
-        if self._mem.r1 != 0:
+        self.mem.r1 -= 1
+        if self.mem.r1 != 0:
             self.pc += offset
 
     def _exec_218(self, offset):
-        self._mem.r2 -= 1
-        if self._mem.r2 != 0:
+        self.mem.r2 -= 1
+        if self.mem.r2 != 0:
             self.pc += offset
 
     def _exec_219(self, offset):
-        self._mem.r3 -= 1
-        if self._mem.r3 != 0:
+        self.mem.r3 -= 1
+        if self.mem.r3 != 0:
             self.pc += offset
 
     def _exec_220(self, offset):
-        self._mem.r4 -= 1
-        if self._mem.r4 != 0:
+        self.mem.r4 -= 1
+        if self.mem.r4 != 0:
             self.pc += offset
 
     def _exec_221(self, offset):
-        self._mem.r5 -= 1
-        if self._mem.r5 != 0:
+        self.mem.r5 -= 1
+        if self.mem.r5 != 0:
             self.pc += offset
 
     def _exec_222(self, offset):
-        self._mem.r6 -= 1
-        if self._mem.r6 != 0:
+        self.mem.r6 -= 1
+        if self.mem.r6 != 0:
             self.pc += offset
 
     def _exec_223(self, offset):
-        self._mem.r7 -= 1
-        if self._mem.r7 != 0:
+        self.mem.r7 -= 1
+        if self.mem.r7 != 0:
             self.pc += offset
 
     def _exec_228(self):
-        self._mem.a = 0
+        self.mem.a = 0
 
     def _exec_229(self, direct):
-        self._mem.a = self._mem[direct]
+        self.mem.a = self.mem[direct]
 
     def _exec_230(self):
-        self._mem.a = self._mem[self._mem.r0]
+        self.mem.a = self.mem[self.mem.r0]
 
     def _exec_231(self):
-        self._mem.a = self._mem[self._mem.r1]
+        self.mem.a = self.mem[self.mem.r1]
 
     def _exec_232(self):
-        self._mem.a = self._mem.r0
+        self.mem.a = self.mem.r0
 
     def _exec_233(self):
-        self._mem.a = self._mem.r1
+        self.mem.a = self.mem.r1
 
     def _exec_234(self):
-        self._mem.a = self._mem.r2
+        self.mem.a = self.mem.r2
 
     def _exec_235(self):
-        self._mem.a = self._mem.r3
+        self.mem.a = self.mem.r3
 
     def _exec_236(self):
-        self._mem.a = self._mem.r4
+        self.mem.a = self.mem.r4
 
     def _exec_237(self):
-        self._mem.a = self._mem.r5
+        self.mem.a = self.mem.r5
 
     def _exec_238(self):
-        self._mem.a = self._mem.r6
+        self.mem.a = self.mem.r6
 
     def _exec_239(self):
-        self._mem.a = self._mem.r7
+        self.mem.a = self.mem.r7
 
     def _exec_244(self):
-        self._mem.a ^= 255
+        self.mem.a ^= 255
 
     def _exec_245(self, direct):
-        self._mem[direct] = self._mem.a
+        self.mem[direct] = self.mem.a
 
     def _exec_246(self):
-        self._mem[self._mem.r0] = self._mem.a
+        self.mem[self.mem.r0] = self.mem.a
 
     def _exec_247(self):
-        self._mem[self._mem.r1] = self._mem.a
+        self.mem[self.mem.r1] = self.mem.a
 
     def _exec_248(self):
-        self._mem.r0 = self._mem.a
+        self.mem.r0 = self.mem.a
 
     def _exec_249(self):
-        self._mem.r1 = self._mem.a
+        self.mem.r1 = self.mem.a
 
     def _exec_250(self):
-        self._mem.r2 = self._mem.a
+        self.mem.r2 = self.mem.a
 
     def _exec_251(self):
-        self._mem.r3 = self._mem.a
+        self.mem.r3 = self.mem.a
 
     def _exec_252(self):
-        self._mem.r4 = self._mem.a
+        self.mem.r4 = self.mem.a
 
     def _exec_253(self):
-        self._mem.r5 = self._mem.a
+        self.mem.r5 = self.mem.a
 
     def _exec_254(self):
-        self._mem.r6 = self._mem.a
+        self.mem.r6 = self.mem.a
 
     def _exec_255(self):
-        self._mem.r7 = self._mem.a
+        self.mem.r7 = self.mem.a
 
 
 class ProgramMemory:
