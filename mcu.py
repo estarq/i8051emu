@@ -15,6 +15,8 @@ class Microcontroller:
         self.prev_int1_states = PreviousPortStates()
         self.t0 = Timer0(self)
         self.t1 = Timer1(self)
+        self.prev_t0_states = PreviousPortStates()
+        self.prev_t1_states = PreviousPortStates()
 
     @property
     def pc(self):
@@ -33,6 +35,15 @@ class Microcontroller:
         self._rom = ProgramMemory()
 
     def next_cycle(self):
+        # Keep track of two previous distinct states of T0/T1
+        if self.prev_t0_states.last != self.mem.t0:
+            self.prev_t0_states.next_to_last = self.prev_t0_states.last
+            self.prev_t0_states.last = self.mem.t0
+
+        if self.prev_t1_states.last != self.mem.t1:
+            self.prev_t1_states.next_to_last = self.prev_t1_states.last
+            self.prev_t1_states.last = self.mem.t1
+
         # Keep track of two previous distinct states of INT0/INT1
         if self.prev_int0_states.last != self.mem.int0:
             self.prev_int0_states.next_to_last = self.prev_int0_states.last
@@ -120,6 +131,32 @@ class Microcontroller:
         self.pc += len(op)
         # Jump operations may override the PC
         exec(f'self._exec_{op.opcode}(*op.args)')
+
+        # Increment Timer 0
+        if self.mem.tr0 and (self.mem.int0 or not self.mem.t0_gate):
+            # Increment in response to a negative edge at T0
+            if self.mem.t0_ct:
+                if self.prev_t0_states.negative_edge:
+                    self.t0.increment()
+            # Increment every machine cycle
+            else:
+                for _ in range(op.cycles):
+                    self.t0.increment()
+
+        if self.mem.tr1 and self.mem.t0_mode == 3:
+            for _ in range(op.cycles):
+                self.t0.increment(mode3_th0_only=True)
+
+        # Increment Timer 1
+        if self.mem.tr1 and (self.mem.int1 or not self.mem.t1_gate):
+            # Increment in response to a negative edge at T1
+            if self.mem.t1_ct:
+                if self.prev_t1_states.negative_edge:
+                    self.t1.increment()
+            # Increment every machine cycle
+            else:
+                for _ in range(op.cycles):
+                    self.t1.increment()
 
     def _exec_0(self):
         return
@@ -1069,6 +1106,22 @@ class DataMemory:
         self[176].value = value
 
     @property
+    def t1(self):
+        return self.p3[2]
+
+    @t1.setter
+    def t1(self, value):
+        self.p3[2] = value
+
+    @property
+    def t0(self):
+        return self.p3[3]
+
+    @t0.setter
+    def t0(self, value):
+        self.p3[3] = value
+
+    @property
     def int1(self):
         return self.p3[4]
 
@@ -1688,6 +1741,7 @@ class Operation:
     def __init__(self, opcode: int, *args: int):
         self.opcode = opcode
         self.args = args
+        self.cycles = Operation._opcodes[opcode]['cycles']
 
     def __len__(self):
         return self._opcodes[self.opcode]['bytes']

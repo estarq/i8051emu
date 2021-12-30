@@ -15,6 +15,13 @@ class TestMicrocontroller:
         m.reset_rom()
         assert m._rom[100] == 0
 
+    def test_next_cycle__prev_t1_states(self):
+        m = mcu.Microcontroller()
+        m._rom[0] = 0  # NOP
+        m.mem.t1 = 0
+        m.next_cycle()
+        assert m.prev_t1_states.negative_edge
+
     def test_next_cycle__int0_level_activated(self):
         m = mcu.Microcontroller()
         m.mem.it0 = 0
@@ -94,6 +101,63 @@ class TestMicrocontroller:
 
         assert m.pc == 123
         assert m.interrupt_stack.top() == 0
+
+    def test_next_cycle__timers(self):
+        # Timer 0, Mode 0, T0
+        m1 = mcu.Microcontroller()
+        m1._rom[0] = 0  # NOP
+        m1._rom[1] = 0
+        m1._rom[2] = 0
+        m1.mem.tr0 = 1
+        m1.mem.int0 = 1
+        m1.mem.t0_ct = 1
+        m1.mem.t0 = 0
+        m1.next_cycle()
+        assert m1.mem.tl0 == 1
+        m1.mem.t0 = 1
+        m1.next_cycle()
+        m1.mem.t0 = 0
+        m1.next_cycle()
+        assert m1.mem.tl0 == 2
+
+        # Timer 1, Mode 1, cycles
+        m2 = mcu.Microcontroller()
+        m2._rom[0] = 0  # NOP (1 cycle)
+        m2._rom[1] = 2  # LJMP (2 cycles)
+        m2._rom[3] = 123
+        m2._rom[4] = 123
+        m2.mem.t1_m0 = 1
+        m2.mem.tr1 = 1
+        m2.mem.t1_gate = 0
+        m2.mem.t1_ct = 0
+        m2.next_cycle()
+        assert m2.mem.tl1 == 1
+        m2.next_cycle()
+        assert m2.mem.tl1 == 3
+
+        # Timer 0, Mode 3, TL0: T0 (TH0: cycles)
+        m3 = mcu.Microcontroller()
+        m3._rom[0] = 163  # INC DPTR (2 cycles)
+        m3._rom[1] = 237  # MOV A, R5 (1 cycle)
+        m3._rom[2] = 163  # INC DPTR
+        m3.mem.tr1 = 1
+        m3.mem.t0_m1 = 1
+        m3.mem.t0_m0 = 1
+        m3.mem.tr0 = 1
+        m3.mem.t0_gate = 0
+        m3.mem.t0_ct = 1
+        m3.mem.t0 = 0
+        m3.next_cycle()
+        assert m3.mem.tl0 == 1
+        assert m3.mem.th0 == 2
+        m3.mem.t0 = 1
+        m3.next_cycle()
+        assert m3.mem.tl0 == 1
+        assert m3.mem.th0 == 3
+        m3.mem.t0 = 0
+        m3.next_cycle()
+        assert m3.mem.tl0 == 2
+        assert m3.mem.th0 == 5
 
     def test_next_cycle__operation_execution(self):
         m = mcu.Microcontroller()
@@ -784,6 +848,12 @@ class TestDataMemory:
         mem.p3 = 4
         assert mem.p3[5] == 1
 
+    def test_t1_prop(self):
+        mem = mcu.DataMemory()
+        assert mem.t1
+        mem.t1 = 0
+        assert not mem.t1
+
     def test_int0_prop(self):
         mem = mcu.DataMemory()
         assert mem.int0 == 1
@@ -988,6 +1058,10 @@ class TestTimer0:
 
 
 class TestOperation:
+    def test_cycles(self):
+        op = mcu.Operation(16)
+        assert op.cycles == 2
+
     def test__len__(self):
         op = mcu.Operation(2)
         assert len(op) == 3, 'Wrong length - op has one two-byte long arg'
