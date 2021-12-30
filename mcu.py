@@ -13,6 +13,8 @@ class Microcontroller:
         self.interrupt_stack.push(0)
         self.prev_int0_states = PreviousPortStates()
         self.prev_int1_states = PreviousPortStates()
+        self.t0 = Timer0(self)
+        self.t1 = Timer1(self)
 
     @property
     def pc(self):
@@ -931,6 +933,10 @@ class DataMemory:
         self.tmod[3] = value
 
     @property
+    def t1_mode(self):
+        return 2 * self.t1_m1 + self.t1_m0
+
+    @property
     def t0_gate(self):
         return self.tmod[4]
 
@@ -961,6 +967,10 @@ class DataMemory:
     @t0_m0.setter
     def t0_m0(self, value):
         self.tmod[7] = value
+
+    @property
+    def t0_mode(self):
+        return 2 * self.t0_m1 + self.t0_m0
 
     @property
     def tl0(self):
@@ -1328,6 +1338,91 @@ class DoubleByte(Byte):
 
     def bits(self):
         return f'{self:016b}'
+
+
+class Timer0:
+    def __init__(self, mc: 'Microcontroller'):
+        self._mc = mc
+
+    def increment(self, mode3_th0_only=False):
+        if mode3_th0_only:
+            if self._mc.mem.th0 == 255:
+                self._mc.mem.tf1 = 1
+                self._mc.mem.th0 = 0
+            else:
+                self._mc.mem.th0 += 1
+            return
+
+        if self._mc.mem.t0_mode == 0:
+            if self._mc.mem.th0 == 255 and self._mc.mem.tl0 == 31:
+                self._mc.mem.tf0 = 1
+                self._mc.mem.th0 = 0
+                self._mc.mem.tl0 = 0
+            elif self._mc.mem.tl0 == 31:
+                self._mc.mem.th0 += 1
+                self._mc.mem.tl0 = 0
+            else:
+                self._mc.mem.tl0 += 1
+
+        elif self._mc.mem.t0_mode == 1:
+            if self._mc.mem.th0 == 255 and self._mc.mem.tl0 == 255:
+                self._mc.mem.tf0 = 1
+                self._mc.mem.th0 = 0
+                self._mc.mem.tl0 = 0
+            elif self._mc.mem.tl0 == 255:
+                self._mc.mem.th0 += 1
+                self._mc.mem.tl0 = 0
+            else:
+                self._mc.mem.tl0 += 1
+
+        elif self._mc.mem.t0_mode == 2:
+            if self._mc.mem.tl0 == 255:
+                self._mc.mem.tf0 = 1
+                self._mc.mem.tl0 = self._mc.mem.th0
+            else:
+                self._mc.mem.tl0 += 1
+
+        elif self._mc.mem.t0_mode == 3:
+            if self._mc.mem.tl0 == 255:
+                self._mc.mem.tf0 = 1
+                self._mc.mem.tl0 = 0
+            else:
+                self._mc.mem.tl0 += 1
+
+
+class Timer1:
+    def __init__(self, mc: 'Microcontroller'):
+        self._mc = mc
+
+    def increment(self):
+        if self._mc.mem.t1_mode == 0:
+            if self._mc.mem.th1 == 255 and self._mc.mem.tl1 == 31:
+                self._mc.mem.tf1 = 1
+                self._mc.mem.th1 = 0
+                self._mc.mem.tl1 = 0
+            elif self._mc.mem.tl1 == 31:
+                self._mc.mem.th1 += 1
+                self._mc.mem.tl1 = 0
+            else:
+                self._mc.mem.tl1 += 1
+
+        elif self._mc.mem.t1_mode == 1:
+            if self._mc.mem.th1 == 255 and self._mc.mem.tl1 == 255:
+                self._mc.mem.tf1 = 1
+                self._mc.mem.th1 = 0
+                self._mc.mem.tl1 = 0
+            elif self._mc.mem.tl1 == 255:
+                self._mc.mem.th1 += 1
+                self._mc.mem.tl1 = 0
+            else:
+                self._mc.mem.tl1 += 1
+
+        elif self._mc.mem.t1_mode == 2:
+            if self._mc.mem.tl1 == 255:
+                self._mc.mem.tf1 = 1
+                self._mc.mem.tl1 = self._mc.mem.th1
+            else:
+                self._mc.mem.tl1 += 1
 
 
 class Operation:

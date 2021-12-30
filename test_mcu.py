@@ -747,6 +747,12 @@ class TestDataMemory:
         assert mem.t1_m0 == 1
         assert mem[137][3] == 1
 
+    def test_t1_mode_prop(self):
+        mem = mcu.DataMemory()
+        mem.t1_m1 = 1
+        mem.t1_m0 = 1
+        assert mem.t1_mode == 3
+
     def test_tl0_prop(self):
         mem = mcu.DataMemory()
         mem.tl0 = 32
@@ -904,6 +910,81 @@ class TestDoubleByte:
     def test__setattr__(self):
         assert mcu.DoubleByte(65538) == 2, 'Overflow not supported'
         assert mcu.DoubleByte(-4) == 65532, 'Underflow not supported'
+
+
+class TestTimer0:
+    def test_increment__mode3_th0_only(self):
+        m = mcu.Microcontroller()
+        m.mem.th0 = 254
+        for _ in range(3):
+            m.t0.increment(mode3_th0_only=True)
+        assert m.mem.th0 == 1
+        assert m.mem.tf1 == 1
+
+    def test_increment__mode0(self):
+        m = mcu.Microcontroller()
+        m.mem.th0 = 254
+        m.mem.tl0 = 29
+        m.t0.increment()
+        assert m.mem.th0 == 254
+        assert m.mem.tl0 == 30
+        assert m.mem.tf0 == 0
+
+        m.mem.th0 = 255
+        m.t0.increment()
+        assert m.mem.th0 == 255
+        assert m.mem.tl0 == 31
+        assert m.mem.tf0 == 0
+
+        m.t0.increment()
+        assert m.mem.th0 == 0
+        assert m.mem.tl0 == 0
+        assert m.mem.tf0 == 1
+
+    def test_increment__mode1(self):
+        m = mcu.Microcontroller()
+        m.mem.th0 = 254
+        m.mem.tl0 = 253
+        m.mem.t0_m0 = 1
+        m.t0.increment()
+        assert m.mem.th0 == 254
+        assert m.mem.tl0 == 254
+        assert m.mem.tf0 == 0
+
+        m.mem.th0 = 255
+        m.t0.increment()
+        assert m.mem.th0 == 255
+        assert m.mem.tl0 == 255
+        assert m.mem.tf0 == 0
+
+        m.t0.increment()
+        assert m.mem.th0 == 0
+        assert m.mem.tl0 == 0
+        assert m.mem.tf0 == 1
+
+    def test_increment__mode2(self):
+        m = mcu.Microcontroller()
+        m.mem.th0 = 123
+        m.mem.tl0 = 254
+        m.mem.t0_m1 = 1
+        m.t0.increment()
+        assert m.mem.th0 == 123
+        assert m.mem.tl0 == 255
+        assert m.mem.tf0 == 0
+        m.t0.increment()
+        assert m.mem.th0 == 123
+        assert m.mem.tl0 == 123
+        assert m.mem.tf0 == 1
+
+    def test_increment__mode3(self):
+        m = mcu.Microcontroller()
+        m.mem.t0_m1 = 1
+        m.mem.t0_m0 = 1
+        m.mem.tl0 = 254
+        for _ in range(4):
+            m.t0.increment()
+        assert m.mem.tl0 == 2
+        assert m.mem.tf0 == 1
 
 
 class TestOperation:
