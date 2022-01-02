@@ -781,6 +781,14 @@ class TestDataMemory:
         mem[5][1] = 1
         assert mem[5] == 64, 'Bit access not supported'
 
+    def test_p0_prop(self):
+        mem = mcu.DataMemory()
+        assert mem.p0 == 0b11111111
+        mem.p0 = 30
+        assert mem[128] == 30
+        mem.p0 = 1
+        assert mem.p0[7]
+
     def test_dptr_prop(self):
         mem = mcu.DataMemory()
         mem.dptr = 65530
@@ -828,6 +836,22 @@ class TestDataMemory:
         mem.th1 = 16
         assert mem.th1 == 16
         assert mem[141][3] == 1
+
+    def test_p1_prop(self):
+        mem = mcu.DataMemory()
+        assert mem.p1 == 0b11111111
+        mem.p1 = 50
+        assert mem[144] == 50
+        mem.p1 = 8
+        assert mem.p1[4]
+
+    def test_p2_prop(self):
+        mem = mcu.DataMemory()
+        assert mem.p2 == 0b11111111
+        mem.p2 = 10
+        assert mem[160] == 10
+        mem.p2 = 2
+        assert mem.p2[6]
 
     def test_ie_prop(self):
         mem = mcu.DataMemory()

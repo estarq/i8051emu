@@ -831,6 +831,9 @@ class DataMemory:
         self._data = [Byte() for _ in range(256)]
         self._dptr = DoubleByte()
         self.sp = 7
+        self.p0 = 0b11111111
+        self.p1 = 0b11111111
+        self.p2 = 0b11111111
         self.p3 = 0b11111111
 
     def __getitem__(self, addr: Union[int, 'Byte']):
@@ -838,6 +841,14 @@ class DataMemory:
 
     def __setitem__(self, addr, value: Union[int, 'Byte']):
         self[addr].value = value
+
+    @property
+    def p0(self):
+        return self[128]
+
+    @p0.setter
+    def p0(self, value):
+        self[128].value = value
 
     @property
     def sp(self):
@@ -1040,6 +1051,22 @@ class DataMemory:
     @th1.setter
     def th1(self, value):
         self[141].value = value
+
+    @property
+    def p1(self):
+        return self[144]
+
+    @p1.setter
+    def p1(self, value):
+        self[144].value = value
+
+    @property
+    def p2(self):
+        return self[160]
+
+    @p2.setter
+    def p2(self, value):
+        self[160].value = value
 
     @property
     def ie(self):
