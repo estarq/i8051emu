@@ -34,6 +34,16 @@ class Microcontroller:
     def reset_rom(self):
         self._rom = ProgramMemory()
 
+    def reset_ram(self):
+        self.mem = DataMemory()
+        self._pc = DoubleByte()
+        self.interrupt_stack = Stack()
+        self.interrupt_stack.push(0)
+        self.prev_int0_states = PreviousPortStates()
+        self.prev_int1_states = PreviousPortStates()
+        self.prev_t0_states = PreviousPortStates()
+        self.prev_t1_states = PreviousPortStates()
+
     def next_cycle(self):
         # Keep track of two previous distinct states of T0/T1
         if self.prev_t0_states.last != self.mem.t0:
