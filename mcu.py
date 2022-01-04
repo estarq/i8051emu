@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Union
+from typing import Tuple, Union
 
 import disassembler
 
@@ -1405,6 +1405,9 @@ class Byte:
 
     def __rsub__(self, other: int):
         return self.__class__(other - int(self))
+
+    def __mul__(self, other: 'Byte') -> Tuple[int, int]:
+        return divmod(int(self) * int(other), 256)
 
     def __divmod__(self, other: Union[int, 'Byte']):
         return divmod(int(self), int(other))

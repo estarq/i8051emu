@@ -979,6 +979,9 @@ class TestByte:
     def test__rsub__(self):
         assert 20 - mcu.Byte(5) == 15
 
+    def test__mul__(self):
+        assert mcu.Byte(25) * mcu.Byte(40) == (3, 232)
+
     def test__divmod__(self):
         assert divmod(mcu.Byte(9), mcu.Byte(2)) == (4, 1)
 
