@@ -603,6 +603,9 @@ class Microcontroller:
     def _exec_163(self):
         self.mem.dptr += 1
 
+    def _exec_164(self):
+        self.mem.b, self.mem.a = self.mem.a * self.mem.b
+
     def _exec_165(self):
         return
 
