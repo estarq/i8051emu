@@ -32,6 +32,7 @@ class Microcontroller:
                 self._rom[addr] = byte
 
     def reset_rom(self):
+        self.reset_ram()
         self._rom = ProgramMemory()
 
     def reset_ram(self):

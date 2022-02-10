@@ -12,8 +12,9 @@ class TestMicrocontroller:
     def test_reset_rom(self):
         m = mcu.Microcontroller()
         m._rom[100] = 123
+        m.mem.a = 20
         m.reset_rom()
-        assert m._rom[100] == 0
+        assert m._rom[100] == 0 and m.mem.a == 0
 
     def test_next_cycle__prev_t1_states(self):
         m = mcu.Microcontroller()
