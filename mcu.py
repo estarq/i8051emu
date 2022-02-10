@@ -828,7 +828,7 @@ class Microcontroller:
 
 class ProgramMemory:
     def __init__(self):
-        self._data = [0] * 64000  # 64 KB
+        self._data = [0] * 65536  # 64 KiB
 
     def __getitem__(self, addr: Union[int, 'DoubleByte', slice]):
         if isinstance(addr, slice):
