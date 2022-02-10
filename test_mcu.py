@@ -21,7 +21,7 @@ class TestMicrocontroller:
         m._rom[0] = 0  # NOP
         m.mem.t1 = 0
         m.next_cycle()
-        assert m.prev_t1_states.negative_edge
+        assert m.prev_t1_states.negative_edge == 1
 
     def test_next_cycle__int0_level_activated(self):
         m = mcu.Microcontroller()
@@ -796,7 +796,7 @@ class TestDataMemory:
         mem.p0 = 30
         assert mem[128] == 30
         mem.p0 = 1
-        assert mem.p0[7]
+        assert mem.p0[7] == 1
 
     def test_dptr_prop(self):
         mem = mcu.DataMemory()
@@ -852,7 +852,7 @@ class TestDataMemory:
         mem.p1 = 50
         assert mem[144] == 50
         mem.p1 = 8
-        assert mem.p1[4]
+        assert mem.p1[4] == 1
 
     def test_p2_prop(self):
         mem = mcu.DataMemory()
@@ -860,7 +860,7 @@ class TestDataMemory:
         mem.p2 = 10
         assert mem[160] == 10
         mem.p2 = 2
-        assert mem.p2[6]
+        assert mem.p2[6] == 1
 
     def test_ie_prop(self):
         mem = mcu.DataMemory()
@@ -883,9 +883,9 @@ class TestDataMemory:
 
     def test_t1_prop(self):
         mem = mcu.DataMemory()
-        assert mem.t1
+        assert mem.t1 == 1
         mem.t1 = 0
-        assert not mem.t1
+        assert mem.t1 == 0
 
     def test_int0_prop(self):
         mem = mcu.DataMemory()
@@ -927,10 +927,10 @@ class TestDataMemory:
         assert mem.rs1 == 1
         assert mem[208][3] == 1
 
-    def test_rs2_prop(self):
+    def test_rs0_prop(self):
         mem = mcu.DataMemory()
-        mem.rs2 = 1
-        assert mem.rs2 == 1
+        mem.rs0 = 1
+        assert mem.rs0 == 1
         assert mem[208][4] == 1
 
     def test_ov_prop(self):
@@ -948,7 +948,7 @@ class TestDataMemory:
     def test_selected_register_bank_prop(self):
         mem = mcu.DataMemory()
         mem.selected_register_bank = 3
-        assert mem.selected_register_bank == 3 and mem.rs1 == 1 and mem.rs2 == 1
+        assert mem.selected_register_bank == 3 and mem.rs1 == 1 and mem.rs0 == 1
 
     def test_r1_prop(self):
         mem = mcu.DataMemory()

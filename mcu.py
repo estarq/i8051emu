@@ -106,8 +106,6 @@ class Microcontroller:
                 self.interrupt_stack.push(7)
                 self._exec_18(0, 27)
 
-            # TODO: SP (RI/TI) (high priority)
-
             # INT0 (low priority)
             elif int0_awaiting and self.interrupt_stack.top() < 5:
                 if self.mem.it0:
@@ -133,8 +131,6 @@ class Microcontroller:
                 self.mem.tf1 = 0
                 self.interrupt_stack.push(2)
                 self._exec_18(0, 27)
-
-            # TODO: SP (RI/TI) (low priority)
 
         # Execute an operation
         op = Operation(self._rom[self.pc])
@@ -215,9 +211,9 @@ class Microcontroller:
 
     def _exec_18(self, high_order_byte, low_order_byte):
         self.mem.sp += 1
-        self.mem[self.mem.sp] = int(self.pc.bits()[8:], 2)
+        self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
         self.mem.sp += 1
-        self.mem[self.mem.sp] = int(self.pc.bits()[:8], 2)
+        self.mem[self.mem.sp] = int(self.pc.bits[:8], 2)
         # Turn two one-byte arguments (as stored in a .hex file) into one two-byte argument
         # e.g. 0xAB = 171, 0xCD = 205; 171 * 16 ** 2 + 205 = 43981 = 0xABCD
         self.pc = high_order_byte * 16 ** 2 + low_order_byte
@@ -1271,11 +1267,11 @@ class DataMemory:
         self.psw[3] = value
 
     @property
-    def rs2(self):
+    def rs0(self):
         return self.psw[4]
 
-    @rs2.setter
-    def rs2(self, value):
+    @rs0.setter
+    def rs0(self, value):
         self.psw[4] = value
 
     @property
@@ -1296,11 +1292,11 @@ class DataMemory:
 
     @property
     def selected_register_bank(self):
-        return 2 * self.rs1 + self.rs2
+        return 2 * self.rs1 + self.rs0
 
     @selected_register_bank.setter
     def selected_register_bank(self, value: int):
-        self.rs1, self.rs2 = [int(bit) for bit in f'{value:02b}']
+        self.rs1, self.rs0 = [int(bit) for bit in f'{value:02b}']
 
     @property
     def r0(self):
@@ -1373,15 +1369,15 @@ class Byte:
         self.value = value
 
     def __getitem__(self, bit_number: int):
-        return int(self.bits()[bit_number])
+        return int(self.bits[bit_number])
 
     def __setitem__(self, bit_number: int, bit_value: int):
-        bits = self.bits()
+        bits = self.bits
         bits = bits[:bit_number] + str(bit_value) + bits[bit_number + 1:]
         self.value = int(bits, 2)
 
     def __setattr__(self, name, value: Union[int, 'Byte']):
-        super(Byte, self).__setattr__(name, int(value) % 256)
+        super().__setattr__(name, int(value) % 256)
 
     def __repr__(self):
         return f'{self.__class__.__name__}({int(self)})'
@@ -1394,6 +1390,9 @@ class Byte:
 
     def __eq__(self, other: Union[int, 'Byte']):
         return int(self) == int(other)
+
+    def __ne__(self, other: Union[int, 'Byte']):
+        return int(self) != int(other)
 
     def __lt__(self, other: Union[int, 'Byte']):
         return int(self) < int(other)
@@ -1413,7 +1412,7 @@ class Byte:
     def __mul__(self, other: 'Byte') -> Tuple[int, int]:
         return divmod(int(self) * int(other), 256)
 
-    def __divmod__(self, other: Union[int, 'Byte']):
+    def __divmod__(self, other: Union[int, 'Byte']) -> Tuple[int, int]:
         return divmod(int(self), int(other))
 
     def __and__(self, other: Union[int, 'Byte']):
@@ -1425,14 +1424,19 @@ class Byte:
     def __xor__(self, other: Union[int, 'Byte']):
         return int(self) ^ int(other)
 
+    @property
     def bits(self):
         return f'{self:08b}'
 
 
 class DoubleByte(Byte):
+    def __init__(self, value=0):
+        super().__init__(value)
+
     def __setattr__(self, name, value: Union[int, 'DoubleByte']):
         super(Byte, self).__setattr__(name, int(value) % 65536)
 
+    @property
     def bits(self):
         return f'{self:016b}'
 
@@ -1788,7 +1792,7 @@ class Operation:
         self.cycles = Operation._opcodes[opcode]['cycles']
 
     def __len__(self):
-        return self._opcodes[self.opcode]['bytes']
+        return Operation._opcodes[self.opcode]['bytes']
 
     def __str__(self):
         # Turn two one-byte arguments (as stored in a .hex file) into one two-byte argument
