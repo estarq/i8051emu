@@ -678,6 +678,12 @@ class Microcontroller:
             self.pc += offset
         self.mem.c = 1 if self.mem.r7 < immed else 0
 
+    def _exec_194(self, bit):
+        if bit < 128:
+            self.mem[32 + bit // 8][7 - bit % 8] = 0
+        else:
+            self.mem[8 * (bit // 8)][7 - bit % 8] = 0
+
     def _exec_195(self):
         self.mem.c = 0
 
