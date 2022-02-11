@@ -540,6 +540,12 @@ class Microcontroller:
     def _exec_144(self, immed):
         self.mem.dptr = immed
 
+    def _exec_146(self, bit):
+        if bit < 128:
+            self.mem[32 + bit // 8][7 - bit % 8] = self.mem.c
+        else:
+            self.mem[8 * (bit // 8)][7 - bit % 8] = self.mem.c
+
     def _exec_148(self, immed):
         self.mem.a -= self.mem.c + immed
 
