@@ -16,13 +16,6 @@ class TestMicrocontroller:
         m.reset_rom()
         assert m._rom[100] == 0 and m.mem.a == 0
 
-    def test_next_cycle__prev_t1_states(self):
-        m = mcu.Microcontroller()
-        m._rom[0] = 0  # NOP
-        m.mem.t1 = 0
-        m.next_cycle()
-        assert m.prev_t1_states.negative_edge == 1
-
     def test_next_cycle__int0_level_activated(self):
         m = mcu.Microcontroller()
         m.mem.it0 = 0
@@ -1023,7 +1016,7 @@ class TestTimer0:
         m = mcu.Microcontroller()
         m.mem.th0 = 254
         for _ in range(3):
-            m.t0.increment(mode3_th0_only=True)
+            m.timer0.increment(mode3_th0_only=True)
         assert m.mem.th0 == 1
         assert m.mem.tf1 == 1
 
@@ -1031,18 +1024,18 @@ class TestTimer0:
         m = mcu.Microcontroller()
         m.mem.th0 = 254
         m.mem.tl0 = 29
-        m.t0.increment()
+        m.timer0.increment()
         assert m.mem.th0 == 254
         assert m.mem.tl0 == 30
         assert m.mem.tf0 == 0
 
         m.mem.th0 = 255
-        m.t0.increment()
+        m.timer0.increment()
         assert m.mem.th0 == 255
         assert m.mem.tl0 == 31
         assert m.mem.tf0 == 0
 
-        m.t0.increment()
+        m.timer0.increment()
         assert m.mem.th0 == 0
         assert m.mem.tl0 == 0
         assert m.mem.tf0 == 1
@@ -1052,18 +1045,18 @@ class TestTimer0:
         m.mem.th0 = 254
         m.mem.tl0 = 253
         m.mem.t0_m0 = 1
-        m.t0.increment()
+        m.timer0.increment()
         assert m.mem.th0 == 254
         assert m.mem.tl0 == 254
         assert m.mem.tf0 == 0
 
         m.mem.th0 = 255
-        m.t0.increment()
+        m.timer0.increment()
         assert m.mem.th0 == 255
         assert m.mem.tl0 == 255
         assert m.mem.tf0 == 0
 
-        m.t0.increment()
+        m.timer0.increment()
         assert m.mem.th0 == 0
         assert m.mem.tl0 == 0
         assert m.mem.tf0 == 1
@@ -1073,11 +1066,11 @@ class TestTimer0:
         m.mem.th0 = 123
         m.mem.tl0 = 254
         m.mem.t0_m1 = 1
-        m.t0.increment()
+        m.timer0.increment()
         assert m.mem.th0 == 123
         assert m.mem.tl0 == 255
         assert m.mem.tf0 == 0
-        m.t0.increment()
+        m.timer0.increment()
         assert m.mem.th0 == 123
         assert m.mem.tl0 == 123
         assert m.mem.tf0 == 1
@@ -1088,7 +1081,7 @@ class TestTimer0:
         m.mem.t0_m0 = 1
         m.mem.tl0 = 254
         for _ in range(4):
-            m.t0.increment()
+            m.timer0.increment()
         assert m.mem.tl0 == 2
         assert m.mem.tf0 == 1
 

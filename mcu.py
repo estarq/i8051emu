@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import Tuple, Union
 
 import disassembler
@@ -11,12 +10,8 @@ class Microcontroller:
         self._pc = DoubleByte()
         self.interrupt_stack = Stack()
         self.interrupt_stack.push(0)
-        self.prev_int0_states = PreviousPortStates()
-        self.prev_int1_states = PreviousPortStates()
-        self.t0 = Timer0(self)
-        self.t1 = Timer1(self)
-        self.prev_t0_states = PreviousPortStates()
-        self.prev_t1_states = PreviousPortStates()
+        self.timer0 = Timer0(self)
+        self.timer1 = Timer1(self)
 
     @property
     def pc(self):
@@ -40,37 +35,15 @@ class Microcontroller:
         self._pc = DoubleByte()
         self.interrupt_stack = Stack()
         self.interrupt_stack.push(0)
-        self.prev_int0_states = PreviousPortStates()
-        self.prev_int1_states = PreviousPortStates()
-        self.prev_t0_states = PreviousPortStates()
-        self.prev_t1_states = PreviousPortStates()
 
     def next_cycle(self):
-        # Keep track of two previous distinct states of T0/T1
-        if self.prev_t0_states.last != self.mem.t0:
-            self.prev_t0_states.next_to_last = self.prev_t0_states.last
-            self.prev_t0_states.last = self.mem.t0
-
-        if self.prev_t1_states.last != self.mem.t1:
-            self.prev_t1_states.next_to_last = self.prev_t1_states.last
-            self.prev_t1_states.last = self.mem.t1
-
-        # Keep track of two previous distinct states of INT0/INT1
-        if self.prev_int0_states.last != self.mem.int0:
-            self.prev_int0_states.next_to_last = self.prev_int0_states.last
-            self.prev_int0_states.last = self.mem.int0
-
-        if self.prev_int1_states.last != self.mem.int1:
-            self.prev_int1_states.next_to_last = self.prev_int1_states.last
-            self.prev_int1_states.last = self.mem.int1
-
         # Check for an external interrupt request from INT0/INT1
         # that can be either negative edge-triggered or negative level-activated
-        if (self.mem.it0 and self.prev_int0_states.negative_edge
+        if (self.mem.it0 and self.mem.int0_previous_state and not self.mem.int0
                 or not self.mem.it0 and not self.mem.int0):
             self.mem.ie0 = 1
 
-        if (self.mem.it1 and self.prev_int1_states.negative_edge
+        if (self.mem.it1 and self.mem.int1_previous_state and not self.mem.int1
                 or not self.mem.it1 and not self.mem.int1):
             self.mem.ie1 = 1
 
@@ -143,27 +116,33 @@ class Microcontroller:
         if self.mem.tr0 and (self.mem.int0 or not self.mem.t0_gate):
             # Increment in response to a negative edge at T0
             if self.mem.t0_ct:
-                if self.prev_t0_states.negative_edge:
-                    self.t0.increment()
+                if self.mem.t0_previous_state and not self.mem.t0:
+                    self.timer0.increment()
             # Increment every machine cycle
             else:
                 for _ in range(op.cycles):
-                    self.t0.increment()
+                    self.timer0.increment()
 
         if self.mem.tr1 and self.mem.t0_mode == 3:
             for _ in range(op.cycles):
-                self.t0.increment(mode3_th0_only=True)
+                self.timer0.increment(mode3_th0_only=True)
 
         # Increment Timer 1
         if self.mem.tr1 and (self.mem.int1 or not self.mem.t1_gate):
             # Increment in response to a negative edge at T1
             if self.mem.t1_ct:
-                if self.prev_t1_states.negative_edge:
-                    self.t1.increment()
+                if self.mem.t1_previous_state and not self.mem.t1:
+                    self.timer1.increment()
             # Increment every machine cycle
             else:
                 for _ in range(op.cycles):
-                    self.t1.increment()
+                    self.timer1.increment()
+
+        # Save the current state of T0, T1, INT0, INT1 for use in the next cycle
+        self.mem.t0_previous_state = self.mem.t0
+        self.mem.t1_previous_state = self.mem.t1
+        self.mem.int0_previous_state = self.mem.int0
+        self.mem.int1_previous_state = self.mem.int1
 
     def _exec_0(self):
         return
@@ -845,6 +824,10 @@ class DataMemory:
         self.p1 = 0b11111111
         self.p2 = 0b11111111
         self.p3 = 0b11111111
+        self.t0_previous_state = 1
+        self.t1_previous_state = 1
+        self.int0_previous_state = 1
+        self.int1_previous_state = 1
 
     def __getitem__(self, addr: Union[int, 'Byte']):
         return self._data[int(addr)]
@@ -1813,13 +1796,3 @@ class Stack:
 
     def top(self):
         return self._data[-1]
-
-
-@dataclass
-class PreviousPortStates:
-    next_to_last: int = 1
-    last: int = 1
-
-    @property
-    def negative_edge(self):
-        return self.next_to_last and not self.last
