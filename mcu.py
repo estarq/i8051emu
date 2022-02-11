@@ -687,6 +687,12 @@ class Microcontroller:
     def _exec_195(self):
         self.mem.c = 0
 
+    def _exec_210(self, bit):
+        if bit < 128:
+            self.mem[32 + bit // 8][7 - bit % 8] = 1
+        else:
+            self.mem[8 * (bit // 8)][7 - bit % 8] = 1
+
     def _exec_211(self):
         self.mem.c = 1
 
