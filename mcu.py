@@ -287,6 +287,11 @@ class Microcontroller:
     def _exec_47(self):
         self.mem.a += self.mem.r7
 
+    def _exec_48(self, bit, offset):
+        byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
+        if not self.mem[byte_no][7 - bit % 8]:
+            self.pc += offset
+
     def _exec_50(self):
         high_order_byte = self.mem[self.mem.sp]
         self.mem.sp -= 1
