@@ -1150,6 +1150,20 @@ class TestByte:
     def test__xor__(self):
         assert mcu.Byte(5) ^ mcu.Byte(3) == 6
 
+    def test_rotate_left(self):
+        b = mcu.Byte(64)
+        b.rotate_left()
+        assert b == 128
+        b.rotate_left()
+        assert b == 1
+
+    def test_rotate_right(self):
+        b = mcu.Byte(2)
+        b.rotate_right()
+        assert b == 1
+        b.rotate_right()
+        assert b == 128
+
 
 class TestDoubleByte:
     def test__getitem__(self):

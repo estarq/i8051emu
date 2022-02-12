@@ -1463,6 +1463,12 @@ class Byte:
     def bits(self):
         return f'{self:08b}'
 
+    def rotate_left(self):
+        self.value = int(self.bits[1:] + self.bits[0], 2)
+
+    def rotate_right(self):
+        self.value = int(self.bits[-1] + self.bits[:-1], 2)
+
 
 class DoubleByte(Byte):
     def __init__(self, value=0):
