@@ -745,6 +745,10 @@ class Microcontroller:
     def _exec_195(self):
         self.mem.c = 0
 
+    def _exec_196(self):
+        for _ in range(4):
+            self.mem.a.rotate_right()
+
     def _exec_210(self, bit):
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
         self.mem[byte_no][7 - bit % 8] = 1
