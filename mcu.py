@@ -254,6 +254,9 @@ class Microcontroller:
         self.mem.sp -= 1
         self.pc = int(f'{high_order_byte:b}{low_order_byte:08b}', 2)
 
+    def _exec_35(self):
+        self.mem.a.rotate_left()
+
     def _exec_36(self, immed):
         self.mem.a += immed
 
