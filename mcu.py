@@ -1258,8 +1258,8 @@ class DataMemory:
         return self.psw[0]
 
     @c.setter
-    def c(self, value: Union[int, bool]):
-        self.psw[0] = int(value)
+    def c(self, value):
+        self.psw[0] = value
 
     @property
     def ac(self):
@@ -1382,9 +1382,9 @@ class Byte:
     def __getitem__(self, bit_number: int):
         return int(self.bits[bit_number])
 
-    def __setitem__(self, bit_number: int, bit_value: int):
+    def __setitem__(self, bit_number: int, bit_value: Union[int, bool]):
         bits = self.bits
-        bits = bits[:bit_number] + str(bit_value) + bits[bit_number + 1:]
+        bits = bits[:bit_number] + str(int(bit_value)) + bits[bit_number + 1:]
         self.value = int(bits, 2)
 
     def __setattr__(self, name, value: Union[int, 'Byte']):
