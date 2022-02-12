@@ -152,6 +152,9 @@ class Microcontroller:
         # e.g. 0xAB = 171, 0xCD = 205; 171 * 16 ** 2 + 205 = 43981 = 0xABCD
         self.pc = high_order_byte * 16 ** 2 + low_order_byte
 
+    def _exec_3(self):
+        self.mem.a.rotate_right()
+
     def _exec_4(self):
         self.mem.a += 1
 
