@@ -203,6 +203,12 @@ class TestMicrocontroller:
         m.mem[30] += 300
         assert m.mem[30] == 44, 'Overflow not supported'
 
+    def test_exec_1(self):
+        m = mcu.Microcontroller()
+        m.pc = 291
+        m._exec_1(837)
+        assert m.pc == 837
+
     def test_exec_2(self):
         m = mcu.Microcontroller()
         m._exec_2(171, 205)
