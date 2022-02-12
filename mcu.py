@@ -478,6 +478,10 @@ class Microcontroller:
         if self.mem.a != 0:
             self.pc += offset
 
+    def _exec_114(self, bit):
+        byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
+        self.mem.c |= self.mem[byte_no][7 - bit % 8]
+
     def _exec_115(self):
         self.pc = self.mem.dptr + self.mem.a
 
