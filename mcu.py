@@ -517,6 +517,10 @@ class Microcontroller:
     def _exec_127(self, immed):
         self.mem.r7 = immed
 
+    def _exec_130(self, bit):
+        byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
+        self.mem.c &= self.mem[byte_no][7 - bit % 8]
+
     def _exec_132(self):
         self.mem.a, self.mem.b = divmod(self.mem.a, self.mem.b)
 
