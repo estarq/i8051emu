@@ -363,6 +363,13 @@ class TestMicrocontroller:
         assert m.pc == 123
         assert m.interrupt_stack.top() == 0
 
+    def test_exec_51(self):
+        m = mcu.Microcontroller()
+        m.mem.a = 65
+        m.mem.c = 1
+        m._exec_51()
+        assert m.mem.a == 131 and m.mem.c == 0
+
     def test_exec_52(self):
         m = mcu.Microcontroller()
         m.mem.a = 10

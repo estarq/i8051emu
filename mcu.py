@@ -311,6 +311,11 @@ class Microcontroller:
         self.pc = int(f'{high_order_byte:b}{low_order_byte:08b}', 2)
         self.interrupt_stack.pop()
 
+    def _exec_51(self):
+        most_significant_bit = self.mem.a.bits[0]
+        self.mem.a = int(self.mem.a.bits[1:] + str(self.mem.c), 2)
+        self.mem.c = most_significant_bit
+
     def _exec_52(self, immed):
         self.mem.a += self.mem.c + immed
 
