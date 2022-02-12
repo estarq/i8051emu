@@ -188,6 +188,12 @@ class Microcontroller:
     def _exec_15(self):
         self.mem.r7 += 1
 
+    def _exec_16(self, bit, offset):
+        byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
+        if self.mem[byte_no][7 - bit % 8]:
+            self.mem[byte_no][7 - bit % 8] = 0
+            self.pc += offset
+
     def _exec_18(self, high_order_byte, low_order_byte):
         self.mem.sp += 1
         self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
