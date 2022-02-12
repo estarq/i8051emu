@@ -635,6 +635,10 @@ class Microcontroller:
     def _exec_175(self, direct):
         self.mem.r7 = self.mem[direct]
 
+    def _exec_178(self, bit):
+        byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
+        self.mem[byte_no][7 - bit % 8] = not self.mem[byte_no][7 - bit % 8]
+
     def _exec_179(self):
         self.mem.c = not self.mem.c
 

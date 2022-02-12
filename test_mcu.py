@@ -661,6 +661,19 @@ class TestMicrocontroller:
         m._exec_174(15)
         assert m.mem.r6 == 200
 
+    def test_exec_178(self):
+        m = mcu.Microcontroller()
+        m.mem[33][5] = 0
+        m._exec_178(10)
+        assert m.mem[33][5] == 1
+        m._exec_178(10)
+        assert m.mem[33][5] == 0
+        m.mem[184][1] = 0
+        m._exec_178(190)
+        assert m.mem[184][1] == 1
+        m._exec_178(190)
+        assert m.mem[184][1] == 0
+
     def test_exec_179(self):
         m = mcu.Microcontroller()
         m.mem.c = 0
