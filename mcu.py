@@ -200,6 +200,13 @@ class Microcontroller:
             self.mem[byte_no][7 - bit % 8] = 0
             self.pc += offset
 
+    def _exec_17(self, addr11):
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[:8], 2)
+        self.pc = int(f'{self.pc.bits[:5]}000{addr11:08b}', 2)
+
     def _exec_18(self, high_order_byte, low_order_byte):
         self.mem.sp += 1
         self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
@@ -309,6 +316,13 @@ class Microcontroller:
         if not self.mem[byte_no][7 - bit % 8]:
             self.pc += offset
 
+    def _exec_49(self, addr11):
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[:8], 2)
+        self.pc = int(f'{self.pc.bits[:5]}001{addr11:08b}', 2)
+
     def _exec_50(self):
         high_order_byte = self.mem[self.mem.sp]
         self.mem.sp -= 1
@@ -411,6 +425,13 @@ class Microcontroller:
         if not self.mem.c:
             self.pc += offset
 
+    def _exec_81(self, addr11):
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[:8], 2)
+        self.pc = int(f'{self.pc.bits[:5]}010{addr11:08b}', 2)
+
     def _exec_82(self, direct):
         self.mem[direct] &= self.mem.a
 
@@ -506,6 +527,13 @@ class Microcontroller:
         if self.mem.a != 0:
             self.pc += offset
 
+    def _exec_113(self, addr11):
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[:8], 2)
+        self.pc = int(f'{self.pc.bits[:5]}011{addr11:08b}', 2)
+
     def _exec_114(self, bit):
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
         self.mem.c |= self.mem[byte_no][7 - bit % 8]
@@ -594,6 +622,13 @@ class Microcontroller:
 
     def _exec_144(self, immed):
         self.mem.dptr = immed
+
+    def _exec_145(self, addr11):
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[:8], 2)
+        self.pc = int(f'{self.pc.bits[:5]}100{addr11:08b}', 2)
 
     def _exec_146(self, bit):
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
@@ -689,6 +724,13 @@ class Microcontroller:
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
         self.mem.c &= not self.mem[byte_no][7 - bit % 8]
 
+    def _exec_177(self, addr11):
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[:8], 2)
+        self.pc = int(f'{self.pc.bits[:5]}101{addr11:08b}', 2)
+
     def _exec_178(self, bit):
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
         self.mem[byte_no][7 - bit % 8] = not self.mem[byte_no][7 - bit % 8]
@@ -769,6 +811,13 @@ class Microcontroller:
     def _exec_196(self):
         for _ in range(4):
             self.mem.a.rotate_right()
+
+    def _exec_209(self, addr11):
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[:8], 2)
+        self.pc = int(f'{self.pc.bits[:5]}110{addr11:08b}', 2)
 
     def _exec_210(self, bit):
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
@@ -860,6 +909,13 @@ class Microcontroller:
 
     def _exec_239(self):
         self.mem.a = self.mem.r7
+
+    def _exec_241(self, addr11):
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = int(self.pc.bits[:8], 2)
+        self.pc = int(f'{self.pc.bits[:5]}111{addr11:08b}', 2)
 
     def _exec_244(self):
         self.mem.a ^= 255
