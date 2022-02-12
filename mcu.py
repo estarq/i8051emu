@@ -206,6 +206,11 @@ class Microcontroller:
         # e.g. 0xAB = 171, 0xCD = 205; 171 * 16 ** 2 + 205 = 43981 = 0xABCD
         self.pc = high_order_byte * 16 ** 2 + low_order_byte
 
+    def _exec_19(self):
+        least_significant_bit = self.mem.a.bits[-1]
+        self.mem.a = int(str(self.mem.c) + self.mem.a.bits[:-1], 2)
+        self.mem.c = least_significant_bit
+
     def _exec_20(self):
         self.mem.a -= 1
 
