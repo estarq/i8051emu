@@ -800,7 +800,7 @@ class Microcontroller:
 
     def _exec_192(self, direct):
         self.mem.sp += 1
-        self.mem[self.mem.sp] = direct
+        self.mem[self.mem.sp] = self.mem[direct]
 
     def _exec_193(self, addr11):
         self.pc = int(f'{self.pc.bits[:5]}110{addr11:08b}', 2)

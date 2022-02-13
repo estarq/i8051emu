@@ -855,8 +855,9 @@ class TestMicrocontroller:
     def test_exec_192(self):
         m = mcu.Microcontroller()
         m.mem.sp = 10
+        m.mem[120] = 30
         m._exec_192(120)
-        assert m.mem.sp == 11 and m.mem[11] == 120
+        assert m.mem.sp == 11 and m.mem[11] == 30
 
     def test_exec_194(self):
         m = mcu.Microcontroller()
