@@ -816,6 +816,10 @@ class Microcontroller:
         for _ in range(4):
             self.mem.a.rotate_right()
 
+    def _exec_208(self, direct):
+        self.mem[direct] = self.mem[self.mem.sp]
+        self.mem.sp -= 1
+
     def _exec_209(self, addr11):
         self.mem.sp += 1
         self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
