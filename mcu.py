@@ -816,6 +816,12 @@ class Microcontroller:
         for _ in range(4):
             self.mem.a.rotate_right()
 
+    def _exec_198(self):
+        self.mem.a, self.mem[self.mem.r0] = int(self.mem[self.mem.r0]), int(self.mem.a)
+
+    def _exec_199(self):
+        self.mem.a, self.mem[self.mem.r1] = int(self.mem[self.mem.r1]), int(self.mem.a)
+
     def _exec_200(self):
         self.mem.a, self.mem.r0 = int(self.mem.r0), int(self.mem.a)
 
@@ -867,7 +873,7 @@ class Microcontroller:
         self.mem.a, self.mem[self.mem.r0] = (
             int(self.mem.a.bits[:4] + self.mem[self.mem.r0].bits[4:], 2),
             int(self.mem[self.mem.r0].bits[:4] + self.mem.a.bits[4:], 2))
-    
+
     def _exec_215(self):
         self.mem.a, self.mem[self.mem.r1] = (
             int(self.mem.a.bits[:4] + self.mem[self.mem.r1].bits[4:], 2),
