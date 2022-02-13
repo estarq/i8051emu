@@ -798,6 +798,10 @@ class Microcontroller:
             self.pc += offset
         self.mem.c = 1 if self.mem.r7 < immed else 0
 
+    def _exec_192(self, direct):
+        self.mem.sp += 1
+        self.mem[self.mem.sp] = direct
+
     def _exec_193(self, addr11):
         self.pc = int(f'{self.pc.bits[:5]}110{addr11:08b}', 2)
 
