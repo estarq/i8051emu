@@ -839,6 +839,16 @@ class Microcontroller:
         if self.mem[direct] != 0:
             self.pc += offset
 
+    def _exec_214(self):
+        self.mem.a, self.mem[self.mem.r0] = (
+            int(self.mem.a.bits[:4] + self.mem[self.mem.r0].bits[4:], 2),
+            int(self.mem[self.mem.r0].bits[:4] + self.mem.a.bits[4:], 2))
+    
+    def _exec_215(self):
+        self.mem.a, self.mem[self.mem.r1] = (
+            int(self.mem.a.bits[:4] + self.mem[self.mem.r1].bits[4:], 2),
+            int(self.mem[self.mem.r1].bits[:4] + self.mem.a.bits[4:], 2))
+
     def _exec_216(self, offset):
         self.mem.r0 -= 1
         if self.mem.r0 != 0:
