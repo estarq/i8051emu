@@ -584,6 +584,9 @@ class Microcontroller:
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
         self.mem.c &= self.mem[byte_no][7 - bit % 8]
 
+    def _exec_131(self):
+        self.mem.a = self._rom[self.pc + self.mem.a]
+
     def _exec_132(self):
         self.mem.a, self.mem.b = divmod(self.mem.a, self.mem.b)
 
@@ -633,6 +636,9 @@ class Microcontroller:
     def _exec_146(self, bit):
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
         self.mem[byte_no][7 - bit % 8] = self.mem.c
+
+    def _exec_147(self):
+        self.mem.a = self._rom[self.mem.dptr + self.mem.a]
 
     def _exec_148(self, immed):
         self.mem.a -= self.mem.c + immed
