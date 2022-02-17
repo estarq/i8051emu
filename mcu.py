@@ -577,6 +577,10 @@ class Microcontroller:
     def _exec_127(self, immed):
         self.mem.r7 = immed
 
+    def _exec_128(self, offset):
+        # Convert from two's complement representation
+        self.pc += offset - 256 if offset > 127 else offset
+
     def _exec_129(self, addr11):
         self.pc = int(f'{self.pc.bits[:5]}100{addr11:08b}', 2)
 
