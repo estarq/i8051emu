@@ -940,6 +940,9 @@ class Microcontroller:
         if self.mem.r7 != 0:
             self.pc += offset
 
+    def _exec_224(self):
+        self.mem.a = self.xmem[self.mem.dptr]
+
     def _exec_225(self, addr11):
         self.pc = int(f'{self.pc.bits[:5]}111{addr11:08b}', 2)
 
