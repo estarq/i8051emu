@@ -988,6 +988,9 @@ class Microcontroller:
     def _exec_239(self):
         self.mem.a = self.mem.r7
 
+    def _exec_240(self):
+        self.xmem[self.mem.dptr] = self.mem.a
+
     def _exec_241(self, addr11):
         self.mem.sp += 1
         self.mem[self.mem.sp] = int(self.pc.bits[8:], 2)
