@@ -943,6 +943,12 @@ class Microcontroller:
     def _exec_225(self, addr11):
         self.pc = int(f'{self.pc.bits[:5]}111{addr11:08b}', 2)
 
+    def _exec_226(self):
+        self.mem.a = self.xmem[int(self.mem.p2.bits + self.mem.r0.bits, 2)]
+
+    def _exec_227(self):
+        self.mem.a = self.xmem[int(self.mem.p2.bits + self.mem.r1.bits, 2)]
+
     def _exec_228(self):
         self.mem.a = 0
 
