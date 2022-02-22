@@ -6,7 +6,8 @@ import disassembler
 class Microcontroller:
     def __init__(self):
         self._rom = ProgramMemory()
-        self.mem = DataMemory()
+        self.mem = InternalDataMemory()
+        self.xmem = ExternalDataMemory()
         self._pc = DoubleByte()
         self.interrupt_stack = Stack()
         self.interrupt_stack.push(0)
@@ -31,7 +32,8 @@ class Microcontroller:
         self._rom = ProgramMemory()
 
     def reset_ram(self):
-        self.mem = DataMemory()
+        self.mem = InternalDataMemory()
+        self.xmem = ExternalDataMemory()
         self._pc = DoubleByte()
         self.interrupt_stack = Stack()
         self.interrupt_stack.push(0)
@@ -1034,7 +1036,7 @@ class ProgramMemory:
         self._data[addr] = value
 
 
-class DataMemory:
+class InternalDataMemory:
     def __init__(self):
         self._data = [Byte() for _ in range(256)]
         self._dptr = DoubleByte()
@@ -1563,6 +1565,17 @@ class DataMemory:
     @r7.setter
     def r7(self, value):
         self[8 * self.selected_register_bank + 7].value = value
+
+
+class ExternalDataMemory:
+    def __init__(self):
+        self._data = [Byte() for _ in range(65536)]  # 64 KiB
+
+    def __getitem__(self, addr: Union[int, 'DoubleByte']):
+        return self._data[int(addr)]
+
+    def __setitem__(self, addr, value: 'Byte'):
+        self[addr].value = value
 
 
 class Byte:

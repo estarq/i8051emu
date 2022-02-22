@@ -1037,9 +1037,9 @@ class TestProgramMemory:
         assert rom[5] == 10
 
 
-class TestDataMemory:
+class TestInternalDataMemory:
     def test_decimal_access(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         byte_id = id(mem[2])
         mem[2] = 30
         assert mem[2] == 30 and id(mem[2]) == byte_id, 'Decimal access not supported'
@@ -1048,12 +1048,12 @@ class TestDataMemory:
         assert mem[3] == 30, 'Cannot use a Byte instance as an address - not converted to int?'
 
     def test_bit_access(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem[5][1] = 1
         assert mem[5] == 64, 'Bit access not supported'
 
     def test_p0_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         assert mem.p0 == 0b11111111
         mem.p0 = 30
         assert mem[128] == 30
@@ -1061,7 +1061,7 @@ class TestDataMemory:
         assert mem.p0[7] == 1
 
     def test_dptr_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.dptr = 65530
         mem.dptr += 10
         assert mem.dptr == 4, 'Overflow not supported - int?'
@@ -1069,47 +1069,47 @@ class TestDataMemory:
         assert mem[130] == int('1' * 8, 2) and mem[131] == int('11111010', 2), 'Wrong binary representation'
 
     def test_tcon_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.tcon[1] = 1
         assert mem.tcon == 64
 
     def test_tf1_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.tf1 = 1
         assert mem.tf1 == 1
         assert mem[136][0] == 1
 
     def test_tmod_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.tmod[2] = 1
         assert mem.tmod == 32
 
     def test_t1_m0_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.t1_m0 = 1
         assert mem.t1_m0 == 1
         assert mem[137][3] == 1
 
     def test_t1_mode_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.t1_m1 = 1
         mem.t1_m0 = 1
         assert mem.t1_mode == 3
 
     def test_tl0_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.tl0 = 32
         assert mem.tl0 == 32
         assert mem[138][2] == 1
 
     def test_th1_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.th1 = 16
         assert mem.th1 == 16
         assert mem[141][3] == 1
 
     def test_p1_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         assert mem.p1 == 0b11111111
         mem.p1 = 50
         assert mem[144] == 50
@@ -1117,7 +1117,7 @@ class TestDataMemory:
         assert mem.p1[4] == 1
 
     def test_p2_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         assert mem.p2 == 0b11111111
         mem.p2 = 10
         assert mem[160] == 10
@@ -1125,18 +1125,18 @@ class TestDataMemory:
         assert mem.p2[6] == 1
 
     def test_ie_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.ie[2] = 1
         assert mem.ie == 32
 
     def test_es_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.es = 1
         assert mem.es == 1
         assert mem[168][3] == 1
 
     def test_p3_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         assert mem.p3 == 0b11111111
         mem.p3 = 0
         assert mem[176] == 0
@@ -1144,79 +1144,90 @@ class TestDataMemory:
         assert mem.p3[5] == 1
 
     def test_t1_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         assert mem.t1 == 1
         mem.t1 = 0
         assert mem.t1 == 0
 
     def test_int0_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         assert mem.int0 == 1
         mem.int0 = 0
         assert mem.int0 == 0
 
     def test_ip_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.ip[3] = 1
         assert mem.ip == 16
 
     def test_pt1_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.pt1 = 1
         assert mem.pt1 == 1
         assert mem[184][4] == 1
 
     def test_psw_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.psw[0] = 1
         assert mem.psw == 128
 
     def test_c_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.c = 1
         assert mem.c == 1
         assert mem[208][0] == 1
 
     def test_ac_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.ac = 1
         assert mem.ac == 1
         assert mem[208][1] == 1
 
     def test_rs1_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.rs1 = 1
         assert mem.rs1 == 1
         assert mem[208][3] == 1
 
     def test_rs0_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.rs0 = 1
         assert mem.rs0 == 1
         assert mem[208][4] == 1
 
     def test_ov_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.ov = 1
         assert mem.ov == 1
         assert mem[208][5] == 1
 
     def test_p_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.p = 1
         assert mem.p == 1
         assert mem[208][7] == 1
 
     def test_selected_register_bank_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.selected_register_bank = 3
         assert mem.selected_register_bank == 3 and mem.rs1 == 1 and mem.rs0 == 1
 
     def test_r1_prop(self):
-        mem = mcu.DataMemory()
+        mem = mcu.InternalDataMemory()
         mem.selected_register_bank = 2
         mem.r1 = 3
         assert mem.r1 == 3 and mem[8 * 2 + 1] == 3
+
+
+class TestExternalDataMemory:
+    def test_access(self):
+        xmem = mcu.ExternalDataMemory()
+        byte_id = id(xmem[2])
+        xmem[2] = mcu.Byte(30)
+        assert xmem[2] == 30 and id(xmem[2]) == byte_id, 'Decimal access not supported'
+        b = mcu.DoubleByte(500)
+        xmem[b] = mcu.Byte(30)
+        assert xmem[500] == 30, 'Cannot use a DoubleByte instance as an address - not converted to int?'
 
 
 class TestByte:
