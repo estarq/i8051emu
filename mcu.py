@@ -992,6 +992,12 @@ class Microcontroller:
         self.mem[self.mem.sp] = int(self.pc.bits[:8], 2)
         self.pc = int(f'{self.pc.bits[:5]}111{addr11:08b}', 2)
 
+    def _exec_242(self):
+        self.xmem[int(self.mem.p2.bits + self.mem.r0.bits, 2)] = self.mem.a
+
+    def _exec_243(self):
+        self.xmem[int(self.mem.p2.bits + self.mem.r1.bits, 2)] = self.mem.a
+
     def _exec_244(self):
         self.mem.a ^= 255
 
