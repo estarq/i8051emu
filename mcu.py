@@ -39,6 +39,9 @@ class Microcontroller:
         self.interrupt_stack.push(0)
 
     def next_cycle(self):
+        # Set/clear the parity flag
+        self.mem.p = 0 if self.mem.a.bits.count('1') % 2 else 1
+
         # Check for an external interrupt request from INT0/INT1
         # that can be either negative edge-triggered or negative level-activated
         if (self.mem.it0 and self.mem.int0_previous_state and not self.mem.int0

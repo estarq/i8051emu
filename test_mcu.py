@@ -16,6 +16,17 @@ class TestMicrocontroller:
         m.reset_rom()
         assert m._rom[100] == 0 and m.mem.a == 0
 
+    def test_next_cycle__parity_flag(self):
+        m = mcu.Microcontroller()
+        m._rom[0] = 0  # NOP
+        m._rom[1] = 0
+        m.mem.a = 0b101
+        m.next_cycle()
+        assert m.mem.p == 1
+        m.mem.a = 0b100
+        m.next_cycle()
+        assert m.mem.p == 0
+
     def test_next_cycle__int0_level_activated(self):
         m = mcu.Microcontroller()
         m.mem.it0 = 0
