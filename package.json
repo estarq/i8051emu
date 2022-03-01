@@ -1,0 +1,43 @@
+{
+  "name": "i8051emu",
+  "version": "1.0.0",
+  "description": "Intel 8051 Emulator",
+  "main": "bundle.js",
+  "scripts": {
+    "babel": "npx babel main.jsx -o main.js",
+    "browserify": "browserify main.js -o bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/estarq/8051.git"
+  },
+  "keywords": [
+    "8051",
+    "emulator"
+  ],
+  "author": "Paul Lloyd",
+  "license": "Proprietary",
+  "bugs": {
+    "url": "https://github.com/estarq/8051/issues"
+  },
+  "homepage": "https://github.com/estarq/8051#readme",
+  "dependencies": {
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.4.3",
+    "brython": "^3.10.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.5",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
+    "eslint": "^8.10.0",
+    "jest-cli": "^27.5.1"
+  }
+}
