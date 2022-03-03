@@ -6,21 +6,21 @@ class TestMicrocontroller:
         m = mcu.Microcontroller()
         with open('test.hex') as f:
             m.load_hex_file(f.read())
-        assert m._rom[0] == 2, 'First byte not loaded'
-        assert m._rom[1] == 1, 'Second byte not loaded'
-        assert m._rom[256] == 174, 'Misplaced byte - addr change due to ORG statement ignored'
+        assert m.rom[0] == 2, 'First byte not loaded'
+        assert m.rom[1] == 1, 'Second byte not loaded'
+        assert m.rom[256] == 174, 'Misplaced byte - addr change due to ORG statement ignored'
 
     def test_reset_rom(self):
         m = mcu.Microcontroller()
-        m._rom[100] = 123
+        m.rom[100] = 123
         m.mem.a = 20
         m.reset_rom()
-        assert m._rom[100] == 0 and m.mem.a == 0
+        assert m.rom[100] == 0 and m.mem.a == 0
 
     def test_next_cycle__parity_flag(self):
         m = mcu.Microcontroller()
-        m._rom[0] = 0  # NOP
-        m._rom[1] = 0
+        m.rom[0] = 0  # NOP
+        m.rom[1] = 0
         m.mem.a = 0b101
         m.next_cycle()
         assert m.mem.p == 1
@@ -32,15 +32,15 @@ class TestMicrocontroller:
         m = mcu.Microcontroller()
         m.mem.it0 = 0
         m.mem.int0 = 0
-        m._rom[0] = 0  # NOP
+        m.rom[0] = 0  # NOP
         m.next_cycle()
         assert m.mem.ie0 == 1
 
     def test_next_cycle__int0_edge_triggered(self):
         m = mcu.Microcontroller()
         m.mem.it0 = 1
-        m._rom[0] = 0  # NOP
-        m._rom[1] = 0
+        m.rom[0] = 0  # NOP
+        m.rom[1] = 0
         m.mem.int0 = 1
         m.next_cycle()
         m.mem.int0 = 0
@@ -55,24 +55,24 @@ class TestMicrocontroller:
         # INT0 (low priority)
         m.mem.ie0 = 1
         m.mem.ex0 = 1
-        m._rom[3] = 4  # INC A
-        m._rom[4] = 50  # RETI
+        m.rom[3] = 4  # INC A
+        m.rom[4] = 50  # RETI
 
         # T1 (high priority)
         m.mem.tf1 = 1
         m.mem.et1 = 1
         m.mem.pt1 = 1
         # ADD A, #4
-        m._rom[27] = 36
-        m._rom[28] = 4
+        m.rom[27] = 36
+        m.rom[28] = 4
         # ADD A, #5
-        m._rom[29] = 36
-        m._rom[30] = 5
+        m.rom[29] = 36
+        m.rom[30] = 5
         # ADD A, #6
-        m._rom[31] = 36
-        m._rom[32] = 6
+        m.rom[31] = 36
+        m.rom[32] = 6
         # RETI
-        m._rom[33] = 50
+        m.rom[33] = 50
 
         m.next_cycle()  # ADD A, #4
         m.next_cycle()  # ADD A, #5
@@ -84,8 +84,8 @@ class TestMicrocontroller:
         m.mem.tf0 = 1
         m.mem.et0 = 1
         m.mem.pt0 = 1
-        m._rom[11] = 20  # DEC A
-        m._rom[12] = 50  # RETI
+        m.rom[11] = 20  # DEC A
+        m.rom[12] = 50  # RETI
 
         m.next_cycle()  # DEC A
         m.next_cycle()  # RETI
@@ -111,9 +111,9 @@ class TestMicrocontroller:
     def test_next_cycle__timers(self):
         # Timer 0, Mode 0, T0
         m1 = mcu.Microcontroller()
-        m1._rom[0] = 0  # NOP
-        m1._rom[1] = 0
-        m1._rom[2] = 0
+        m1.rom[0] = 0  # NOP
+        m1.rom[1] = 0
+        m1.rom[2] = 0
         m1.mem.tr0 = 1
         m1.mem.int0 = 1
         m1.mem.t0_ct = 1
@@ -128,10 +128,10 @@ class TestMicrocontroller:
 
         # Timer 1, Mode 1, cycles
         m2 = mcu.Microcontroller()
-        m2._rom[0] = 0  # NOP (1 cycle)
-        m2._rom[1] = 2  # LJMP (2 cycles)
-        m2._rom[3] = 123
-        m2._rom[4] = 123
+        m2.rom[0] = 0  # NOP (1 cycle)
+        m2.rom[1] = 2  # LJMP (2 cycles)
+        m2.rom[3] = 123
+        m2.rom[4] = 123
         m2.mem.t1_m0 = 1
         m2.mem.tr1 = 1
         m2.mem.t1_gate = 0
@@ -143,9 +143,9 @@ class TestMicrocontroller:
 
         # Timer 0, Mode 3, TL0: T0 (TH0: cycles)
         m3 = mcu.Microcontroller()
-        m3._rom[0] = 163  # INC DPTR (2 cycles)
-        m3._rom[1] = 237  # MOV A, R5 (1 cycle)
-        m3._rom[2] = 163  # INC DPTR
+        m3.rom[0] = 163  # INC DPTR (2 cycles)
+        m3.rom[1] = 237  # MOV A, R5 (1 cycle)
+        m3.rom[2] = 163  # INC DPTR
         m3.mem.tr1 = 1
         m3.mem.t0_m1 = 1
         m3.mem.t0_m0 = 1
@@ -168,14 +168,14 @@ class TestMicrocontroller:
     def test_next_cycle__operation_execution(self):
         m = mcu.Microcontroller()
         m.pc = mcu.DoubleByte(50)
-        m._rom[50] = 0  # NOP
+        m.rom[50] = 0  # NOP
         m.next_cycle()
         assert m.pc == 51
 
         m.pc = mcu.DoubleByte(100)
-        m._rom[100] = 2  # LJMP
-        m._rom[101] = 171
-        m._rom[102] = 205
+        m.rom[100] = 2  # LJMP
+        m.rom[101] = 171
+        m.rom[102] = 205
         m.next_cycle()
         assert m.pc == 43981  # 171 * 2 ** 8 + 205
 
@@ -666,7 +666,7 @@ class TestMicrocontroller:
 
     def test_exec_131(self):
         m = mcu.Microcontroller()
-        m._rom[30050] = 123
+        m.rom[30050] = 123
         m.pc = 30000
         m.mem.a = 50
         m._exec_131()
@@ -1067,7 +1067,7 @@ class TestMicrocontroller:
 
 
 class TestInternalDataMemory:
-    def test_decimal_access(self):
+    def test_access(self):
         mem = mcu.InternalDataMemory()
         byte_id = id(mem[2])
         mem[2] = 30

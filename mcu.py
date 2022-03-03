@@ -5,7 +5,7 @@ import disassembler
 
 class Microcontroller:
     def __init__(self):
-        self._rom = [0] * 65536  # 64 KiB
+        self.rom = [0] * 65536  # 64 KiB
         self.mem = InternalDataMemory()
         self.xmem = ExternalDataMemory()
         self._pc = DoubleByte()
@@ -25,11 +25,11 @@ class Microcontroller:
     def load_hex_file(self, file_content):
         for record in disassembler.IntelHexFile(file_content):
             for addr, byte in enumerate(record, record.first_byte_addr):
-                self._rom[addr] = byte
+                self.rom[addr] = byte
 
     def reset_rom(self):
         self.reset_ram()
-        self._rom = [0] * 65536
+        self.rom = [0] * 65536
 
     def reset_ram(self):
         self.mem = InternalDataMemory()
@@ -111,8 +111,8 @@ class Microcontroller:
                 self._exec_18(0, 27)
 
         # Execute an operation
-        op = Operation(self._rom[int(self.pc)])
-        op.args = self._rom[int(self.pc + 1):int(self.pc + len(op))]
+        op = Operation(self.rom[int(self.pc)])
+        op.args = self.rom[int(self.pc + 1):int(self.pc + len(op))]
         self.pc += len(op)
         # Jump operations may override the PC
         exec(f'self._exec_{op.opcode}(*op.args)')
@@ -594,7 +594,7 @@ class Microcontroller:
         self.mem.c &= self.mem[byte_no][7 - bit % 8]
 
     def _exec_131(self):
-        self.mem.a = self._rom[int(self.pc + self.mem.a)]
+        self.mem.a = self.rom[int(self.pc + self.mem.a)]
 
     def _exec_132(self):
         self.mem.a, self.mem.b = divmod(self.mem.a, self.mem.b)
@@ -647,7 +647,7 @@ class Microcontroller:
         self.mem[byte_no][7 - bit % 8] = self.mem.c
 
     def _exec_147(self):
-        self.mem.a = self._rom[int(self.mem.dptr + self.mem.a)]
+        self.mem.a = self.rom[int(self.mem.dptr + self.mem.a)]
 
     def _exec_148(self, immed):
         self.mem.a -= self.mem.c + immed
