@@ -1066,21 +1066,6 @@ class TestMicrocontroller:
         assert m.mem.r2 == 50
 
 
-class TestProgramMemory:
-    def test__getitem__(self):
-        rom = mcu.ProgramMemory()
-        rom[5] = 10
-        rom[6] = 20
-        rom[7] = 30
-        assert rom[6] == 20
-        assert rom[5:8] == [10, 20, 30]
-
-    def test__setitem__(self):
-        rom = mcu.ProgramMemory()
-        rom[5] = 10
-        assert rom[5] == 10
-
-
 class TestInternalDataMemory:
     def test_decimal_access(self):
         mem = mcu.InternalDataMemory()

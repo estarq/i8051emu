@@ -5,7 +5,7 @@ import disassembler
 
 class Microcontroller:
     def __init__(self):
-        self._rom = ProgramMemory()
+        self._rom = [0] * 65536  # 64 KiB
         self.mem = InternalDataMemory()
         self.xmem = ExternalDataMemory()
         self._pc = DoubleByte()
@@ -29,7 +29,7 @@ class Microcontroller:
 
     def reset_rom(self):
         self.reset_ram()
-        self._rom = ProgramMemory()
+        self._rom = [0] * 65536
 
     def reset_ram(self):
         self.mem = InternalDataMemory()
@@ -111,8 +111,8 @@ class Microcontroller:
                 self._exec_18(0, 27)
 
         # Execute an operation
-        op = Operation(self._rom[self.pc])
-        op.args = self._rom[self.pc + 1:self.pc + len(op)]
+        op = Operation(self._rom[int(self.pc)])
+        op.args = self._rom[int(self.pc + 1):int(self.pc + len(op))]
         self.pc += len(op)
         # Jump operations may override the PC
         exec(f'self._exec_{op.opcode}(*op.args)')
@@ -594,7 +594,7 @@ class Microcontroller:
         self.mem.c &= self.mem[byte_no][7 - bit % 8]
 
     def _exec_131(self):
-        self.mem.a = self._rom[self.pc + self.mem.a]
+        self.mem.a = self._rom[int(self.pc + self.mem.a)]
 
     def _exec_132(self):
         self.mem.a, self.mem.b = divmod(self.mem.a, self.mem.b)
@@ -647,7 +647,7 @@ class Microcontroller:
         self.mem[byte_no][7 - bit % 8] = self.mem.c
 
     def _exec_147(self):
-        self.mem.a = self._rom[self.mem.dptr + self.mem.a]
+        self.mem.a = self._rom[int(self.mem.dptr + self.mem.a)]
 
     def _exec_148(self, immed):
         self.mem.a -= self.mem.c + immed
@@ -1042,19 +1042,6 @@ class Microcontroller:
 
     def _exec_255(self):
         self.mem.r7 = self.mem.a
-
-
-class ProgramMemory:
-    def __init__(self):
-        self._data = [0] * 65536  # 64 KiB
-
-    def __getitem__(self, addr: Union[int, 'DoubleByte', slice]):
-        if isinstance(addr, slice):
-            return self._data[int(addr.start):int(addr.stop)]
-        return self._data[int(addr)]
-
-    def __setitem__(self, addr: int, value: int):
-        self._data[addr] = value
 
 
 class InternalDataMemory:
