@@ -22,8 +22,8 @@ class Microcontroller:
     def pc(self, value):
         self._pc.value = value
 
-    def load_hex_file(self, filepath):
-        for record in disassembler.IntelHexFile(filepath):
+    def load_hex_file(self, file_content):
+        for record in disassembler.IntelHexFile(file_content):
             for addr, byte in enumerate(record, record.first_byte_addr):
                 self._rom[addr] = byte
 

@@ -1,10 +1,10 @@
 import mcu
 
 
-def disassemble(filepath):
+def disassemble(file_content):
     # Disassemble a file having in mind that arguments may not be in the same record as an opcode
     getting_opcode = True
-    for record in IntelHexFile(filepath):
+    for record in IntelHexFile(file_content):
         # If a record starts with an opcode, an ORG statement may have changed its address
         if getting_opcode:
             addr = record.first_byte_addr
@@ -28,10 +28,9 @@ def disassemble(filepath):
 
 
 class IntelHexFile:
-    def __init__(self, filepath):
-        with open(filepath) as file:
-            # [:-1] to skip the trailing EOF Record
-            self._records = [Record(line.rstrip()) for line in list(file)[:-1]]
+    def __init__(self, file_content):
+        # [:-1] to skip the trailing EOF Record
+        self._records = [Record(line) for line in file_content.splitlines()[:-1]]
 
     def __iter__(self):
         for record in self._records:

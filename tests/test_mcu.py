@@ -4,7 +4,8 @@ import mcu
 class TestMicrocontroller:
     def test_load_hex_file(self):
         m = mcu.Microcontroller()
-        m.load_hex_file('tests/test.hex')
+        with open('test.hex') as f:
+            m.load_hex_file(f.read())
         assert m._rom[0] == 2, 'First byte not loaded'
         assert m._rom[1] == 1, 'Second byte not loaded'
         assert m._rom[256] == 174, 'Misplaced byte - addr change due to ORG statement ignored'
