@@ -1,8 +1,10 @@
 import * as React from 'react';
+import {useState} from "react";
 import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import KeyboardDoubleArrowRightOutlinedIcon from '@mui/icons-material/KeyboardDoubleArrowRightOutlined';
+import PauseOutlinedIcon from '@mui/icons-material/PauseOutlined';
 import {makeStyles} from "@material-ui/core/styles";
 import render from "./main";
 
@@ -40,6 +42,9 @@ function onFileUpload(e) {
 }
 
 export default function TopBar() {
+    const [running, setRunning] = useState(false);
+    const [intervalRef, setIntervalRef] = useState();
+
     return (
         <AppBar position="static" classes={useStyles()}>
             <Toolbar>
@@ -62,13 +67,19 @@ export default function TopBar() {
                 </IconButton>
                 <IconButton color="inherit" onClick={() => {
                     if (window.assRows.length) {
-                        setInterval(() => {
-                            mcu_next_cycle();
-                            render();
-                        }, 500);
+                        if (running) {
+                            clearInterval(intervalRef);
+                        } else {
+                            const id = setInterval(() => {
+                                mcu_next_cycle();
+                                render();
+                            }, 500);
+                            setIntervalRef(id);
+                        }
+                        setRunning(!running);
                     }
                 }}>
-                    <KeyboardDoubleArrowRightOutlinedIcon/>
+                    {running ? <PauseOutlinedIcon/> : <KeyboardDoubleArrowRightOutlinedIcon/>}
                 </IconButton>
             </Toolbar>
         </AppBar>
