@@ -9,6 +9,9 @@ import render from "./main";
 const useStyles = makeStyles({
     root: {
         'background-color': 'rgba(25, 118, 210, 0.7)',
+        '& .MuiTypography-root': {
+            'margin-right': '10px',
+        },
     },
 });
 
