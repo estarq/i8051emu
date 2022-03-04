@@ -2,10 +2,10 @@
   "name": "i8051emu",
   "version": "1.0.0",
   "description": "Intel 8051 Emulator",
-  "main": "bundle.js",
+  "main": "lib/bundle.min.js",
   "scripts": {
-    "babel": "npx babel main.jsx -o main.js",
-    "browserify": "browserify main.js -o bundle.js"
+    "prebuild": "npx babel src -d lib",
+    "build": "browserify lib/main.js -o lib/bundle.js && uglifyjs lib/bundle.js -o lib/bundle.min.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,10 @@
   "dependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
+    "@material-ui/core": "^4.12.3",
+    "@mui/icons-material": "^5.4.4",
     "@mui/material": "^5.4.3",
+    "@mui/x-data-grid": "^5.5.1",
     "brython": "^3.10.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
@@ -38,6 +41,7 @@
     "babelify": "^10.0.0",
     "browserify": "^17.0.0",
     "eslint": "^8.10.0",
-    "jest-cli": "^27.5.1"
+    "jest-cli": "^27.5.1",
+    "uglify-js": "^3.15.2"
   }
 }

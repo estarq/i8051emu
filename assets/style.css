@@ -2,3 +2,7 @@
     font-family: "Roboto";
     src: url(Roboto-Light.ttf) format("truetype");
 }
+
+body {
+    margin: 0;
+}
