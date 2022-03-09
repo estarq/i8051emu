@@ -4,7 +4,7 @@ import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     root: {
-        height: '70vh',
+        height: '543px',
         width: '550px',
         margin: '20px',
         '& .MuiDataGrid-columnHeader:last-of-type .MuiDataGrid-iconSeparator': {
