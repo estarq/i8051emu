@@ -25,7 +25,6 @@ function onFileUpload(e) {
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = () => {
-        mcu_reset_rom();
         window.currentAddr = 0;
         window.assRows = [];
         const disassembled = disassemble(reader.result);
@@ -39,7 +38,12 @@ function onFileUpload(e) {
                 mnemonic: arr[idx][5],
             })
         })
+        mcu_reset_rom();
         mcu_load_hex_file(reader.result);
+        mcu_update_window_rom();
+        window.memType = 'ROM';
+        window.memRows = window.rom;
+        document.getElementById("memTable").scrollTop = 0;
         render();
     }
 }

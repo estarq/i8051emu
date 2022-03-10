@@ -6,7 +6,6 @@ const useStyles = makeStyles({
     root: {
         height: '543px',
         width: '550px',
-        margin: '20px',
         '& .MuiDataGrid-columnHeader:last-of-type .MuiDataGrid-iconSeparator': {
             display: 'none',
         },
