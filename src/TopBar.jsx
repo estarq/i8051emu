@@ -44,6 +44,7 @@ function onFileUpload(e) {
         window.memType = 'ROM';
         window.memRows = window.rom;
         document.getElementById("memTable").scrollTop = 0;
+        window.mcu_update_window_keyRows();
         render();
     }
 }

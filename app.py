@@ -32,6 +32,7 @@ def mcu_next_cycle():
     elif window.memType == 'XRAM':
         mcu_update_window_xram()
         window.memRows = window.xram
+    mcu_update_window_keyRows()
 
 
 def mcu_update_window_rom():
@@ -50,6 +51,23 @@ def mcu_reset_rom():
     m.reset_rom()
 
 
+def mcu_update_window_keyRows():
+    window.keyRows = [
+        {'name': 'A', 'val': int(m.mem.a)},
+        {'name': 'B', 'val': int(m.mem.b)},
+        {'name': 'SP', 'val': int(m.mem.sp)},
+        {'name': 'PC', 'val': int(m.pc)},
+        {'name': 'DPTR', 'val': int(m.mem.dptr)},
+        {'name': 'R0', 'val': int(m.mem.r0)},
+        {'name': 'R1', 'val': int(m.mem.r1)},
+        {'name': 'R2', 'val': int(m.mem.r2)},
+        {'name': 'R3', 'val': int(m.mem.r3)},
+        {'name': 'R4', 'val': int(m.mem.r4)},
+        {'name': 'R5', 'val': int(m.mem.r5)},
+        {'name': 'R6', 'val': int(m.mem.r6)},
+        {'name': 'R7', 'val': int(m.mem.r7)}]
+
+
 window.disassemble = disassemble
 window.mcu_load_hex_file = mcu_load_hex_file
 window.mcu_next_cycle = mcu_next_cycle
@@ -57,3 +75,4 @@ window.mcu_update_window_rom = mcu_update_window_rom
 window.mcu_update_window_ram = mcu_update_window_ram
 window.mcu_update_window_xram = mcu_update_window_xram
 window.mcu_reset_rom = mcu_reset_rom
+window.mcu_update_window_keyRows = mcu_update_window_keyRows
