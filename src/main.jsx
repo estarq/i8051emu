@@ -1,11 +1,11 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import {StyledEngineProvider} from '@mui/material/styles';
-import {Box} from "@material-ui/core";
+import {Box} from '@material-ui/core';
 import TopBar from './TopBar';
 import AssTable from './AssTable';
-import MemTable from "./MemTable";
-import KeyRegsTable from "./KeyRegsTable";
+import MemTable from './MemTable';
+import KeyRegsTable from './KeyRegsTable';
 
 window.assRows = [];
 window.currentAddr = 0;

@@ -43,24 +43,11 @@ const useStyles = makeStyles({
     },
 });
 
-const handleChange = (e) => {
-    switch (e.target.value) {
-        case 'ROM':
-            mcu_update_window_rom();
-            window.memRows = window.rom;
-            break;
-        case 'RAM':
-            mcu_update_window_ram();
-            window.memRows = window.ram;
-            break;
-        case 'XRAM':
-            mcu_update_window_xram();
-            window.memRows = window.xram;
-            break;
-    }
+function handleChange(e) {
     window.memType = e.target.value;
+    mcu_update_window_memRows();
     render();
-};
+}
 
 export default function MemTable(props) {
     return (

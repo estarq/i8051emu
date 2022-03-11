@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {useState} from "react";
-import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
+import {useState} from 'react';
+import {AppBar, IconButton, Toolbar, Typography} from '@material-ui/core';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import KeyboardDoubleArrowRightOutlinedIcon from '@mui/icons-material/KeyboardDoubleArrowRightOutlined';
 import PauseOutlinedIcon from '@mui/icons-material/PauseOutlined';
-import {makeStyles} from "@material-ui/core/styles";
-import render from "./main";
+import {makeStyles} from '@material-ui/core/styles';
+import render from './main';
 
 const useStyles = makeStyles({
     root: {
@@ -43,8 +43,15 @@ function onFileUpload(e) {
         mcu_update_window_rom();
         window.memType = 'ROM';
         window.memRows = window.rom;
-        document.getElementById("memTable").scrollTop = 0;
+        document.getElementById('memTable').scrollTop = 0;
         window.mcu_update_window_keyRows();
+        render();
+    }
+}
+
+function onNextClicked() {
+    if (window.assRows.length) {
+        mcu_next_cycle();
         render();
     }
 }
@@ -65,12 +72,7 @@ export default function TopBar() {
                     <input type="file" hidden onChange={onFileUpload}/>
                 </IconButton>
 
-                <IconButton color="inherit" onClick={() => {
-                    if (window.assRows.length) {
-                        mcu_next_cycle();
-                        render();
-                    }
-                }}>
+                <IconButton color="inherit" onClick={onNextClicked}>
                     <KeyboardArrowRightOutlinedIcon/>
                 </IconButton>
                 <IconButton color="inherit" onClick={() => {

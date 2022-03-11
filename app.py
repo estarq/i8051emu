@@ -23,15 +23,7 @@ def mcu_load_hex_file(file_content):
 def mcu_next_cycle():
     m.next_cycle()
     window.currentAddr = int(m.pc)
-    if window.memType == 'ROM':
-        mcu_update_window_rom()
-        window.memRows = window.rom
-    elif window.memType == 'RAM':
-        mcu_update_window_ram()
-        window.memRows = window.ram
-    elif window.memType == 'XRAM':
-        mcu_update_window_xram()
-        window.memRows = window.xram
+    mcu_update_window_memRows()
     mcu_update_window_keyRows()
 
 
@@ -49,6 +41,18 @@ def mcu_update_window_xram():
 
 def mcu_reset_rom():
     m.reset_rom()
+
+
+def mcu_update_window_memRows():
+    if window.memType == 'ROM':
+        mcu_update_window_rom()
+        window.memRows = window.rom
+    elif window.memType == 'RAM':
+        mcu_update_window_ram()
+        window.memRows = window.ram
+    else:
+        mcu_update_window_xram()
+        window.memRows = window.xram
 
 
 def mcu_update_window_keyRows():
@@ -74,5 +78,6 @@ window.mcu_next_cycle = mcu_next_cycle
 window.mcu_update_window_rom = mcu_update_window_rom
 window.mcu_update_window_ram = mcu_update_window_ram
 window.mcu_update_window_xram = mcu_update_window_xram
+window.mcu_update_window_memRows = mcu_update_window_memRows
 window.mcu_reset_rom = mcu_reset_rom
 window.mcu_update_window_keyRows = mcu_update_window_keyRows
