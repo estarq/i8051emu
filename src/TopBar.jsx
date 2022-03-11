@@ -2,6 +2,7 @@ import * as React from 'react';
 import {useState} from 'react';
 import {AppBar, IconButton, Toolbar, Typography} from '@material-ui/core';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import KeyboardDoubleArrowRightOutlinedIcon from '@mui/icons-material/KeyboardDoubleArrowRightOutlined';
 import PauseOutlinedIcon from '@mui/icons-material/PauseOutlined';
@@ -56,6 +57,16 @@ function onNextClicked() {
     }
 }
 
+function onRefreshClicked() {
+    mcu_reset_ram();
+    window.currentAddr = 0;
+    window.memType = 'ROM';
+    mcu_update_window_memRows();
+    document.getElementById('memTable').scrollTop = 0;
+    mcu_update_window_keyRows();
+    render();
+}
+
 export default function TopBar() {
     const [running, setRunning] = useState(false);
     const [intervalRef, setIntervalRef] = useState();
@@ -70,6 +81,10 @@ export default function TopBar() {
                 <IconButton variant="text" color="inherit" component="label">
                     <FileUploadOutlinedIcon/>
                     <input type="file" hidden onChange={onFileUpload}/>
+                </IconButton>
+
+                <IconButton color="inherit" onClick={onRefreshClicked}>
+                    <RefreshOutlinedIcon/>
                 </IconButton>
 
                 <IconButton color="inherit" onClick={onNextClicked}>
