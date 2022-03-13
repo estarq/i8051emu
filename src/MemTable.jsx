@@ -11,28 +11,28 @@ import render from './main';
 
 const useStyles = makeStyles({
     root: {
-        width: '155px',
-        height: '543px',
+        width: '139px',
+        height: '531px',
         'margin-left': '20px',
         border: '1px solid rgb(224, 224, 224)',
         'border-radius': '4px',
         'scrollbar-width': 'thin',
+        '& .MuiTableRow-head:last-of-type .MuiTableCell-head': {
+            top: '28px',
+        },
+        '& .MuiTableRow-root:last-of-type .MuiTableCell-body': {
+            'border-bottom-width': 0,
+        },
         '& .MuiTableCell-head:first-of-type': {
-            padding: '3px 16px',
-            height: '26px',
-        },
-        '& .MuiTableRow-head:last-of-type th': {
-            'line-height': '23px',
-            top: '39px',
-        },
-        '& .MuiTableBody-root td': {
-            'line-height': '23px',
+            padding: '4px 16px',
         },
         '& .MuiTableCell-root': {
             'text-align': 'center',
+            'line-height': '15px',
         },
-        '& .MuiSelect-select': {
-            'padding-right': '15px',
+        '& .MuiInputBase-input': {
+            padding: '0 15px 0 0',
+            'font-size': '15px',
         },
         '& .MuiSelect-select:focus': {
             'background-color': 'inherit',

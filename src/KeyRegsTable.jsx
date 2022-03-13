@@ -9,27 +9,18 @@ import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     root: {
-        width: '155px',
-        height: '543px',
+        width: '139px',
+        height: '531px',
         'overflow-y': 'hidden',
         'margin-left': '20px',
         border: '1px solid rgb(224, 224, 224)',
         'border-radius': '4px',
-        '& .MuiTableCell-head': {
-            height: '26px',
-        },
-        '& .MuiTableRow-head:last-of-type th': {
-            padding: '4px 16px',
-            height: '27px',
-        },
-        '& .MuiTableBody-root td': {
-            'line-height': '23px',
-        },
-        '& .MuiTableRow-root:last-of-type td': {
+        '& .MuiTableRow-root:last-of-type .MuiTableCell-body': {
             'border-bottom': 0,
         },
         '& .MuiTableCell-root': {
             'text-align': 'center',
+            'line-height': '15px',
         },
     },
 });
