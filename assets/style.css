@@ -7,11 +7,6 @@ body {
     margin: 0;
 }
 
-.MuiBox-root {
-    display: inline-flex;
-    margin: 20px;
-}
-
 .MuiListItem-root {
     justify-content: center !important;
     font-size: 14px !important;

@@ -25,6 +25,7 @@ def mcu_next_cycle():
     window.currentAddr = int(m.pc)
     mcu_update_window_memRows()
     mcu_update_window_keyRows()
+    mcu_update_window_flags()
 
 
 def mcu_reset_rom():
@@ -80,6 +81,45 @@ def mcu_update_window_keyRows():
         {'name': 'R7', 'val': int(m.mem.r7)}]
 
 
+def mcu_update_window_flags():
+    window.flags = {
+        'EA': m.mem.ea,
+        'ES': m.mem.es,
+        'ET1': m.mem.et1,
+        'EX1': m.mem.ex1,
+        'ET0': m.mem.et0,
+        'EX0': m.mem.ex0,
+        'PS': m.mem.ps,
+        'PT1': m.mem.pt1,
+        'PX1': m.mem.px1,
+        'PT0': m.mem.pt0,
+        'PX0': m.mem.px0,
+        'C': m.mem.c,
+        'AC': m.mem.ac,
+        'F0': m.mem.f0,
+        'RS1': m.mem.rs1,
+        'RS0': m.mem.rs0,
+        'OV': m.mem.ov,
+        'F1': m.mem.f1,
+        'P': m.mem.p,
+        'TF1': m.mem.tf1,
+        'TR1': m.mem.tr1,
+        'TF0': m.mem.tf0,
+        'TR0': m.mem.tr0,
+        'IE1': m.mem.ie1,
+        'IT1': m.mem.it1,
+        'IE0': m.mem.ie0,
+        'IT0': m.mem.it0,
+        'T1_GATE': m.mem.t1_gate,
+        'T1_CT': m.mem.t1_ct,
+        'T1_M1': m.mem.t1_m1,
+        'T1_M0': m.mem.t1_m0,
+        'T0_GATE': m.mem.t0_gate,
+        'T0_CT': m.mem.t0_ct,
+        'T0_M1': m.mem.t0_m1,
+        'T0_M0': m.mem.t0_m0}
+
+
 window.disassemble = disassemble
 window.mcu_load_hex_file = mcu_load_hex_file
 window.mcu_next_cycle = mcu_next_cycle
@@ -90,3 +130,4 @@ window.mcu_update_window_ram = mcu_update_window_ram
 window.mcu_update_window_xram = mcu_update_window_xram
 window.mcu_update_window_memRows = mcu_update_window_memRows
 window.mcu_update_window_keyRows = mcu_update_window_keyRows
+window.mcu_update_window_flags = mcu_update_window_flags

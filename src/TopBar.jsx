@@ -49,6 +49,7 @@ function onFileUpload(e) {
         window.memRows = window.rom;
         document.getElementById('memTable').scrollTop = 0;
         window.mcu_update_window_keyRows();
+        window.mcu_update_window_flags()
         render();
     }
 }
@@ -67,6 +68,7 @@ function onRefreshClicked() {
     mcu_update_window_memRows();
     document.getElementById('memTable').scrollTop = 0;
     mcu_update_window_keyRows();
+    mcu_update_window_flags()
     render();
 }
 

@@ -1471,6 +1471,14 @@ class InternalDataMemory:
         self.psw[1] = value
 
     @property
+    def f0(self):
+        return self.psw[2]
+
+    @f0.setter
+    def f0(self, value):
+        self.psw[2] = value
+
+    @property
     def rs1(self):
         return self.psw[3]
 
@@ -1493,6 +1501,14 @@ class InternalDataMemory:
     @ov.setter
     def ov(self, value):
         self.psw[5] = value
+
+    @property
+    def f1(self):
+        return self.psw[6]
+
+    @f1.setter
+    def f1(self, value):
+        self.psw[6] = value
 
     @property
     def p(self):
