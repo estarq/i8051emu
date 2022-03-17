@@ -11,9 +11,9 @@ import FlagsTable from './FlagsTable';
 
 window.assRows = [];
 window.currentAddr = 0;
-window.memRows = [];
+window.memCells = [];
 window.memType = 'ROM';
-window.keyRows = [];
+window.keyRegs = [];
 window.flags = {};
 
 const useStyles = makeStyles({
@@ -29,8 +29,8 @@ function App() {
             <TopBar/>
             <Box classes={useStyles()}>
                 <AssTable rows={window.assRows} currentAddr={window.currentAddr}/>
-                <MemTable rows={window.memRows} memType={window.memType}/>
-                <KeyRegsTable rows={window.keyRows}/>
+                <MemTable cells={window.memCells} memType={window.memType}/>
+                <KeyRegsTable regs={window.keyRegs}/>
                 <FlagsTable flags={window.flags}/>
             </Box>
         </StyledEngineProvider>

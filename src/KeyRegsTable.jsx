@@ -11,21 +11,21 @@ const useStyles = makeStyles({
     root: {
         width: '139px',
         height: '531px',
-        'overflow-y': 'hidden',
-        'margin-left': '20px',
+        overflowY: 'hidden',
+        marginLeft: '20px',
         border: '1px solid rgb(224, 224, 224)',
-        'border-radius': '4px',
+        borderRadius: '4px',
         '& .MuiTableRow-root:last-of-type .MuiTableCell-body': {
-            'border-bottom': 0,
+            borderBottomWidth: '0px',
         },
         '& .MuiTableCell-root': {
-            'text-align': 'center',
-            'line-height': '15px',
+            textAlign: 'center',
+            lineHeight: '15px',
         },
     },
 });
 
-export default function KeyRegsTable(props) {
+export default function KeyRegsTable({regs}) {
     return (
         <TableContainer classes={useStyles()}>
             <Table size="small">
@@ -39,10 +39,10 @@ export default function KeyRegsTable(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.rows.map((row) => (
-                        <TableRow key={row.name}>
-                            <TableCell>{row.name}</TableCell>
-                            <TableCell>{row.val}</TableCell>
+                    {regs.map((reg) => (
+                        <TableRow key={reg.name}>
+                            <TableCell>{reg.name}</TableCell>
+                            <TableCell>{reg.value}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

@@ -13,29 +13,29 @@ const useStyles = makeStyles({
     root: {
         width: '139px',
         height: '531px',
-        'margin-left': '20px',
+        marginLeft: '20px',
         border: '1px solid rgb(224, 224, 224)',
-        'border-radius': '4px',
-        'scrollbar-width': 'thin',
+        borderRadius: '4px',
+        scrollbarWidth: 'thin',
         '& .MuiTableRow-head:last-of-type .MuiTableCell-head': {
             top: '28px',
         },
         '& .MuiTableRow-root:last-of-type .MuiTableCell-body': {
-            'border-bottom-width': 0,
+            borderBottomWidth: '0px',
         },
         '& .MuiTableCell-head:first-of-type': {
             padding: '4px 16px',
         },
         '& .MuiTableCell-root': {
-            'text-align': 'center',
-            'line-height': '15px',
+            textAlign: 'center',
+            lineHeight: '15px',
         },
         '& .MuiInputBase-input': {
-            padding: '0 15px 0 0',
-            'font-size': '15px',
+            padding: '0px 15px 0px 0px',
+            fontSize: '15px',
         },
         '& .MuiSelect-select:focus': {
-            'background-color': 'inherit',
+            backgroundColor: 'inherit',
         },
         '& .MuiSelect-icon': {
             right: '15px',
@@ -43,13 +43,13 @@ const useStyles = makeStyles({
     },
 });
 
-function handleChange(e) {
-    window.memType = e.target.value;
-    mcu_update_window_memRows();
-    render();
-}
+export default function MemTable({cells, memType}) {
+    function onMemoryTypeChanged(e) {
+        window.memType = e.target.value;
+        mcu_update_window_memCells();
+        render();
+    }
 
-export default function MemTable(props) {
     return (
         <TableContainer id="memTable" classes={useStyles()}>
             <Table stickyHeader size="small">
@@ -57,7 +57,7 @@ export default function MemTable(props) {
                     <TableRow>
                         <TableCell colSpan={2}>
                             <FormControl fullWidth>
-                                <Select value={props.memType} onChange={handleChange} disableUnderline>
+                                <Select value={memType} onChange={onMemoryTypeChanged} disableUnderline>
                                     <MenuItem value={"ROM"}>ROM</MenuItem>
                                     <MenuItem value={"RAM"}>RAM</MenuItem>
                                     <MenuItem value={"XRAM"}>XRAM</MenuItem>
@@ -71,10 +71,10 @@ export default function MemTable(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.rows.map((row) => (
-                        <TableRow key={row.addr}>
-                            <TableCell>{row.addr}</TableCell>
-                            <TableCell>{row.val}</TableCell>
+                    {cells.map((cell) => (
+                        <TableRow key={cell.addr}>
+                            <TableCell>{cell.addr}</TableCell>
+                            <TableCell>{cell.value}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

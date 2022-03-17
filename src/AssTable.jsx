@@ -7,13 +7,13 @@ const useStyles = makeStyles({
         height: '531px',
         width: '442px',
         '& .MuiDataGrid-columnHeader': {
-            padding: 0,
+            padding: '0px',
         },
         '& .MuiDataGrid-columnSeparator': {
             display: 'none',
         },
         '& .MuiDataGrid-cell': {
-            'line-height': '15px',
+            lineHeight: '15px',
         },
         '& .MuiDataGrid-cell:focus, & .MuiDataGrid-columnHeader:focus': {
             outline: 'none',
@@ -30,11 +30,11 @@ const columns = [
     {field: 'mnemonic', headerName: 'Mnemonic', width: 175, headerAlign: 'center', align: 'center', sortable: false},
 ];
 
-export default function AssTable(props) {
+export default function AssTable({rows, currentAddr}) {
     return (
         <DataGrid
             classes={useStyles()}
-            rows={props.rows}
+            rows={rows}
             rowsPerPageOptions={[]}
             rowHeight={40}
             headerHeight={40}
@@ -44,7 +44,7 @@ export default function AssTable(props) {
             disableColumnMenu={true}
             density={"compact"}
             hideFooterSelectedRowCount={true}
-            selectionModel={props.currentAddr}
+            selectionModel={currentAddr}
         />
     );
 }
