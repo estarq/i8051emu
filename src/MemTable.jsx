@@ -46,6 +46,7 @@ const useStyles = makeStyles({
 export default function MemTable({cells, memType}) {
     function onMemoryTypeChanged(e) {
         window.memType = e.target.value;
+        document.getElementById('memTable').scrollTop = 0;
         mcu_update_window_memCells();
         render();
     }
