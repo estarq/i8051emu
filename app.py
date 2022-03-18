@@ -118,11 +118,21 @@ def mcu_update_window_flags():
     }
 
 
+def mcu_update_window_extDevsRegs():
+    window.extDevsRegs = [
+        {'name': 'CSDS', 'bits': list(m.xmem.csds.bits)},
+        {'name': 'CSDB', 'bits': list(m.xmem.csdb.bits)},
+        {'name': 'CSKB0', 'bits': list(m.xmem.cskb0.bits)},
+        {'name': 'CSKB1', 'bits': list(m.xmem.cskb1.bits)},
+    ]
+
+
 def mcu_update_window_all():
     mcu_update_window_currentAddr()
     mcu_update_window_memCells()
     mcu_update_window_keyRegs()
     mcu_update_window_flags()
+    mcu_update_window_extDevsRegs()
 
 
 window.disassemble_to_window_assRows = disassemble_to_window_assRows

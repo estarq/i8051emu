@@ -1601,6 +1601,38 @@ class ExternalDataMemory:
     def __setitem__(self, addr, value: 'Byte'):
         self[addr].value = value
 
+    @property
+    def cskb0(self):
+        return self[21]
+
+    @cskb0.setter
+    def cskb0(self, value):
+        self[21].value = value
+
+    @property
+    def cskb1(self):
+        return self[22]
+
+    @cskb1.setter
+    def cskb1(self, value):
+        self[22].value = value
+
+    @property
+    def csds(self):
+        return self[30]
+
+    @csds.setter
+    def csds(self, value):
+        self[30].value = value
+
+    @property
+    def csdb(self):
+        return self[38]
+
+    @csdb.setter
+    def csdb(self, value):
+        self[38].value = value
+
 
 class Byte:
     # Warning: big-endian

@@ -1258,6 +1258,11 @@ class TestExternalDataMemory:
         xmem[b] = mcu.Byte(30)
         assert xmem[500] == 30, 'Cannot use a DoubleByte instance as an address - not converted to int?'
 
+    def test_csds_prop(self):
+        xmem = mcu.ExternalDataMemory()
+        xmem.csds = 20
+        assert xmem[30] == 20
+
 
 class TestByte:
     def test__getitem__(self):

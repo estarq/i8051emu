@@ -8,6 +8,7 @@ import AssTable from './AssTable';
 import MemTable from './MemTable';
 import KeyRegsTable from './KeyRegsTable';
 import FlagsTable from './FlagsTable';
+import ExtDevsTable from './ExtDevsTable';
 
 window.assRows = [];
 window.currentAddr = 0;
@@ -15,11 +16,15 @@ window.memCells = [];
 window.memType = 'ROM';
 window.keyRegs = [];
 window.flags = {};
+window.extDevsRegs = [];
 
 const useStyles = makeStyles({
     root: {
         display: 'inline-flex',
         margin: '20px',
+        '& .MuiBox-root': {
+            flexDirection: 'column',
+        },
     },
 });
 
@@ -31,7 +36,10 @@ function App() {
                 <AssTable rows={window.assRows} currentAddr={window.currentAddr}/>
                 <MemTable cells={window.memCells} memType={window.memType}/>
                 <KeyRegsTable regs={window.keyRegs}/>
-                <FlagsTable flags={window.flags}/>
+                <Box>
+                    <FlagsTable flags={window.flags}/>
+                    <ExtDevsTable regs={window.extDevsRegs}/>
+                </Box>
             </Box>
         </StyledEngineProvider>
     );
