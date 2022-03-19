@@ -9,6 +9,7 @@ import MemTable from './MemTable';
 import KeyRegsTable from './KeyRegsTable';
 import FlagsTable from './FlagsTable';
 import ExtDevsTable from './ExtDevsTable';
+import PortsTable from './PortsTable';
 
 window.assRows = [];
 window.currentAddr = 0;
@@ -17,6 +18,7 @@ window.memType = 'ROM';
 window.keyRegs = [];
 window.flags = {};
 window.extDevsRegs = [];
+window.ports = [];
 
 const useStyles = makeStyles({
     root: {
@@ -39,6 +41,7 @@ function App() {
                 <Box>
                     <FlagsTable flags={window.flags}/>
                     <ExtDevsTable regs={window.extDevsRegs}/>
+                    <PortsTable ports={window.ports}/>
                 </Box>
             </Box>
         </StyledEngineProvider>

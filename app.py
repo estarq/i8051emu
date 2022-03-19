@@ -127,12 +127,22 @@ def mcu_update_window_extDevsRegs():
     ]
 
 
+def mcu_update_window_ports():
+    window.ports = [
+        {'name': 'P0', 'bits': list(m.mem.p0.bits)},
+        {'name': 'P1', 'bits': list(m.mem.p1.bits)},
+        {'name': 'P2', 'bits': list(m.mem.p2.bits)},
+        {'name': 'P3', 'bits': list(m.mem.p3.bits)},
+    ]
+
+
 def mcu_update_window_all():
     mcu_update_window_currentAddr()
     mcu_update_window_memCells()
     mcu_update_window_keyRegs()
     mcu_update_window_flags()
     mcu_update_window_extDevsRegs()
+    mcu_update_window_ports()
 
 
 window.disassemble_to_window_assRows = disassemble_to_window_assRows
