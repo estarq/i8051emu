@@ -136,6 +136,17 @@ def mcu_update_window_ports():
     ]
 
 
+def mcu_update_window_csds():
+    window.csds = list(m.xmem.csds.bits)
+
+
+def mcu_update_window_segments():
+    window.segments = {
+        name: bool(m.xmem.csdb[idx])
+        for idx, name in enumerate(['dp', 'g', 'f', 'e', 'd', 'c', 'b', 'a'])
+    }
+
+
 def mcu_update_window_all():
     mcu_update_window_currentAddr()
     mcu_update_window_memCells()
@@ -143,6 +154,8 @@ def mcu_update_window_all():
     mcu_update_window_flags()
     mcu_update_window_extDevsRegs()
     mcu_update_window_ports()
+    mcu_update_window_csds()
+    mcu_update_window_segments()
 
 
 window.disassemble_to_window_assRows = disassemble_to_window_assRows
