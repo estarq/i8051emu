@@ -56,7 +56,7 @@ export default function MainWindow() {
                 </Box>
             </Box>
             <Box>
-                <Display csds={window.csds}/>
+                <Display enabled={window.displayEnabled} csds={window.csds}/>
                 <StateIcons displayEnabled={window.displayEnabled} buzzerEnabled={window.buzzerEnabled}
                             LEDEnabled={window.LEDEnabled}/>
             </Box>

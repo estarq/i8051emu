@@ -12,11 +12,11 @@ const useStyles = makeStyles({
     },
 });
 
-export default function Display({csds}) {
+export default function Display({enabled, csds}) {
     return (
         <Box classes={useStyles()}>
             {csds.reverse().map((bit, idx) => (
-                <Digit key={idx} enabled={Boolean(parseInt(bit))} segments={window.segments}/>
+                <Digit key={idx} enabled={enabled && Boolean(parseInt(bit))} segments={window.segments}/>
             ))}
         </Box>
     );
