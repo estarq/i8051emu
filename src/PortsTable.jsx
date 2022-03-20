@@ -28,8 +28,10 @@ const useStyles = makeStyles({
             width: '65px',
             padding: '6px 0px',
         },
-        '& .MuiTableRow-root:last-of-type .MuiTableCell-body': {
-            borderBottomWidth: '0px',
+        '& .MuiTableRow-root:last-of-type': {
+            '& .MuiTableCell-body': {
+                borderBottomWidth: '0px',
+            },
         },
     },
 });

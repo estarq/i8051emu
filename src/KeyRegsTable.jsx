@@ -15,8 +15,10 @@ const useStyles = makeStyles({
         marginLeft: '20px',
         border: '1px solid rgb(224, 224, 224)',
         borderRadius: '4px',
-        '& .MuiTableRow-root:last-of-type .MuiTableCell-body': {
-            borderBottomWidth: '0px',
+        '& .MuiTableRow-root:last-of-type': {
+            '& .MuiTableCell-body': {
+                borderBottomWidth: '0px',
+            },
         },
         '& .MuiTableCell-root': {
             textAlign: 'center',

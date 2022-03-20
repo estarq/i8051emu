@@ -8,15 +8,18 @@ const useStyles = makeStyles({
         width: '442px',
         '& .MuiDataGrid-columnHeader': {
             padding: '0px',
+            '&:focus': {
+                outline: 'none',
+            },
         },
         '& .MuiDataGrid-columnSeparator': {
             display: 'none',
         },
         '& .MuiDataGrid-cell': {
             lineHeight: '15px',
-        },
-        '& .MuiDataGrid-cell:focus, & .MuiDataGrid-columnHeader:focus': {
-            outline: 'none',
+            '&:focus': {
+                outline: 'none',
+            },
         },
     },
 });

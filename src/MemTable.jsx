@@ -17,11 +17,15 @@ const useStyles = makeStyles({
         border: '1px solid rgb(224, 224, 224)',
         borderRadius: '4px',
         scrollbarWidth: 'thin',
-        '& .MuiTableRow-head:last-of-type .MuiTableCell-head': {
-            top: '28px',
+        '& .MuiTableRow-head:last-of-type': {
+            '& .MuiTableCell-head': {
+                top: '28px',
+            },
         },
-        '& .MuiTableRow-root:last-of-type .MuiTableCell-body': {
-            borderBottomWidth: '0px',
+        '& .MuiTableRow-root:last-of-type': {
+            '& .MuiTableCell-body': {
+                borderBottomWidth: '0px',
+            },
         },
         '& .MuiTableCell-head:first-of-type': {
             padding: '4px 16px',
