@@ -17,6 +17,7 @@ const useStyles = makeStyles({
         border: '1px solid rgb(224, 224, 224)',
         borderRadius: '4px',
         scrollbarWidth: 'thin',
+        overflowX: 'hidden',
         '& .MuiTableRow-head:last-of-type': {
             '& .MuiTableCell-head': {
                 top: '28px',

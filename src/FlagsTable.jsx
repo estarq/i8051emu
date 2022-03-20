@@ -35,7 +35,7 @@ const useStyles = makeStyles({
             textDecoration: 'overline',
         },
         '& .set': {
-            color: 'rgba(25, 118, 210, 0.7)',
+            fontWeight: 'bold',
         },
     },
 });
