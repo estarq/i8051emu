@@ -8,6 +8,7 @@ import FlagsTable from './FlagsTable';
 import ExtDevsTable from './ExtDevsTable';
 import PortsTable from './PortsTable';
 import Display from './Display';
+import StateIcons from './StateIcons';
 
 window.assRows = [];
 window.currentAddr = 0;
@@ -19,6 +20,9 @@ window.extDevsRegs = [];
 window.ports = [];
 window.csds = [];
 window.segments = {};
+window.displayEnabled = false;
+window.buzzerEnabled = false;
+window.LEDEnabled = false;
 
 const useStyles = makeStyles({
     root: {
@@ -53,6 +57,8 @@ export default function MainWindow() {
             </Box>
             <Box>
                 <Display csds={window.csds}/>
+                <StateIcons displayEnabled={window.displayEnabled} buzzerEnabled={window.buzzerEnabled}
+                            LEDEnabled={window.LEDEnabled}/>
             </Box>
         </Box>
     );

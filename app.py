@@ -147,6 +147,18 @@ def mcu_update_window_segments():
     }
 
 
+def mcu_update_window_displayEnabled():
+    window.displayEnabled = not m.mem.p1[1]
+
+
+def mcu_update_window_buzzerEnabled():
+    window.buzzerEnabled = not m.mem.p1[2]
+
+
+def mcu_update_window_LEDEnabled():
+    window.LEDEnabled = not m.mem.p1[0]
+
+
 def mcu_update_window_all():
     mcu_update_window_currentAddr()
     mcu_update_window_memCells()
@@ -156,6 +168,9 @@ def mcu_update_window_all():
     mcu_update_window_ports()
     mcu_update_window_csds()
     mcu_update_window_segments()
+    mcu_update_window_displayEnabled()
+    mcu_update_window_buzzerEnabled()
+    mcu_update_window_LEDEnabled()
 
 
 window.disassemble_to_window_assRows = disassemble_to_window_assRows
