@@ -56,7 +56,11 @@ def mcu_update_window_memCells():
         ]
     elif window.memType == 'RAM':
         window.memCells = [
-            {'addr': addr, 'value': int(m.mem[addr])} for addr in range(256)
+            {'addr': addr, 'value': int(m.mem[addr])} for addr in range(128)
+        ]
+    elif window.memType == 'SFR':
+        window.memCells = [
+            {'addr': addr, 'value': int(m.mem[addr])} for addr in range(128, 256)
         ]
     elif window.memType == 'XRAM':
         window.memCells = [

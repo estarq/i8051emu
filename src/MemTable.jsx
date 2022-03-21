@@ -66,6 +66,7 @@ export default function MemTable({cells, memType}) {
                                 <Select value={memType} onChange={onMemoryTypeChanged} disableUnderline>
                                     <MenuItem value={"ROM"}>ROM</MenuItem>
                                     <MenuItem value={"RAM"}>RAM</MenuItem>
+                                    <MenuItem value={"SFR"}>SFR</MenuItem>
                                     <MenuItem value={"XRAM"}>XRAM</MenuItem>
                                 </Select>
                             </FormControl>
