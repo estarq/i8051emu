@@ -37,6 +37,14 @@ def mcu_reset_ram():
     m.reset_ram()
 
 
+def mcu_set_seqKeyPressed():
+    m.mem.p3[2] = 1
+
+
+def mcu_clr_seqKeyPressed():
+    m.mem.p3[2] = 0
+
+
 def mcu_update_window_currentAddr():
     window.currentAddr = int(m.pc)
 
@@ -178,5 +186,7 @@ window.mcu_load_hex_file = mcu_load_hex_file
 window.mcu_next_cycle = mcu_next_cycle
 window.mcu_reset_rom = mcu_reset_rom
 window.mcu_reset_ram = mcu_reset_ram
+window.mcu_set_seqKeyPressed = mcu_set_seqKeyPressed
+window.mcu_clr_seqKeyPressed = mcu_clr_seqKeyPressed
 window.mcu_update_window_memCells = mcu_update_window_memCells
 window.mcu_update_window_all = mcu_update_window_all

@@ -9,6 +9,7 @@ import ExtDevsTable from './ExtDevsTable';
 import PortsTable from './PortsTable';
 import Display from './Display';
 import StateIcons from './StateIcons';
+import SequentialKeyboard from './SequentialKeyboard';
 
 window.assRows = [];
 window.currentAddr = 0;
@@ -59,6 +60,7 @@ export default function MainWindow() {
                 <Display enabled={window.displayEnabled} csds={window.csds}/>
                 <StateIcons displayEnabled={window.displayEnabled} buzzerEnabled={window.buzzerEnabled}
                             LEDEnabled={window.LEDEnabled}/>
+                <SequentialKeyboard/>
             </Box>
         </Box>
     );
