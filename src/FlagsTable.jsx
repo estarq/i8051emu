@@ -13,7 +13,7 @@ const useStyles = makeStyles({
         width: '454px',
         height: '168px',
         overflow: 'hidden',
-        margin: '0px 0px 26px 20px',
+        margin: '0px 0px 25px 20px',
         border: '1px solid rgb(224, 224, 224)',
         borderRadius: '4px',
         '& .MuiTableCell-head': {

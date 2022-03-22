@@ -17,8 +17,8 @@ window.memCells = [];
 window.memType = 'ROM';
 window.keyRegs = [];
 window.flags = {};
-window.extDevsRegs = [];
 window.ports = [];
+window.extDevsRegs = [];
 window.csds = [];
 window.segments = {};
 window.displayEnabled = false;
@@ -52,8 +52,8 @@ export default function MainWindow() {
                 <KeyRegsTable regs={window.keyRegs}/>
                 <Box>
                     <FlagsTable flags={window.flags}/>
-                    <ExtDevsTable regs={window.extDevsRegs}/>
                     <PortsTable ports={window.ports}/>
+                    <ExtDevsTable regs={window.extDevsRegs}/>
                 </Box>
             </Box>
             <Box>

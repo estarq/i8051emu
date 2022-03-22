@@ -6,6 +6,10 @@ const useStyles = makeStyles({
     root: {
         height: '531px',
         width: '442px',
+        '& .MuiDataGrid-virtualScroller': {
+            overflowX: 'hidden',
+            scrollbarWidth: 'thin',
+        },
         '& .MuiDataGrid-columnHeader': {
             padding: '0px',
             '&:focus': {
@@ -41,12 +45,12 @@ export default function AssTable({rows, currentAddr}) {
             rowsPerPageOptions={[]}
             rowHeight={40}
             headerHeight={40}
-            autoPageSize={true}
             getRowId={(row) => row.addr}
             columns={columns}
             disableColumnMenu={true}
             density={"compact"}
             hideFooterSelectedRowCount={true}
+            hideFooter={rows.length < 101}
             selectionModel={currentAddr}
         />
     );

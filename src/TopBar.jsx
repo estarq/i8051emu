@@ -19,7 +19,7 @@ const useStyles = makeStyles({
             minHeight: '60px',
         },
         '& .MuiTypography-root': {
-            marginRight: '10px',
+            margin: '0px 10px 0px 5px',
         },
     },
 });
