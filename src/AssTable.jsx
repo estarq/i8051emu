@@ -38,6 +38,10 @@ const columns = [
 ];
 
 export default function AssTable({rows, currentAddr}) {
+    function onSelectionModelChanged(selectedRowData) {
+        window.selectedAddr = selectedRowData[0];
+    }
+
     return (
         <DataGrid
             classes={useStyles()}
@@ -52,6 +56,7 @@ export default function AssTable({rows, currentAddr}) {
             hideFooterSelectedRowCount={true}
             hideFooter={rows.length < 101}
             selectionModel={currentAddr}
+            onSelectionModelChange={onSelectionModelChanged}
         />
     );
 }

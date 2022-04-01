@@ -13,6 +13,7 @@ import SequentialKeyboard from './SequentialKeyboard';
 
 window.assRows = [];
 window.currentAddr = 0;
+window.selectedAddr = 0;
 window.memCells = [];
 window.memType = 'ROM';
 window.keyRegs = [];

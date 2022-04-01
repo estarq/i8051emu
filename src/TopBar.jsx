@@ -4,6 +4,7 @@ import {AppBar, IconButton, Toolbar, Typography} from '@material-ui/core';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import LastPageOutlinedIcon from '@mui/icons-material/LastPageOutlined';
 import KeyboardDoubleArrowRightOutlinedIcon from '@mui/icons-material/KeyboardDoubleArrowRightOutlined';
 import PauseOutlinedIcon from '@mui/icons-material/PauseOutlined';
 import {makeStyles} from '@material-ui/core/styles';
@@ -59,6 +60,15 @@ export default function TopBar() {
         }
     }
 
+    function onToSelectedClicked() {
+        const intervalRef = setInterval(() => {
+            if (window.currentAddr !== window.selectedAddr)
+                onNextClicked();
+            else
+                clearInterval(intervalRef);
+        }, 500);
+    }
+
     function onRunClicked() {
         setIntervalRef(setInterval(onNextClicked, 500));
         setRunning(true);
@@ -87,6 +97,9 @@ export default function TopBar() {
 
                 <IconButton color="inherit" onClick={onNextClicked}>
                     <KeyboardArrowRightOutlinedIcon/>
+                </IconButton>
+                <IconButton color="inherit" onClick={onToSelectedClicked}>
+                    <LastPageOutlinedIcon/>
                 </IconButton>
                 <IconButton color="inherit" onClick={running ? onPauseClicked : onRunClicked}>
                     {running ? <PauseOutlinedIcon/> : <KeyboardDoubleArrowRightOutlinedIcon/>}
