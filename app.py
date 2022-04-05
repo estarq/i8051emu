@@ -45,6 +45,22 @@ def mcu_clr_seqKeyPressed():
     m.mem.p3[2] = 0
 
 
+def mcu_set_CSKB0_bit(bit_number):
+    m.xmem.cskb0[bit_number] = 1
+
+
+def mcu_set_CSKB1_bit(bit_number):
+    m.xmem.cskb1[bit_number] = 1
+
+
+def mcu_clr_CSKB0_bit(bit_number):
+    m.xmem.cskb0[bit_number] = 0
+
+
+def mcu_clr_CSKB1_bit(bit_number):
+    m.xmem.cskb1[bit_number] = 0
+
+
 def mcu_update_window_currentAddr():
     window.currentAddr = int(m.pc)
 
@@ -192,5 +208,9 @@ window.mcu_reset_rom = mcu_reset_rom
 window.mcu_reset_ram = mcu_reset_ram
 window.mcu_set_seqKeyPressed = mcu_set_seqKeyPressed
 window.mcu_clr_seqKeyPressed = mcu_clr_seqKeyPressed
+window.mcu_set_CSKB0_bit = mcu_set_CSKB0_bit
+window.mcu_set_CSKB1_bit = mcu_set_CSKB1_bit
+window.mcu_clr_CSKB0_bit = mcu_clr_CSKB0_bit
+window.mcu_clr_CSKB1_bit = mcu_clr_CSKB1_bit
 window.mcu_update_window_memCells = mcu_update_window_memCells
 window.mcu_update_window_all = mcu_update_window_all

@@ -10,6 +10,7 @@ import PortsTable from './PortsTable';
 import Display from './Display';
 import StateIcons from './StateIcons';
 import SequentialKeyboard from './SequentialKeyboard';
+import MatrixKeyboard from './MatrixKeyboard';
 
 window.assRows = [];
 window.currentAddr = 0;
@@ -62,6 +63,7 @@ export default function MainWindow() {
                 <StateIcons displayEnabled={window.displayEnabled} buzzerEnabled={window.buzzerEnabled}
                             LEDEnabled={window.LEDEnabled}/>
                 <SequentialKeyboard/>
+                <MatrixKeyboard/>
             </Box>
         </Box>
     );
