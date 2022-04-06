@@ -68,7 +68,7 @@ def mcu_update_window_currentAddr():
 def mcu_update_window_memCells():
     if window.memType == 'ROM':
         window.memCells = [
-            {'addr': addr, 'value': m.rom[addr]} for addr in range(1000)
+            {'addr': addr, 'value': value} for addr, value in enumerate(m.rom)
         ]
     elif window.memType == 'RAM':
         window.memCells = [
@@ -80,7 +80,7 @@ def mcu_update_window_memCells():
         ]
     elif window.memType == 'XRAM':
         window.memCells = [
-            {'addr': addr, 'value': int(m.xmem[addr])} for addr in range(1000)
+            {'addr': addr, 'value': int(value)} for addr, value in enumerate(m.xmem)
         ]
 
 

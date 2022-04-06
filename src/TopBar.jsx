@@ -38,18 +38,18 @@ export default function TopBar() {
             mcu_load_hex_file(reader.result);
             disassemble_to_window_assRows(reader.result);
             window.memType = 'ROM';
-            document.getElementById('memTable').scrollTop = 0;
             mcu_update_window_all();
             render();
+            setTimeout("document.getElementsByClassName('ReactVirtualized__Grid')[0].scrollTop = 0");
         }
     }
 
     function onRefreshClicked() {
         mcu_reset_ram();
         window.memType = 'ROM';
-        document.getElementById('memTable').scrollTop = 0;
         mcu_update_window_all();
         render();
+        setTimeout("document.getElementsByClassName('ReactVirtualized__Grid')[0].scrollTop = 0");
     }
 
     function onNextClicked() {

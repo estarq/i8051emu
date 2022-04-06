@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     root: {
         width: '139px',
         height: '531px',
-        overflowY: 'hidden',
+        overflow: 'hidden',
         marginLeft: '20px',
         border: '1px solid rgb(224, 224, 224)',
         borderRadius: '4px',

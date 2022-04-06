@@ -1598,6 +1598,9 @@ class ExternalDataMemory:
     def __getitem__(self, addr: Union[int, 'DoubleByte']):
         return self._data[int(addr)]
 
+    def __len__(self):
+        return len(self._data)
+
     def __setitem__(self, addr, value: 'Byte'):
         self[addr].value = value
 
