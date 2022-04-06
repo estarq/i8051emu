@@ -1261,7 +1261,7 @@ class TestExternalDataMemory:
     def test_csds_prop(self):
         xmem = mcu.ExternalDataMemory()
         xmem.csds = 20
-        assert xmem[30] == 20
+        assert xmem[65328] == 20
 
 
 class TestByte:

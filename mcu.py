@@ -1606,35 +1606,35 @@ class ExternalDataMemory:
 
     @property
     def cskb0(self):
-        return self[21]
+        return self[65313]
 
     @cskb0.setter
     def cskb0(self, value):
-        self[21].value = value
+        self[65313].value = value
 
     @property
     def cskb1(self):
-        return self[22]
+        return self[65314]
 
     @cskb1.setter
     def cskb1(self, value):
-        self[22].value = value
+        self[65314].value = value
 
     @property
     def csds(self):
-        return self[30]
+        return self[65328]
 
     @csds.setter
     def csds(self, value):
-        self[30].value = value
+        self[65328].value = value
 
     @property
     def csdb(self):
-        return self[38]
+        return self[65336]
 
     @csdb.setter
     def csdb(self, value):
-        self[38].value = value
+        self[65336].value = value
 
 
 class Byte:
