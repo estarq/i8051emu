@@ -203,7 +203,8 @@ class Microcontroller:
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
         if self.mem[byte_no][7 - bit % 8]:
             self.mem[byte_no][7 - bit % 8] = 0
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_17(self, addr11):
         self.mem.sp += 1
@@ -265,7 +266,8 @@ class Microcontroller:
     def _exec_32(self, bit, offset):
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
         if self.mem[byte_no][7 - bit % 8]:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_33(self, addr11):
         self.pc = int(f'{self.pc.bits[:5]}001{addr11:08b}', 2)
@@ -319,7 +321,8 @@ class Microcontroller:
     def _exec_48(self, bit, offset):
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
         if not self.mem[byte_no][7 - bit % 8]:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_49(self, addr11):
         self.mem.sp += 1
@@ -379,7 +382,8 @@ class Microcontroller:
 
     def _exec_64(self, offset):
         if self.mem.c:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_65(self, addr11):
         self.pc = int(f'{self.pc.bits[:5]}010{addr11:08b}', 2)
@@ -428,7 +432,8 @@ class Microcontroller:
 
     def _exec_80(self, offset):
         if not self.mem.c:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_81(self, addr11):
         self.mem.sp += 1
@@ -481,7 +486,8 @@ class Microcontroller:
 
     def _exec_96(self, offset):
         if self.mem.a == 0:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_97(self, addr11):
         self.pc = int(f'{self.pc.bits[:5]}011{addr11:08b}', 2)
@@ -530,7 +536,8 @@ class Microcontroller:
 
     def _exec_112(self, offset):
         if self.mem.a != 0:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_113(self, addr11):
         self.mem.sp += 1
@@ -755,62 +762,74 @@ class Microcontroller:
 
     def _exec_180(self, immed, offset):
         if self.mem.a != immed:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem.a < immed else 0
 
     def _exec_181(self, direct, offset):
         if self.mem.a != self.mem[direct]:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem.a < self.mem[direct] else 0
 
     def _exec_182(self, immed, offset):
         if self.mem[self.mem.r0] != immed:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem[self.mem.r0] < immed else 0
 
     def _exec_183(self, immed, offset):
         if self.mem[self.mem.r1] != immed:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem[self.mem.r1] < immed else 0
 
     def _exec_184(self, immed, offset):
         if self.mem.r0 != immed:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem.r0 < immed else 0
 
     def _exec_185(self, immed, offset):
         if self.mem.r1 != immed:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem.r1 < immed else 0
 
     def _exec_186(self, immed, offset):
         if self.mem.r2 != immed:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem.r2 < immed else 0
 
     def _exec_187(self, immed, offset):
         if self.mem.r3 != immed:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem.r3 < immed else 0
 
     def _exec_188(self, immed, offset):
         if self.mem.r4 != immed:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem.r4 < immed else 0
 
     def _exec_189(self, immed, offset):
         if self.mem.r5 != immed:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem.r5 < immed else 0
 
     def _exec_190(self, immed, offset):
         if self.mem.r6 != immed:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem.r6 < immed else 0
 
     def _exec_191(self, immed, offset):
         if self.mem.r7 != immed:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
         self.mem.c = 1 if self.mem.r7 < immed else 0
 
     def _exec_192(self, direct):
@@ -891,7 +910,8 @@ class Microcontroller:
     def _exec_213(self, direct, offset):
         self.mem[direct] -= 1
         if self.mem[direct] != 0:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_214(self):
         self.mem.a, self.mem[self.mem.r0] = (
@@ -906,42 +926,50 @@ class Microcontroller:
     def _exec_216(self, offset):
         self.mem.r0 -= 1
         if self.mem.r0 != 0:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_217(self, offset):
         self.mem.r1 -= 1
         if self.mem.r1 != 0:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_218(self, offset):
         self.mem.r2 -= 1
         if self.mem.r2 != 0:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_219(self, offset):
         self.mem.r3 -= 1
         if self.mem.r3 != 0:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_220(self, offset):
         self.mem.r4 -= 1
         if self.mem.r4 != 0:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_221(self, offset):
         self.mem.r5 -= 1
         if self.mem.r5 != 0:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_222(self, offset):
         self.mem.r6 -= 1
         if self.mem.r6 != 0:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_223(self, offset):
         self.mem.r7 -= 1
         if self.mem.r7 != 0:
-            self.pc += offset
+            # Convert from two's complement representation
+            self.pc += offset - 256 if offset > 127 else offset
 
     def _exec_224(self):
         self.mem.a = self.xmem[self.mem.dptr]

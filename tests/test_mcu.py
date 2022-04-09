@@ -259,8 +259,8 @@ class TestMicrocontroller:
         m._exec_16(10, 20)
         assert m.mem[33][5] == 0 and m.pc == 125
         m.mem[184][1] = 1
-        m._exec_16(190, 15)
-        assert m.mem[184][1] == 0 and m.pc == 140
+        m._exec_16(190, 180)
+        assert m.mem[184][1] == 0 and m.pc == 49
 
     def test_exec_18(self):
         m = mcu.Microcontroller()
@@ -306,8 +306,8 @@ class TestMicrocontroller:
         m._exec_32(10, 20)
         assert m.pc == 125
         m.mem[184][1] = 1
-        m._exec_32(190, 15)
-        assert m.pc == 140
+        m._exec_32(190, 180)
+        assert m.pc == 49
 
     def test_exec_34(self):
         m = mcu.Microcontroller()
@@ -361,8 +361,8 @@ class TestMicrocontroller:
         m._exec_48(10, 20)
         assert m.pc == 125
         m.mem[184][1] = 0
-        m._exec_48(190, 15)
-        assert m.pc == 140
+        m._exec_48(190, 180)
+        assert m.pc == 49
 
     def test_exec_50(self):
         m = mcu.Microcontroller()
@@ -421,8 +421,8 @@ class TestMicrocontroller:
         m._exec_64(30)
         assert m.pc == 123
         m.mem.c = 1
-        m._exec_64(30)
-        assert m.pc == 153
+        m._exec_64(180)
+        assert m.pc == 47
 
     def test_exec_66(self):
         m = mcu.Microcontroller()
@@ -472,8 +472,8 @@ class TestMicrocontroller:
         m._exec_80(30)
         assert m.pc == 123
         m.mem.c = 0
-        m._exec_80(30)
-        assert m.pc == 153
+        m._exec_80(180)
+        assert m.pc == 47
 
     def test_exec_82(self):
         m = mcu.Microcontroller()
@@ -520,11 +520,11 @@ class TestMicrocontroller:
         m = mcu.Microcontroller()
         m.pc = 100
         m.mem.a = 0
-        m._exec_96(30)
-        assert m.pc == 130
+        m._exec_96(250)
+        assert m.pc == 94
         m.mem.a = 15
         m._exec_96(30)
-        assert m.pc == 130
+        assert m.pc == 94
 
     def test_exec_97(self):
         m = mcu.Microcontroller()
@@ -575,13 +575,13 @@ class TestMicrocontroller:
 
     def test_exec_112(self):
         m = mcu.Microcontroller()
-        m.pc = 100
+        m.pc = 200
         m.mem.a = 0
         m._exec_112(30)
-        assert m.pc == 100
+        assert m.pc == 200
         m.mem.a = 15
-        m._exec_112(30)
-        assert m.pc == 130
+        m._exec_112(130)
+        assert m.pc == 74
 
     def test_exec_113(self):
         m = mcu.Microcontroller()
@@ -843,44 +843,44 @@ class TestMicrocontroller:
 
     def test_exec_180(self):
         m = mcu.Microcontroller()
-        m.pc = 50
+        m.pc = 250
         m.mem.a = 3
-        m._exec_180(4, 30)
-        assert m.pc == 80 and m.mem.c == 1
+        m._exec_180(4, 130)
+        assert m.pc == 124 and m.mem.c == 1
         m._exec_180(3, 20)
-        assert m.pc == 80 and m.mem.c == 0
+        assert m.pc == 124 and m.mem.c == 0
 
     def test_exec_181(self):
         m = mcu.Microcontroller()
-        m.pc = 50
+        m.pc = 250
         m.mem.a = 3
         m.mem[10] = 4
-        m._exec_181(10, 30)
-        assert m.pc == 80 and m.mem.c == 1
+        m._exec_181(10, 130)
+        assert m.pc == 124 and m.mem.c == 1
         m.mem[10] = 3
         m._exec_181(10, 20)
-        assert m.pc == 80 and m.mem.c == 0
+        assert m.pc == 124 and m.mem.c == 0
 
     def test_exec_182(self):
         m = mcu.Microcontroller()
-        m.pc = 50
+        m.pc = 250
         m.mem.r0 = 10
         m.mem[m.mem.r0] = 3
-        m._exec_182(4, 30)
-        assert m.pc == 80 and m.mem.c == 1
+        m._exec_182(4, 130)
+        assert m.pc == 124 and m.mem.c == 1
         m.mem[m.mem.r0] = 4
         m._exec_182(4, 20)
-        assert m.pc == 80 and m.mem.c == 0
+        assert m.pc == 124 and m.mem.c == 0
 
     def test_exec_190(self):
         m = mcu.Microcontroller()
-        m.pc = 50
+        m.pc = 250
         m.mem.r6 = 3
-        m._exec_190(4, 30)
-        assert m.pc == 80 and m.mem.c == 1
+        m._exec_190(4, 130)
+        assert m.pc == 124 and m.mem.c == 1
         m.mem.r6 = 4
         m._exec_190(4, 20)
-        assert m.pc == 80 and m.mem.c == 0
+        assert m.pc == 124 and m.mem.c == 0
 
     def test_exec_192(self):
         m = mcu.Microcontroller()
@@ -962,11 +962,11 @@ class TestMicrocontroller:
     def test_exec_213(self):
         m = mcu.Microcontroller()
         m.mem[20] = 2
-        m.pc = 50
+        m.pc = 250
+        m._exec_213(20, 130)
+        assert m.mem[20] == 1 and m.pc == 124
         m._exec_213(20, 30)
-        assert m.mem[20] == 1 and m.pc == 80
-        m._exec_213(20, 30)
-        assert m.mem[20] == 0 and m.pc == 80
+        assert m.mem[20] == 0 and m.pc == 124
 
     def test_exec_214(self):
         m = mcu.Microcontroller()
@@ -979,11 +979,11 @@ class TestMicrocontroller:
     def test_exec_222(self):
         m = mcu.Microcontroller()
         m.mem.r6 = 2
-        m.pc = 50
+        m.pc = 250
+        m._exec_222(130)
+        assert m.mem.r6 == 1 and m.pc == 124
         m._exec_222(30)
-        assert m.mem.r6 == 1 and m.pc == 80
-        m._exec_222(30)
-        assert m.mem.r6 == 0 and m.pc == 80
+        assert m.mem.r6 == 0 and m.pc == 124
 
     def test_exec_224(self):
         m = mcu.Microcontroller()
