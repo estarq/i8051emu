@@ -37,7 +37,7 @@ export default function TopBar() {
             mcu_reset_rom();
             mcu_load_hex_file(reader.result);
             disassemble_to_window_assRows(reader.result);
-            window.memType = 'ROM';
+            window.memType = 'RAM';
             mcu_update_window_all();
             render();
             setTimeout("document.getElementsByClassName('ReactVirtualized__Grid')[0].scrollTop = 0");
@@ -46,7 +46,7 @@ export default function TopBar() {
 
     function onRefreshClicked() {
         mcu_reset_ram();
-        window.memType = 'ROM';
+        window.memType = 'RAM';
         mcu_update_window_all();
         render();
         setTimeout("document.getElementsByClassName('ReactVirtualized__Grid')[0].scrollTop = 0");
