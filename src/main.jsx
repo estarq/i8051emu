@@ -20,4 +20,4 @@ export default function render() {
     );
 }
 
-render();
+window.render = render;

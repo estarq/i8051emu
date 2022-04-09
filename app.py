@@ -3,8 +3,6 @@ from browser import window
 import disassembler
 import mcu
 
-m = mcu.Microcontroller()
-
 
 def disassemble_to_window_assRows(file_content):
     window.assRows = [
@@ -214,3 +212,15 @@ window.mcu_clr_CSKB0_bit = mcu_clr_CSKB0_bit
 window.mcu_clr_CSKB1_bit = mcu_clr_CSKB1_bit
 window.mcu_update_window_memCells = mcu_update_window_memCells
 window.mcu_update_window_all = mcu_update_window_all
+
+print8051hex = (":03000000020100FA\n"
+                ":1001000075307F75313F75326D75330678307A04FE\n"
+                ":100110007B01D2967930EBF323FB7938E6F308C202\n"
+                ":0501200096DAEF80E714\n"
+                ":00000001FF\n")
+
+m = mcu.Microcontroller()
+m.load_hex_file(print8051hex)
+disassemble_to_window_assRows(print8051hex)
+mcu_update_window_all()
+window.render()
