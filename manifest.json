@@ -7,5 +7,12 @@
   "version": "1.0.0",
   "start_url": "./index.html",
   "display": "standalone",
-  "orientation": "landscape"
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "assets/favicon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
 }
