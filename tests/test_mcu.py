@@ -786,6 +786,7 @@ class TestMicrocontroller:
         m._exec_164()
         assert m.mem.a == 132
         assert m.mem.b == 3
+        assert m.mem.ov == 1
         assert m.mem.c == 0
 
     def test_exec_167(self):
@@ -1276,6 +1277,12 @@ class TestByte:
     def test__setattr__(self):
         assert mcu.Byte(260) == 4, 'Overflow not supported'
         assert mcu.Byte(-2) == 254, 'Underflow not supported'
+
+    def test__bool__(self):
+        b = mcu.Byte()
+        assert not b
+        b = 3
+        assert b
 
     def test__add__(self):
         b = mcu.Byte(4)

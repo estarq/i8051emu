@@ -708,6 +708,8 @@ class Microcontroller:
 
     def _exec_164(self):
         self.mem.b, self.mem.a = self.mem.a * self.mem.b
+        self.mem.ov = 1 if self.mem.b else 0
+        self.mem.c = 0
 
     def _exec_165(self):
         return
@@ -1689,6 +1691,9 @@ class Byte:
 
     def __int__(self):
         return self.value
+
+    def __bool__(self):
+        return bool(int(self))
 
     def __eq__(self, other: Union[int, 'Byte']):
         return int(self) == int(other)
