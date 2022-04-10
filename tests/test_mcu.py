@@ -959,7 +959,7 @@ class TestMicrocontroller:
         m = mcu.Microcontroller()
         m.mem.a = 190
         m._exec_212()
-        assert m.mem.a == 36
+        assert m.mem.a == 36 and m.mem.c == 1
 
     def test_exec_213(self):
         m = mcu.Microcontroller()

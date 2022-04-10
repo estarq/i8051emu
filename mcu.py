@@ -907,8 +907,12 @@ class Microcontroller:
 
     def _exec_212(self):
         if self.mem.ac or int(self.mem.a.bits[4:], 2) > 9:
+            if int(self.mem.a) + 6 > 255:
+                self.mem.c = 1
             self.mem.a += 6
         if self.mem.c or int(self.mem.a.bits[:4], 2) > 9:
+            if int(self.mem.a) + 96 > 255:
+                self.mem.c = 1
             self.mem.a += 96
 
     def _exec_213(self, direct, offset):
