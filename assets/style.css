@@ -14,3 +14,14 @@ body {
     font-size: 14px !important;
     height: 26px;
 }
+
+#info-alerts {
+    position: fixed;
+    left: 20px;
+    right: 20px;
+    bottom: 10px;
+}
+
+#info-alerts .MuiPaper-root {
+    background-color: rgb(229, 246, 253);
+}
