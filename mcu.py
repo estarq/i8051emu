@@ -604,6 +604,8 @@ class Microcontroller:
         self.mem.a = self.rom[int(self.pc + self.mem.a)]
 
     def _exec_132(self):
+        self.mem.c = 0
+        self.mem.ov = 0 if self.mem.b else 1
         self.mem.a, self.mem.b = divmod(self.mem.a, self.mem.b)
 
     def _exec_133(self, src_direct, dest_direct):
