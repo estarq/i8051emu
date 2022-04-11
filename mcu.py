@@ -301,9 +301,21 @@ class Microcontroller:
         self.mem.a += self.mem[direct]
 
     def _exec_38(self):
+        self.mem.c = 1 if int(self.mem.a) + int(self.mem[self.mem.r0]) > 255 else 0
+        self.mem.ac = 1 if int(self.mem.a.bits[4:], 2) + int(self.mem[self.mem.r0].bits[4:], 2) > 15 else 0
+        # Convert A and mem[r0] as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        mem_r0_signed = int(self.mem[self.mem.r0]) - 256 if self.mem[self.mem.r0] > 127 else int(self.mem[self.mem.r0])
+        self.mem.ov = 1 if not -129 < a_signed + mem_r0_signed < 128 else 0
         self.mem.a += self.mem[self.mem.r0]
 
     def _exec_39(self):
+        self.mem.c = 1 if int(self.mem.a) + int(self.mem[self.mem.r1]) > 255 else 0
+        self.mem.ac = 1 if int(self.mem.a.bits[4:], 2) + int(self.mem[self.mem.r1].bits[4:], 2) > 15 else 0
+        # Convert A and mem[r1] as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        mem_r1_signed = int(self.mem[self.mem.r1]) - 256 if self.mem[self.mem.r1] > 127 else int(self.mem[self.mem.r1])
+        self.mem.ov = 1 if not -129 < a_signed + mem_r1_signed < 128 else 0
         self.mem.a += self.mem[self.mem.r1]
 
     def _exec_40(self):
