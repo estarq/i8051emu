@@ -328,9 +328,12 @@ class TestMicrocontroller:
 
     def test_exec_36(self):
         m = mcu.Microcontroller()
-        m.mem.a = 10
-        m._exec_36(20)
-        assert m.mem.a == 30
+        m.mem.a = 195
+        m._exec_36(170)
+        assert m.mem.a == 109
+        assert m.mem.c == 1
+        assert m.mem.ac == 0
+        assert m.mem.ov == 1
 
     def test_exec_37(self):
         m = mcu.Microcontroller()
@@ -1284,6 +1287,10 @@ class TestByte:
         assert not b
         b = 3
         assert b
+
+    def test__gt__(self):
+        b = mcu.Byte(32)
+        assert b > 31
 
     def test__add__(self):
         b = mcu.Byte(4)

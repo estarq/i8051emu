@@ -283,6 +283,12 @@ class Microcontroller:
         self.mem.a.rotate_left()
 
     def _exec_36(self, immed):
+        self.mem.c = 1 if int(self.mem.a) + immed > 255 else 0
+        self.mem.ac = 1 if int(self.mem.a.bits[4:], 2) + int(f'{immed:08b}'[4:], 2) > 15 else 0
+        # Convert A and immed as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        immed_signed = immed - 256 if immed > 127 else immed
+        self.mem.ov = 1 if not -129 < a_signed + immed_signed < 128 else 0
         self.mem.a += immed
 
     def _exec_37(self, direct):
@@ -1709,6 +1715,9 @@ class Byte:
 
     def __lt__(self, other: Union[int, 'Byte']):
         return int(self) < int(other)
+
+    def __gt__(self, other: Union[int, 'Byte']):
+        return int(self) > int(other)
 
     def __add__(self, other: Union[int, 'Byte']):
         return self.__class__(int(self) + int(other))
