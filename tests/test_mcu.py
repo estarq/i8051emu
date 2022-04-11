@@ -429,11 +429,14 @@ class TestMicrocontroller:
 
     def test_exec_60(self):
         m = mcu.Microcontroller()
-        m.mem.a = 50
+        m.mem.a = 195
         m.mem.c = 1
-        m.mem.r4 = 5
+        m.mem.r4 = 170
         m._exec_60()
-        assert m.mem.a == 56
+        assert m.mem.a == 110
+        assert m.mem.c == 1
+        assert m.mem.ac == 0
+        assert m.mem.ov == 1
 
     def test_exec_64(self):
         m = mcu.Microcontroller()
