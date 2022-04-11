@@ -825,7 +825,14 @@ class Microcontroller:
         self.mem.c = c
 
     def _exec_149(self, direct):
+        c = 1 if self.mem[direct] > self.mem.a else 0
+        self.mem.ac = 1 if int(self.mem[direct].bits[4:], 2) > int(self.mem.a.bits[4:], 2) else 0
+        # Convert A and mem[direct] as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        mem_direct_signed = int(self.mem[direct]) - 256 if self.mem[direct] > 127 else int(self.mem[direct])
+        self.mem.ov = 1 if not -129 < a_signed - mem_direct_signed < 128 else 0
         self.mem.a -= self.mem.c + self.mem[direct]
+        self.mem.c = c
 
     def _exec_150(self):
         self.mem.a -= self.mem.c + self.mem[self.mem.r0]
