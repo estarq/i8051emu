@@ -815,7 +815,14 @@ class Microcontroller:
         self.mem.a = self.rom[int(self.mem.dptr + self.mem.a)]
 
     def _exec_148(self, immed):
+        c = 1 if immed > self.mem.a else 0
+        self.mem.ac = 1 if int(f'{immed:08b}'[4:], 2) > int(self.mem.a.bits[4:], 2) else 0
+        # Convert A and immed as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        immed_signed = immed - 256 if immed > 127 else immed
+        self.mem.ov = 1 if not -129 < a_signed - immed_signed < 128 else 0
         self.mem.a -= self.mem.c + immed
+        self.mem.c = c
 
     def _exec_149(self, direct):
         self.mem.a -= self.mem.c + self.mem[direct]

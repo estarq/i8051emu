@@ -739,10 +739,13 @@ class TestMicrocontroller:
 
     def test_exec_148(self):
         m = mcu.Microcontroller()
-        m.mem.a = 100
+        m.mem.a = 201
         m.mem.c = 1
-        m._exec_148(20)
-        assert m.mem.a == 79
+        m._exec_148(84)
+        assert m.mem.a == 116
+        assert m.mem.c == 0
+        assert m.mem.ac == 0
+        assert m.mem.ov == 1
 
     def test_exec_149(self):
         m = mcu.Microcontroller()
