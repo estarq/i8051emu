@@ -855,28 +855,84 @@ class Microcontroller:
         self.mem.c = c
 
     def _exec_152(self):
+        c = 1 if self.mem.r0 > self.mem.a else 0
+        self.mem.ac = 1 if int(self.mem.r0.bits[4:], 2) > int(self.mem.a.bits[4:], 2) else 0
+        # Convert A and R0 as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        r0_signed = int(self.mem.r0) - 256 if self.mem.r0 > 127 else int(self.mem.r0)
+        self.mem.ov = 1 if not -129 < a_signed - r0_signed < 128 else 0
         self.mem.a -= self.mem.c + self.mem.r0
+        self.mem.c = c
 
     def _exec_153(self):
+        c = 1 if self.mem.r1 > self.mem.a else 0
+        self.mem.ac = 1 if int(self.mem.r1.bits[4:], 2) > int(self.mem.a.bits[4:], 2) else 0
+        # Convert A and R1 as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        r1_signed = int(self.mem.r1) - 256 if self.mem.r1 > 127 else int(self.mem.r1)
+        self.mem.ov = 1 if not -129 < a_signed - r1_signed < 128 else 0
         self.mem.a -= self.mem.c + self.mem.r1
+        self.mem.c = c
 
     def _exec_154(self):
+        c = 1 if self.mem.r2 > self.mem.a else 0
+        self.mem.ac = 1 if int(self.mem.r2.bits[4:], 2) > int(self.mem.a.bits[4:], 2) else 0
+        # Convert A and R2 as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        r2_signed = int(self.mem.r2) - 256 if self.mem.r2 > 127 else int(self.mem.r2)
+        self.mem.ov = 1 if not -129 < a_signed - r2_signed < 128 else 0
         self.mem.a -= self.mem.c + self.mem.r2
+        self.mem.c = c
 
     def _exec_155(self):
+        c = 1 if self.mem.r3 > self.mem.a else 0
+        self.mem.ac = 1 if int(self.mem.r3.bits[4:], 2) > int(self.mem.a.bits[4:], 2) else 0
+        # Convert A and R3 as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        r3_signed = int(self.mem.r3) - 256 if self.mem.r3 > 127 else int(self.mem.r3)
+        self.mem.ov = 1 if not -129 < a_signed - r3_signed < 128 else 0
         self.mem.a -= self.mem.c + self.mem.r3
+        self.mem.c = c
 
     def _exec_156(self):
+        c = 1 if self.mem.r4 > self.mem.a else 0
+        self.mem.ac = 1 if int(self.mem.r4.bits[4:], 2) > int(self.mem.a.bits[4:], 2) else 0
+        # Convert A and R4 as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        r4_signed = int(self.mem.r4) - 256 if self.mem.r4 > 127 else int(self.mem.r4)
+        self.mem.ov = 1 if not -129 < a_signed - r4_signed < 128 else 0
         self.mem.a -= self.mem.c + self.mem.r4
+        self.mem.c = c
 
     def _exec_157(self):
+        c = 1 if self.mem.r5 > self.mem.a else 0
+        self.mem.ac = 1 if int(self.mem.r5.bits[4:], 2) > int(self.mem.a.bits[4:], 2) else 0
+        # Convert A and R5 as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        r5_signed = int(self.mem.r5) - 256 if self.mem.r5 > 127 else int(self.mem.r5)
+        self.mem.ov = 1 if not -129 < a_signed - r5_signed < 128 else 0
         self.mem.a -= self.mem.c + self.mem.r5
+        self.mem.c = c
 
     def _exec_158(self):
+        c = 1 if self.mem.r6 > self.mem.a else 0
+        self.mem.ac = 1 if int(self.mem.r6.bits[4:], 2) > int(self.mem.a.bits[4:], 2) else 0
+        # Convert A and R6 as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        r6_signed = int(self.mem.r6) - 256 if self.mem.r6 > 127 else int(self.mem.r6)
+        self.mem.ov = 1 if not -129 < a_signed - r6_signed < 128 else 0
         self.mem.a -= self.mem.c + self.mem.r6
+        self.mem.c = c
 
     def _exec_159(self):
+        c = 1 if self.mem.r7 > self.mem.a else 0
+        self.mem.ac = 1 if int(self.mem.r7.bits[4:], 2) > int(self.mem.a.bits[4:], 2) else 0
+        # Convert A and R7 as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        r7_signed = int(self.mem.r7) - 256 if self.mem.r7 > 127 else int(self.mem.r7)
+        self.mem.ov = 1 if not -129 < a_signed - r7_signed < 128 else 0
         self.mem.a -= self.mem.c + self.mem.r7
+        self.mem.c = c
 
     def _exec_160(self, bit):
         byte_no = bit // 8 + 32 if bit < 128 else bit // 8 * 8
