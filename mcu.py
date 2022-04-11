@@ -417,6 +417,12 @@ class Microcontroller:
         self.mem.c = most_significant_bit
 
     def _exec_52(self, immed):
+        self.mem.c = 1 if int(self.mem.a) + immed + self.mem.c > 255 else 0
+        self.mem.ac = 1 if int(self.mem.a.bits[4:], 2) + int(f'{immed:08b}'[4:], 2) + self.mem.c > 15 else 0
+        # Convert A and immed as if they were two's complement numbers
+        a_signed = int(self.mem.a) - 256 if self.mem.a > 127 else int(self.mem.a)
+        immed_signed = immed - 256 if immed > 127 else immed
+        self.mem.ov = 1 if not -129 < a_signed + immed_signed + self.mem.c < 128 else 0
         self.mem.a += self.mem.c + immed
 
     def _exec_53(self, direct):
