@@ -5,22 +5,23 @@
   "main": "lib/bundle.min.js",
   "scripts": {
     "prebuild": "npx babel src -d lib",
-    "build": "browserify lib/main.js -o lib/bundle.js && uglifyjs lib/bundle.js -o lib/bundle.min.js"
+    "build": "browserify lib/main.js -g [ envify --NODE_ENV production ] -g uglifyify | terser --compress --mangle > lib/bundle.min.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/estarq/8051.git"
+    "url": "git+https://github.com/estarq/i8051emu.git"
   },
   "keywords": [
     "8051",
-    "emulator"
+    "emulator",
+    "i8051emu"
   ],
   "author": "Paul Lloyd",
-  "license": "Proprietary",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/estarq/8051/issues"
+    "url": "https://github.com/estarq/i8051emu/issues"
   },
-  "homepage": "https://github.com/estarq/8051#readme",
+  "homepage": "https://github.com/estarq/i8051emu#readme",
   "dependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
@@ -42,8 +43,10 @@
     "@babel/preset-react": "^7.16.7",
     "babelify": "^10.0.0",
     "browserify": "^17.0.0",
+    "envify": "^4.1.0",
     "eslint": "^8.10.0",
     "jest-cli": "^27.5.1",
-    "uglify-js": "^3.15.2"
+    "terser": "^5.12.1",
+    "uglifyify": "^5.0.2"
   }
 }
