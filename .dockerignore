@@ -1,0 +1,10 @@
+.run/
+lib/
+node_modules/
+tests/
+.dockerignore
+.gitignore
+Dockerfile
+LICENSE
+package-lock.json
+README.md
