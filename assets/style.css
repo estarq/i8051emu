@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "Roboto";
+    src: url(Roboto-Light.ttf) format("truetype");
+}
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.MuiListItem-root {
+    justify-content: center !important;
+    font-size: 14px !important;
+    height: 26px;
+}
+
+#info-alerts {
+    position: fixed;
+    left: 20px;
+    right: 20px;
+    bottom: 10px;
+}
+
+#info-alerts .MuiPaper-root {
+    background-color: rgb(229, 246, 253);
+}
