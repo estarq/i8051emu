@@ -1,3 +1,9 @@
 .idea
-node_modules
+electron
+!electron/copyFiles.js
+!electron/main.js
+!electron/package.json
+!electron/package-lock.json
+!electron/server.js
 lib
+node_modules

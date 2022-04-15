@@ -1,0 +1,58 @@
+{
+  "name": "i8051emu",
+  "version": "1.0.0",
+  "description": "Intel 8051 Emulator",
+  "main": "main.js",
+  "build": {
+    "appId": "com.estarq.i8051emu",
+    "mac": {
+      "target": [{
+        "target": "dmg",
+        "arch": [
+          "arm64",
+          "x64"
+        ]
+      }],
+      "icon": "assets/favicon.icns"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "win": {
+      "target": "portable",
+      "icon": "assets/favicon.ico"
+    }
+  },
+  "scripts": {
+    "start": "electron .",
+    "distMac": "node copyFiles.js && electron-builder --mac",
+    "distLinux": "node copyFiles.js && electron-builder --linux",
+    "distWindows": "node copyFiles.js && electron-builder --windows"
+  },
+  "postinstall": "electron-builder install-app-deps",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/estarq/i8051emu.git"
+  },
+  "keywords": [
+    "8051",
+    "emulator",
+    "i8051emu"
+  ],
+  "author": "Paul Lloyd",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/estarq/i8051emu/issues"
+  },
+  "homepage": "https://github.com/estarq/i8051emu#readme",
+  "dependencies": {
+    "brython": "^3.10.5",
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "electron": "^18.0.4",
+    "electron-builder": "^23.0.3",
+    "electron-packager": "^15.4.0",
+    "fs-extra": "^10.0.1"
+  }
+}

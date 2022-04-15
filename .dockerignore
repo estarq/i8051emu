@@ -1,4 +1,5 @@
 .run/
+electron/
 lib/
 node_modules/
 tests/
