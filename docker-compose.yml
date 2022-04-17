@@ -1,0 +1,6 @@
+services:
+  webserver:
+    container_name: "i8051emu"
+    build: .
+    ports:
+      - "3000:3000"
