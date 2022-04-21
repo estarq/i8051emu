@@ -102,11 +102,12 @@ Download an image and run it as a container:<br>
 2nd - Resetting the state of the microcontroller leaving the content of the ROM<br>
 3rd - Execution of the next instruction<br>
 4th - Execution of the program up to the clicked row<br>
-5th - Automatic execution of the next instruction every 500 ms. When clicked, the icon turns into a pause button.
+5th - Automatic execution of the next instruction every 500 ms. When clicked, the icon turns into a pause button
 
 ### Main Table
 
-Each line represents one assembly instruction. The row highlighted in blue is next in the sequence of program execution.
+Each line represents one assembly instruction.<br>
+The row highlighted in blue is next in the sequence of program execution.
 
 Description of the columns:<br>
 Addr - the ROM address where the instruction is stored<br>
